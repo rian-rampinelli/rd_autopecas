@@ -1,19 +1,20 @@
 package com.rd.autopecas.erp_autopecas;
 
 import com.rd.autopecas.erp_autopecas.domain.cliente.Cliente;
+import com.rd.autopecas.erp_autopecas.domain.compra.Compra;
 import com.rd.autopecas.erp_autopecas.domain.endereco.Endereco;
 import com.rd.autopecas.erp_autopecas.domain.forma_pagamento.FormaPagamento;
+import com.rd.autopecas.erp_autopecas.domain.fornecedor.Fornecedor;
 import com.rd.autopecas.erp_autopecas.domain.funcionario.Funcionario;
 import com.rd.autopecas.erp_autopecas.domain.funcionario.enums.CargoFuncionario;
 import com.rd.autopecas.erp_autopecas.domain.funcionario.enums.StatusFuncionario;
 import com.rd.autopecas.erp_autopecas.domain.user.User;
-import com.rd.autopecas.erp_autopecas.domain.venda.StatusVenda;
+import com.rd.autopecas.erp_autopecas.domain.common.StatusTransacao;
 import com.rd.autopecas.erp_autopecas.domain.venda.Venda;
 import io.github.cdimascio.dotenv.Dotenv;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import javax.swing.*;
 import java.math.BigDecimal;
 
 @SpringBootApplication
@@ -57,7 +58,7 @@ public class ErpAutopecasApplication {
 
             Venda venda1 = new Venda();
             venda1.setTotalValue(BigDecimal.valueOf(00.00));
-            venda1.setStatus(StatusVenda.EM_ANDAMENTO);
+            venda1.setStatus(StatusTransacao.EM_ANDAMENTO);
             funcionario1.addVenda(venda1);
             cliente1.addVenda(venda1);
 
@@ -65,8 +66,19 @@ public class ErpAutopecasApplication {
             formaPagamento.setName("pix");
 
             venda1.setFormaPagamento(formaPagamento);
-
             System.out.println(venda1);
+
+            Fornecedor fornecedor1 = new Fornecedor();
+            fornecedor1.setNome("Toyota");
+            fornecedor1.setCnpj("12345678901234");
+
+            Compra compra1 = new Compra();
+            compra1.setTotalValue(BigDecimal.valueOf(00.00));
+            compra1.setStatus(StatusTransacao.EM_ANDAMENTO);
+            fornecedor1.addCompra(compra1);
+            funcionario1.addCompra(compra1);
+            compra1.setFormaPagamento(formaPagamento);
+            System.out.println(compra1);
         }
 	}
 }

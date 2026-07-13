@@ -1,5 +1,6 @@
 package com.rd.autopecas.erp_autopecas.domain.funcionario;
 
+import com.rd.autopecas.erp_autopecas.domain.compra.Compra;
 import com.rd.autopecas.erp_autopecas.domain.endereco.Endereco;
 import com.rd.autopecas.erp_autopecas.domain.funcionario.enums.CargoFuncionario;
 import com.rd.autopecas.erp_autopecas.domain.funcionario.enums.StatusFuncionario;
@@ -44,6 +45,10 @@ public class Funcionario {
     @ToString.Exclude
     private List<Venda> vendas = new ArrayList();
 
+    @OneToMany(mappedBy = "funcionario")
+    @ToString.Exclude
+    private List<Compra> compras = new ArrayList();
+
 
     public void addVenda(Venda venda) {
         vendas.add(venda);
@@ -53,5 +58,15 @@ public class Funcionario {
     public void removeVenda(Venda venda) {
         vendas.remove(venda);
         venda.setFuncionario(null);
+    }
+
+    public void addCompra(Compra compra) {
+        compras.add(compra);
+        compra.setFuncionario(this);
+    }
+
+    public void removeCompra(Compra compra) {
+        compras.remove(compra);
+        compra.setFuncionario(null);
     }
 }
