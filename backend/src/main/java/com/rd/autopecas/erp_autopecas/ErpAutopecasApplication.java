@@ -1,6 +1,7 @@
 package com.rd.autopecas.erp_autopecas;
 
 import com.rd.autopecas.erp_autopecas.domain.cliente.Cliente;
+import com.rd.autopecas.erp_autopecas.domain.endereco.Endereco;
 import com.rd.autopecas.erp_autopecas.domain.funcionario.Funcionario;
 import com.rd.autopecas.erp_autopecas.domain.funcionario.enums.CargoFuncionario;
 import com.rd.autopecas.erp_autopecas.domain.funcionario.enums.StatusFuncionario;
@@ -38,6 +39,14 @@ public class ErpAutopecasApplication {
             Cliente cliente1 = new Cliente();
             cliente1.setUser(user1);
             System.out.println(cliente1);
+
+            Endereco endereco1 = new Endereco();
+            endereco1.setRua("123 Main St");
+            endereco1.setCidade("Anytown");
+            endereco1.setBairro("CA");
+            endereco1.setCep("12345-678");
+            user1.addEndereco(endereco1);
+            System.out.println(endereco1);
         }
 
 	}

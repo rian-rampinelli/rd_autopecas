@@ -2,9 +2,13 @@ package com.rd.autopecas.erp_autopecas.domain.user;
 
 import com.rd.autopecas.erp_autopecas.domain.cliente.Cliente;
 import com.rd.autopecas.erp_autopecas.domain.common.Auditable;
+import com.rd.autopecas.erp_autopecas.domain.endereco.Endereco;
 import com.rd.autopecas.erp_autopecas.domain.funcionario.Funcionario;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -30,5 +34,19 @@ public class User extends Auditable {
 
     @Column(name = "cpf", nullable = false, unique = true, length = 11)
     private String cpf;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude
+    private List<Endereco> enderecos = new ArrayList<>();
+
+    public void addEndereco(Endereco endereco) {
+        enderecos.add(endereco);
+        endereco.setUser(this);
+    }
+
+    public void removeEndereco(Endereco endereco) {
+        enderecos.remove(endereco);
+        endereco.setUser(null);
+    }
 
 }
