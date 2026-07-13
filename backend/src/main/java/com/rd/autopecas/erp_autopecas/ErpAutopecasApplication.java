@@ -1,5 +1,7 @@
 package com.rd.autopecas.erp_autopecas;
 
+import com.rd.autopecas.erp_autopecas.domain.Item.Item;
+import com.rd.autopecas.erp_autopecas.domain.carro.Carro;
 import com.rd.autopecas.erp_autopecas.domain.cliente.Cliente;
 import com.rd.autopecas.erp_autopecas.domain.compra.Compra;
 import com.rd.autopecas.erp_autopecas.domain.endereco.Endereco;
@@ -16,6 +18,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 @SpringBootApplication
 public class ErpAutopecasApplication {
@@ -79,6 +82,31 @@ public class ErpAutopecasApplication {
             funcionario1.addCompra(compra1);
             compra1.setFormaPagamento(formaPagamento);
             System.out.println(compra1);
+
+            //testar carro e items
+            Carro carro = new Carro();
+            carro.setNome("peuget");
+            carro.setMarca("peuget");
+            carro.setModelo("peuget");
+            carro.setMotor("peuget");
+            carro.setVersao("e");
+            carro.setAnoFabricacao(LocalDate.of(1222,10,22));
+
+            Item item = new Item();
+            item.setNome("Vidro");
+            item.setDescricao("Vidro de carro");
+            item.setCodigo(122222L);
+            item.setMarca("peuget");
+            item.setTypeItem("peuget");
+            item.setStandartPrice(BigDecimal.valueOf(230.00));
+            item.setPeso(BigDecimal.valueOf(10.00));
+            System.out.println(item);
+
+            carro.addItem(item);
+
+            System.out.println(carro);
+            System.out.println(item);
+
         }
 	}
 }

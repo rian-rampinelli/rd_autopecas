@@ -1,12 +1,10 @@
 package com.rd.autopecas.erp_autopecas.domain.user;
 
-import com.rd.autopecas.erp_autopecas.domain.cliente.Cliente;
+
 import com.rd.autopecas.erp_autopecas.domain.common.Auditable;
 import com.rd.autopecas.erp_autopecas.domain.endereco.Endereco;
-import com.rd.autopecas.erp_autopecas.domain.funcionario.Funcionario;
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
