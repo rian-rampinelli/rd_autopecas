@@ -5,6 +5,7 @@ import com.rd.autopecas.erp_autopecas.domain.common.Auditable;
 import com.rd.autopecas.erp_autopecas.domain.endereco.Endereco;
 import com.rd.autopecas.erp_autopecas.domain.item_compra.ItemCompra;
 import com.rd.autopecas.erp_autopecas.domain.item_estoque.ItemEstoque;
+import com.rd.autopecas.erp_autopecas.domain.movimentacao_estoque.MovimentacaoEstoque;
 import com.rd.autopecas.erp_autopecas.domain.unidade.Unidade;
 import jakarta.persistence.*;
 import lombok.*;
@@ -33,6 +34,10 @@ public class Estoque extends Auditable {
     @ToString.Exclude
     private List<ItemEstoque> ItemsEstoque = new ArrayList();
 
+    @OneToMany(mappedBy = "estoque")
+    @ToString.Exclude
+    private List<MovimentacaoEstoque> movimentacoesEstoque = new ArrayList();
+
 
     public void addItemEstoque(ItemEstoque itemEstoque) {
         ItemsEstoque.add(itemEstoque);
@@ -42,6 +47,16 @@ public class Estoque extends Auditable {
     public void removeItemEstoque(ItemEstoque itemEstoque) {
         ItemsEstoque.remove(itemEstoque);
         itemEstoque.setEstoque(null);
+    }
+
+    public void addMovimentacao(MovimentacaoEstoque movimentacaoEstoque) {
+        movimentacoesEstoque.add(movimentacaoEstoque);
+        movimentacaoEstoque.setEstoque(this);
+    }
+
+    public void removeMovimentacaoEstoque(MovimentacaoEstoque movimentacaoEstoque) {
+        movimentacoesEstoque.remove(movimentacaoEstoque);
+        movimentacaoEstoque.setEstoque(null);
     }
 
 

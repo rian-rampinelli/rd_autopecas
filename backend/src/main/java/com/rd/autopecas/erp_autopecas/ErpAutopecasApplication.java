@@ -14,6 +14,8 @@ import com.rd.autopecas.erp_autopecas.domain.funcionario.enums.StatusFuncionario
 import com.rd.autopecas.erp_autopecas.domain.item_compra.ItemCompra;
 import com.rd.autopecas.erp_autopecas.domain.item_estoque.ItemEstoque;
 import com.rd.autopecas.erp_autopecas.domain.item_venda.ItemVenda;
+import com.rd.autopecas.erp_autopecas.domain.movimentacao_estoque.MovimentacaoEstoque;
+import com.rd.autopecas.erp_autopecas.domain.movimentacao_estoque.TypeMovimentacao;
 import com.rd.autopecas.erp_autopecas.domain.unidade.StatusUnidade;
 import com.rd.autopecas.erp_autopecas.domain.unidade.Unidade;
 import com.rd.autopecas.erp_autopecas.domain.user.User;
@@ -147,6 +149,13 @@ public class ErpAutopecasApplication {
             itemEstoque.setLocalizacao("Prateleira 1");
             estoque.addItemEstoque(itemEstoque);
             System.out.println(itemEstoque);
+
+            MovimentacaoEstoque movimentacaoEstoque = new MovimentacaoEstoque();
+            movimentacaoEstoque.setQuantidade(BigDecimal.valueOf(5));
+            movimentacaoEstoque.setTypeMovimentacao(TypeMovimentacao.ENTRADA);
+            movimentacaoEstoque.setItem(item);
+            estoque.addMovimentacao(movimentacaoEstoque);
+            System.out.println(movimentacaoEstoque);
         }
 	}
 }
