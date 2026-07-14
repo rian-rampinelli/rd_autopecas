@@ -5,6 +5,7 @@ import com.rd.autopecas.erp_autopecas.domain.carro.Carro;
 import com.rd.autopecas.erp_autopecas.domain.cliente.Cliente;
 import com.rd.autopecas.erp_autopecas.domain.compra.Compra;
 import com.rd.autopecas.erp_autopecas.domain.endereco.Endereco;
+import com.rd.autopecas.erp_autopecas.domain.estoque.Estoque;
 import com.rd.autopecas.erp_autopecas.domain.forma_pagamento.FormaPagamento;
 import com.rd.autopecas.erp_autopecas.domain.fornecedor.Fornecedor;
 import com.rd.autopecas.erp_autopecas.domain.funcionario.Funcionario;
@@ -12,6 +13,8 @@ import com.rd.autopecas.erp_autopecas.domain.funcionario.enums.CargoFuncionario;
 import com.rd.autopecas.erp_autopecas.domain.funcionario.enums.StatusFuncionario;
 import com.rd.autopecas.erp_autopecas.domain.item_compra.ItemCompra;
 import com.rd.autopecas.erp_autopecas.domain.item_venda.ItemVenda;
+import com.rd.autopecas.erp_autopecas.domain.unidade.StatusUnidade;
+import com.rd.autopecas.erp_autopecas.domain.unidade.Unidade;
 import com.rd.autopecas.erp_autopecas.domain.user.User;
 import com.rd.autopecas.erp_autopecas.domain.common.StatusTransacao;
 import com.rd.autopecas.erp_autopecas.domain.venda.Venda;
@@ -123,6 +126,19 @@ public class ErpAutopecasApplication {
             itemCompra.setQuantidade(BigDecimal.valueOf(2));
             itemCompra.setItemValue(item.getStandartPrice());
             System.out.println(itemCompra);
+
+            //criando unidada e estoque e relações
+            Unidade unidade = new Unidade();
+            unidade.setEndereco("123 Main St");
+            unidade.setStatus(StatusUnidade.ATIVO);
+
+
+            Estoque estoque = new Estoque();
+            estoque.setLugar("Prateleira 1");
+            unidade.addEstoque(estoque);
+
+            System.out.println(estoque);
+            System.out.println(unidade);
         }
 	}
 }
