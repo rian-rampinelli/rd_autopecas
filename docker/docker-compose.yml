@@ -1,0 +1,12 @@
+services:
+  postgres:
+    image: postgres
+    ports:
+      - "5432:5432"
+    expose:
+      - "5432"
+    environment:
+      - POSTGRES_DB=erp_autopecas
+      - POSTGRES_USER=erp_user
+      - POSTGRES_PASSWORD=erp_password
+      - POSTGRES_ROOT_PASSWORD=erp_root_password
