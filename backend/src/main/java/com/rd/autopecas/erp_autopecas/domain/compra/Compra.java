@@ -5,10 +5,14 @@ import com.rd.autopecas.erp_autopecas.domain.forma_pagamento.FormaPagamento;
 import com.rd.autopecas.erp_autopecas.domain.fornecedor.Fornecedor;
 import com.rd.autopecas.erp_autopecas.domain.funcionario.Funcionario;
 import com.rd.autopecas.erp_autopecas.domain.common.StatusTransacao;
+import com.rd.autopecas.erp_autopecas.domain.item_compra.ItemCompra;
+import com.rd.autopecas.erp_autopecas.domain.item_venda.ItemVenda;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "compra")
@@ -41,4 +45,19 @@ public class Compra extends Auditable {
     @ManyToOne
     @JoinColumn(name = "id_forma_pagamento", nullable = false)
     private FormaPagamento formaPagamento;
+
+    @OneToMany(mappedBy = "compra")
+    @ToString.Exclude
+    private List<ItemCompra> ItemsCompra = new ArrayList();
+
+
+    public void addItemCompra(ItemCompra itemCompra) {
+        ItemsCompra.add(itemCompra);
+        itemCompra.setCompra(this);
+    }
+
+    public void removeItemCompra(ItemCompra itemCompra) {
+        ItemsCompra.remove(itemCompra);
+        itemCompra.setCompra(null);
+    }
 }
