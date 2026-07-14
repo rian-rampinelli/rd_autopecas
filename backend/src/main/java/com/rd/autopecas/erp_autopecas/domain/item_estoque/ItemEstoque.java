@@ -25,6 +25,9 @@ public class ItemEstoque extends Auditable {
     @Column(name = "quantidade",nullable = false,precision = 10,scale = 2)
     private BigDecimal quantidade;
 
+    @Column(name = "localizacao", nullable = false, length = 255)
+    private String localizacao;
+
     @ManyToOne
     @JoinColumn(name = "id_item", nullable = false)
     private Item item;

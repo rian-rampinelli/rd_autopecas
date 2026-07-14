@@ -135,7 +135,6 @@ public class ErpAutopecasApplication {
 
 
             Estoque estoque = new Estoque();
-            estoque.setLugar("Prateleira 1");
             unidade.addEstoque(estoque);
 
             System.out.println(estoque);
@@ -145,6 +144,7 @@ public class ErpAutopecasApplication {
             ItemEstoque itemEstoque = new ItemEstoque();
             itemEstoque.setQuantidade(BigDecimal.valueOf(10));
             itemEstoque.setItem(item);
+            itemEstoque.setLocalizacao("Prateleira 1");
             estoque.addItemEstoque(itemEstoque);
             System.out.println(itemEstoque);
         }

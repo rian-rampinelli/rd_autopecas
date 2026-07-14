@@ -24,10 +24,6 @@ public class Estoque extends Auditable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "lugar", nullable = false, length = 255)
-    private String lugar;
-
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_unidade", nullable = false)
     @ToString.Exclude

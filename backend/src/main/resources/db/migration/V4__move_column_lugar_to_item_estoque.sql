@@ -1,0 +1,5 @@
+ALTER TABLE estoque
+DROP COLUMN lugar;
+
+ALTER TABLE item_estoque
+ADD COLUMN localizacao VARCHAR(255) NOT NULL;
