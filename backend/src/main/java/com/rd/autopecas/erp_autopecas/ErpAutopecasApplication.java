@@ -12,6 +12,7 @@ import com.rd.autopecas.erp_autopecas.domain.funcionario.Funcionario;
 import com.rd.autopecas.erp_autopecas.domain.funcionario.enums.CargoFuncionario;
 import com.rd.autopecas.erp_autopecas.domain.funcionario.enums.StatusFuncionario;
 import com.rd.autopecas.erp_autopecas.domain.item_compra.ItemCompra;
+import com.rd.autopecas.erp_autopecas.domain.item_estoque.ItemEstoque;
 import com.rd.autopecas.erp_autopecas.domain.item_venda.ItemVenda;
 import com.rd.autopecas.erp_autopecas.domain.unidade.StatusUnidade;
 import com.rd.autopecas.erp_autopecas.domain.unidade.Unidade;
@@ -139,6 +140,13 @@ public class ErpAutopecasApplication {
 
             System.out.println(estoque);
             System.out.println(unidade);
+
+            //criando itemEstoque e movimentacaoEstoque e suas relações
+            ItemEstoque itemEstoque = new ItemEstoque();
+            itemEstoque.setQuantidade(BigDecimal.valueOf(10));
+            itemEstoque.setItem(item);
+            estoque.addItemEstoque(itemEstoque);
+            System.out.println(itemEstoque);
         }
 	}
 }

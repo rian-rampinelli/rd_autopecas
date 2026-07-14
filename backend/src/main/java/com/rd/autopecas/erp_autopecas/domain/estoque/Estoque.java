@@ -3,6 +3,8 @@ package com.rd.autopecas.erp_autopecas.domain.estoque;
 
 import com.rd.autopecas.erp_autopecas.domain.common.Auditable;
 import com.rd.autopecas.erp_autopecas.domain.endereco.Endereco;
+import com.rd.autopecas.erp_autopecas.domain.item_compra.ItemCompra;
+import com.rd.autopecas.erp_autopecas.domain.item_estoque.ItemEstoque;
 import com.rd.autopecas.erp_autopecas.domain.unidade.Unidade;
 import jakarta.persistence.*;
 import lombok.*;
@@ -30,6 +32,21 @@ public class Estoque extends Auditable {
     @JoinColumn(name = "id_unidade", nullable = false)
     @ToString.Exclude
     private Unidade unidade;
+
+    @OneToMany(mappedBy = "estoque")
+    @ToString.Exclude
+    private List<ItemEstoque> ItemsEstoque = new ArrayList();
+
+
+    public void addItemEstoque(ItemEstoque itemEstoque) {
+        ItemsEstoque.add(itemEstoque);
+        itemEstoque.setEstoque(this);
+    }
+
+    public void removeItemEstoque(ItemEstoque itemEstoque) {
+        ItemsEstoque.remove(itemEstoque);
+        itemEstoque.setEstoque(null);
+    }
 
 
 
