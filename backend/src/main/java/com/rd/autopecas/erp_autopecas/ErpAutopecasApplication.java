@@ -9,13 +9,14 @@ import com.rd.autopecas.erp_autopecas.domain.estoque.Estoque;
 import com.rd.autopecas.erp_autopecas.domain.forma_pagamento.FormaPagamento;
 import com.rd.autopecas.erp_autopecas.domain.fornecedor.Fornecedor;
 import com.rd.autopecas.erp_autopecas.domain.funcionario.Funcionario;
-import com.rd.autopecas.erp_autopecas.domain.funcionario.enums.CargoFuncionario;
+import com.rd.autopecas.erp_autopecas.domain.role.RoleFuncionario;
 import com.rd.autopecas.erp_autopecas.domain.funcionario.enums.StatusFuncionario;
 import com.rd.autopecas.erp_autopecas.domain.item_compra.ItemCompra;
 import com.rd.autopecas.erp_autopecas.domain.item_estoque.ItemEstoque;
 import com.rd.autopecas.erp_autopecas.domain.item_venda.ItemVenda;
 import com.rd.autopecas.erp_autopecas.domain.movimentacao_estoque.MovimentacaoEstoque;
 import com.rd.autopecas.erp_autopecas.domain.movimentacao_estoque.TypeMovimentacao;
+import com.rd.autopecas.erp_autopecas.domain.role.Role;
 import com.rd.autopecas.erp_autopecas.domain.unidade.StatusUnidade;
 import com.rd.autopecas.erp_autopecas.domain.unidade.Unidade;
 import com.rd.autopecas.erp_autopecas.domain.user.User;
@@ -48,8 +49,11 @@ public class ErpAutopecasApplication {
             user1.setPassword("rian");
             System.out.println(user1);
 
+            Role role = new Role();
+            role.setName(RoleFuncionario.ROLE_ESTOQUISTA);
+
             Funcionario funcionario1 = new Funcionario();
-            funcionario1.setCargo(CargoFuncionario.ESTOQUISTA);
+            funcionario1.addRole(role);
             funcionario1.setStatus(StatusFuncionario.ATIVO);
             funcionario1.setUser(user1);
             funcionario1.setSalario(BigDecimal.valueOf(2000.00));

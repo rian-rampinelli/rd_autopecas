@@ -1,10 +1,10 @@
 package com.rd.autopecas.erp_autopecas.domain.user;
 
-
 import com.rd.autopecas.erp_autopecas.domain.common.Auditable;
 import com.rd.autopecas.erp_autopecas.domain.endereco.Endereco;
 import jakarta.persistence.*;
 import lombok.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,5 +46,6 @@ public class User extends Auditable {
         enderecos.remove(endereco);
         endereco.setUser(null);
     }
+
 
 }

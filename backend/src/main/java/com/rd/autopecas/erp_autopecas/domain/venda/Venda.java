@@ -3,7 +3,6 @@ package com.rd.autopecas.erp_autopecas.domain.venda;
 import com.rd.autopecas.erp_autopecas.domain.cliente.Cliente;
 import com.rd.autopecas.erp_autopecas.domain.common.Auditable;
 import com.rd.autopecas.erp_autopecas.domain.common.StatusTransacao;
-import com.rd.autopecas.erp_autopecas.domain.compra.Compra;
 import com.rd.autopecas.erp_autopecas.domain.forma_pagamento.FormaPagamento;
 import com.rd.autopecas.erp_autopecas.domain.funcionario.Funcionario;
 import com.rd.autopecas.erp_autopecas.domain.item_venda.ItemVenda;
