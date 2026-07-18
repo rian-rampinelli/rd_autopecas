@@ -8,6 +8,6 @@ import java.util.Optional;
 @Repository
 public interface FuncionarioRepository extends JpaRepository<Funcionario, Long> {
 
-    Optional<Funcionario> findByUser_Nome(String email);
+    Optional<Funcionario> findByUser_Email(String email);
     Boolean existsByUser_Email(String email);
 }

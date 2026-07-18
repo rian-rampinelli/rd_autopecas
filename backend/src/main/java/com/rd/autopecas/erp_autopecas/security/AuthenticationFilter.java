@@ -35,7 +35,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
             if(tokenProvider.isTokenValid(token)){
                 String userName = tokenProvider.getUsername(token);
                 //pegar do db pelo email e instanciar em um userdetails
-                UserDetails userDetails = funcionarioRepository.findByUser_Nome(userName)
+                UserDetails userDetails = funcionarioRepository.findByUser_Email(userName)
                         .orElseThrow(() -> new UsernameNotFoundException("nao encontrado"));
                 //confirma q o user ta autenticado a partir de agora
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails,null,userDetails.getAuthorities());

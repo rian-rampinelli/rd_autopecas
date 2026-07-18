@@ -22,12 +22,12 @@ public class TokenProvider {
                 (Funcionario) authentication.getPrincipal();
 
         Instant now = Instant.now();
-        var expiresIn = 300L;
+        var expiresIn = 600L;
 
         var claims = JwtClaimsSet.builder()
                 .subject(funcionario.getUsername())
                 .issuedAt(now)
-                .expiresAt(now.plusMillis(expiresIn))
+                .expiresAt(now.plusSeconds(expiresIn))
                 .build();
 
         return jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();

@@ -30,3 +30,7 @@ jwt:
     key: ${JWT_PUBLIC_KEY}
   private:
     key: ${JWT_PRIVATE_KEY}
+
+logging:
+  level:
+    org.springframework.security: DEBUG
