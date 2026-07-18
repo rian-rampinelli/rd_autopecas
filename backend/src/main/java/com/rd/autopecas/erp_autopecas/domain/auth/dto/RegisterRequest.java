@@ -1,5 +1,6 @@
 package com.rd.autopecas.erp_autopecas.domain.auth.dto;
 
+import com.rd.autopecas.erp_autopecas.domain.endereco.dto.EnderecoRequest;
 import jakarta.validation.constraints.*;
 
 import java.math.BigDecimal;
@@ -27,6 +28,8 @@ public record RegisterRequest(
         BigDecimal salary,
 
         @NotEmpty(message = "Ao menos uma role deve ser informada")  // <-- aqui
-        List<Long> roleIds
+        List<Long> roleIds,
+
+        List<EnderecoRequest> enderecos
 ) {
 }

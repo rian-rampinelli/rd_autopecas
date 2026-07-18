@@ -4,6 +4,8 @@ import com.rd.autopecas.erp_autopecas.domain.auth.dto.LoginRequest;
 import com.rd.autopecas.erp_autopecas.domain.auth.dto.LoginResponse;
 import com.rd.autopecas.erp_autopecas.domain.auth.dto.RegisterRequest;
 import com.rd.autopecas.erp_autopecas.domain.auth.dto.RegisterResponse;
+import com.rd.autopecas.erp_autopecas.domain.endereco.Endereco;
+import com.rd.autopecas.erp_autopecas.domain.endereco.dto.EnderecoRequest;
 import com.rd.autopecas.erp_autopecas.domain.funcionario.Funcionario;
 import com.rd.autopecas.erp_autopecas.domain.funcionario.FuncionarioRepository;
 import com.rd.autopecas.erp_autopecas.domain.funcionario.enums.StatusFuncionario;
@@ -15,16 +17,14 @@ import com.rd.autopecas.erp_autopecas.exceptions.AtributeAlredyExistsException;
 import com.rd.autopecas.erp_autopecas.exceptions.ValidationException;
 import com.rd.autopecas.erp_autopecas.security.TokenProvider;
 import lombok.AllArgsConstructor;
-import org.apache.coyote.BadRequestException;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 
@@ -50,6 +50,12 @@ public class AuthService {
         user.setEmail(registerRequest.email());
         user.setCpf(registerRequest.cpf());
         user.setPassword(passwordEncoder.encode(registerRequest.password()));
+
+        List<Endereco> enderecos = registerRequest.enderecos().stream()
+                .map(dto -> dto.toEntity(user))
+                .toList();
+
+        user.setEnderecos(enderecos);
 
         Set<Role> roles = new HashSet<>(roleRepository.findAllById(registerRequest.roleIds()));
 
