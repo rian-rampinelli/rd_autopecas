@@ -2,6 +2,7 @@ package com.rd.autopecas.erp_autopecas.domain.funcionario;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -16,6 +17,6 @@ public class UserDetailsServiceImp implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return funcionarioRepository.findByUser_Email(username)
-                .orElseThrow(() -> new AccessDeniedException("user não encontrada!"));
+                .orElseThrow(() -> new UsernameNotFoundException("user não encontrado!"));
     }
 }

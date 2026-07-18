@@ -11,6 +11,8 @@ import com.rd.autopecas.erp_autopecas.domain.role.Role;
 import com.rd.autopecas.erp_autopecas.domain.role.RoleRepository;
 import com.rd.autopecas.erp_autopecas.domain.user.User;
 import com.rd.autopecas.erp_autopecas.domain.user.UserRepository;
+import com.rd.autopecas.erp_autopecas.exceptions.AtributeAlredyExistsException;
+import com.rd.autopecas.erp_autopecas.exceptions.ValidationException;
 import com.rd.autopecas.erp_autopecas.security.TokenProvider;
 import lombok.AllArgsConstructor;
 import org.apache.coyote.BadRequestException;
@@ -38,9 +40,9 @@ public class AuthService {
     private final UserRepository userRepository;
 
 
-    public RegisterResponse register(RegisterRequest registerRequest) throws BadRequestException {
+    public RegisterResponse register(RegisterRequest registerRequest){
         if(funcionarioRepository.existsByUser_Email(registerRequest.email())){
-            throw new AccessDeniedException("Email já cadastrado!");
+            throw new AtributeAlredyExistsException("Email já cadastrado!");
         }
 
         User user = new User();
@@ -52,7 +54,7 @@ public class AuthService {
         Set<Role> roles = new HashSet<>(roleRepository.findAllById(registerRequest.roleIds()));
 
         if (roles.size() != registerRequest.roleIds().size()) {
-            throw new BadRequestException("Uma ou mais roles não existem");
+            throw new ValidationException("Uma ou mais roles não existem");
         }
 
         Funcionario funcionario = new Funcionario();
@@ -68,16 +70,10 @@ public class AuthService {
     }
 
     public LoginResponse login(LoginRequest loginRequest) throws Exception{
-        try {
-            //authentication provider -> userDetailsService -> PassWordEncoder.matches -> autenticado!
-            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.email(),loginRequest.password()));
-            String token = tokenProvider.gerarToken(authentication);
+        //authentication provider -> userDetailsService -> PassWordEncoder.matches -> autenticado!
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.email(),loginRequest.password()));
+        String token = tokenProvider.gerarToken(authentication);
 
-            return new LoginResponse(token, tokenProvider.expiresIn(token));
-        }catch (BadCredentialsException e){
-            throw new BadRequestException("credenciais invalidas");
-        }catch (Exception e){
-            throw e;
-        }
+        return new LoginResponse(token, tokenProvider.expiresIn(token));
     }
 }
