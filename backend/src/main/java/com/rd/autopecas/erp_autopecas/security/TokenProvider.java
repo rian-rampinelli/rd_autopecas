@@ -30,9 +30,7 @@ public class TokenProvider {
                 .expiresAt(now.plusMillis(expiresIn))
                 .build();
 
-        return jwtEncoder.encode(
-                JwtEncoderParameters.from(claims)
-        ).getTokenValue();
+        return jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
 
     }
 

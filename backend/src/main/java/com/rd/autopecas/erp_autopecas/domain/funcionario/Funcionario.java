@@ -31,7 +31,7 @@ public class Funcionario extends Auditable implements UserDetails {
     @Column(name = "status", nullable = false,length = 64)
     private StatusFuncionario status;
 
-    @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "funcionario_roles",
             joinColumns = @JoinColumn(name = "id_funcionario"),
