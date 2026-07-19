@@ -11,9 +11,7 @@ public record FuncionarioRequest(
 
         @NotNull(message = "Salário não pode ser nulo")
         @DecimalMin(value = "0.0", inclusive = false, message = "Salário deve ser maior que zero")
-        BigDecimal salario,
+        BigDecimal salario
 
-        @NotEmpty(message = "Ao menos uma role deve ser informada")
-        Set<Long> roles
 ) {
 }

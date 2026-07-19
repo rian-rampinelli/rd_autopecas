@@ -4,8 +4,7 @@ import com.rd.autopecas.erp_autopecas.domain.auth.dto.LoginRequest;
 import com.rd.autopecas.erp_autopecas.domain.auth.dto.LoginResponse;
 import com.rd.autopecas.erp_autopecas.domain.auth.dto.RegisterRequest;
 import com.rd.autopecas.erp_autopecas.domain.auth.dto.RegisterResponse;
-import com.rd.autopecas.erp_autopecas.domain.endereco.Endereco;
-import com.rd.autopecas.erp_autopecas.domain.endereco.dto.EnderecoRequest;
+import com.rd.autopecas.erp_autopecas.domain.endereco_funcionario.EnderecoFuncionario;
 import com.rd.autopecas.erp_autopecas.domain.funcionario.Funcionario;
 import com.rd.autopecas.erp_autopecas.domain.funcionario.FuncionarioRepository;
 import com.rd.autopecas.erp_autopecas.domain.funcionario.enums.StatusFuncionario;
@@ -16,6 +15,7 @@ import com.rd.autopecas.erp_autopecas.domain.user.UserRepository;
 import com.rd.autopecas.erp_autopecas.exceptions.AtributeAlredyExistsException;
 import com.rd.autopecas.erp_autopecas.exceptions.ValidationException;
 import com.rd.autopecas.erp_autopecas.security.TokenProvider;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -40,8 +40,9 @@ public class AuthService {
     private final UserRepository userRepository;
 
 
+    @Transactional
     public RegisterResponse register(RegisterRequest registerRequest){
-        if(funcionarioRepository.existsByUser_Email(registerRequest.email())){
+        if(userRepository.existsByEmail(registerRequest.email())){
             throw new AtributeAlredyExistsException("Email já cadastrado!");
         }
 
@@ -51,27 +52,25 @@ public class AuthService {
         user.setCpf(registerRequest.cpf());
         user.setPassword(passwordEncoder.encode(registerRequest.password()));
 
-        List<Endereco> enderecos = registerRequest.enderecos().stream()
-                .map(dto -> dto.toEntity(user))
-                .toList();
-
-        user.setEnderecos(enderecos);
-
         Set<Role> roles = new HashSet<>(roleRepository.findAllById(registerRequest.roleIds()));
-
         if (roles.size() != registerRequest.roleIds().size()) {
             throw new ValidationException("Uma ou mais roles não existem");
         }
+        user.setRoles(roles);
 
         Funcionario funcionario = new Funcionario();
         funcionario.setUser(user);
         funcionario.setStatus(StatusFuncionario.ATIVO);
+        funcionario.setCargo(registerRequest.cargo());
         funcionario.setSalario(registerRequest.salary());
-        funcionario.setRoles(roles);
 
-        userRepository.save(user);
+        List<EnderecoFuncionario> enderecoFuncionarios = registerRequest.enderecos().stream()
+                .map(dto -> dto.toEntity(funcionario))
+                .toList();
+
+        funcionario.setEnderecoFuncionarios(enderecoFuncionarios);
+
         funcionarioRepository.save(funcionario);
-
         return RegisterResponse.fromEntity(user,funcionario);
     }
 

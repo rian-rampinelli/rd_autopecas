@@ -1,18 +1,19 @@
-package com.rd.autopecas.erp_autopecas.domain.endereco;
+package com.rd.autopecas.erp_autopecas.domain.endereco_cliente;
 
+import com.rd.autopecas.erp_autopecas.domain.cliente.Cliente;
 import com.rd.autopecas.erp_autopecas.domain.common.Auditable;
 import com.rd.autopecas.erp_autopecas.domain.user.User;
 import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "endereco")
+@Table(name = "endereco_cliente")
 @Getter
 @Setter
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class Endereco extends Auditable {
+public class EnderecoCliente extends Auditable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,6 +38,6 @@ public class Endereco extends Auditable {
     private Long numero;
 
     @ManyToOne
-    @JoinColumn(name = "id_user")
-    private User user;
+    @JoinColumn(name = "id_cliente")
+    private Cliente cliente;
 }

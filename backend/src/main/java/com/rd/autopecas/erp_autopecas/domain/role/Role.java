@@ -1,5 +1,6 @@
 package com.rd.autopecas.erp_autopecas.domain.role;
 
+import com.rd.autopecas.erp_autopecas.domain.role.enums.RoleUser;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,7 +23,7 @@ public class Role implements GrantedAuthority {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 255)
-    private RoleFuncionario name;
+    private RoleUser name;
 
     @Override
     public @Nullable String getAuthority() {

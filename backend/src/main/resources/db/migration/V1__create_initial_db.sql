@@ -8,9 +8,33 @@ CREATE TABLE "users" (
   "update_at" timestamp NOT NULL
 );
 
-CREATE TABLE "endereco" (
+CREATE TABLE "roles" (
+  "id" BIGSERIAL PRIMARY KEY,
+  "nome" varchar(255) NOT NULL
+);
+
+CREATE TABLE "users_roles" (
   "id" BIGSERIAL PRIMARY KEY,
   "id_user" BIGINT NOT NULL,
+  "id_role" BIGINT NOT NULL
+);
+
+CREATE TABLE "endereco_funcionario" (
+  "id" BIGSERIAL PRIMARY KEY,
+  "id_funcionario" BIGINT NOT NULL,
+  "nome" varchar(255) NOT NULL,
+  "cidade" varchar(255) NOT NULL,
+  "cep" varchar(64) NOT NULL,
+  "rua" varchar(255) NOT NULL,
+  "bairro" varchar(255) NOT NULL,
+  "numero" BIGINT NOT NULL,
+  "created_at" timestamp NOT NULL,
+  "update_at" timestamp NOT NULL
+);
+
+CREATE TABLE "endereco_cliente" (
+  "id" BIGSERIAL PRIMARY KEY,
+  "id_cliente" BIGINT NOT NULL,
   "nome" varchar(255) NOT NULL,
   "cidade" varchar(255) NOT NULL,
   "cep" varchar(64) NOT NULL,
@@ -32,7 +56,10 @@ CREATE TABLE "funcionario" (
 
 CREATE TABLE "cliente" (
   "id" BIGSERIAL PRIMARY KEY,
-  "id_user" BIGINT UNIQUE NOT NULL,
+  "nome" varchar(255) NOT NULL,
+  "email" varchar(128) UNIQUE NOT NULL,
+  "numero" varchar(64) NOT NULL,
+  "cpf" varchar(11) UNIQUE NOT NULL,
   "created_at" timestamp NOT NULL,
   "update_at" timestamp NOT NULL
 );
@@ -160,62 +187,46 @@ CREATE TABLE "item_compra" (
   "update_at" timestamp NOT NULL
 );
 
-ALTER TABLE "endereco"
-ADD FOREIGN KEY ("id_user") REFERENCES "users" ("id");
+ALTER TABLE "endereco_funcionario" ADD FOREIGN KEY ("id_funcionario") REFERENCES "funcionario" ("id") DEFERRABLE INITIALLY IMMEDIATE;
 
-ALTER TABLE "funcionario"
-ADD FOREIGN KEY ("id_user") REFERENCES "users" ("id");
+ALTER TABLE "endereco_cliente" ADD FOREIGN KEY ("id_cliente") REFERENCES "cliente" ("id") DEFERRABLE INITIALLY IMMEDIATE;
 
-ALTER TABLE "cliente"
-ADD FOREIGN KEY ("id_user") REFERENCES "users" ("id");
+ALTER TABLE "funcionario" ADD FOREIGN KEY ("id_user") REFERENCES "users" ("id") DEFERRABLE INITIALLY IMMEDIATE;
 
-ALTER TABLE "venda"
-ADD FOREIGN KEY ("id_forma_pagamento") REFERENCES "forma_pagamento" ("id");
+ALTER TABLE "users_roles" ADD FOREIGN KEY ("id_user") REFERENCES "users" ("id") DEFERRABLE INITIALLY IMMEDIATE;
 
-ALTER TABLE "venda"
-ADD FOREIGN KEY ("id_cliente") REFERENCES "cliente" ("id");
+ALTER TABLE "users_roles" ADD FOREIGN KEY ("id_role") REFERENCES "roles" ("id") DEFERRABLE INITIALLY IMMEDIATE;
 
-ALTER TABLE "venda"
-ADD FOREIGN KEY ("id_funcionario") REFERENCES "funcionario" ("id");
+ALTER TABLE "venda" ADD FOREIGN KEY ("id_forma_pagamento") REFERENCES "forma_pagamento" ("id") DEFERRABLE INITIALLY IMMEDIATE;
 
-ALTER TABLE "compra"
-ADD FOREIGN KEY ("id_funcionario") REFERENCES "funcionario" ("id");
+ALTER TABLE "venda" ADD FOREIGN KEY ("id_cliente") REFERENCES "cliente" ("id") DEFERRABLE INITIALLY IMMEDIATE;
 
-ALTER TABLE "compra"
-ADD FOREIGN KEY ("id_fornecedor") REFERENCES "fornecedor" ("id");
+ALTER TABLE "venda" ADD FOREIGN KEY ("id_funcionario") REFERENCES "funcionario" ("id") DEFERRABLE INITIALLY IMMEDIATE;
 
-ALTER TABLE "compra"
-ADD FOREIGN KEY ("id_forma_pagamento") REFERENCES "forma_pagamento" ("id");
+ALTER TABLE "compra" ADD FOREIGN KEY ("id_funcionario") REFERENCES "funcionario" ("id") DEFERRABLE INITIALLY IMMEDIATE;
 
-ALTER TABLE "carro_items"
-ADD FOREIGN KEY ("id_carro") REFERENCES "carro" ("id");
+ALTER TABLE "compra" ADD FOREIGN KEY ("id_fornecedor") REFERENCES "fornecedor" ("id") DEFERRABLE INITIALLY IMMEDIATE;
 
-ALTER TABLE "carro_items"
-ADD FOREIGN KEY ("id_item") REFERENCES "item" ("id");
+ALTER TABLE "compra" ADD FOREIGN KEY ("id_forma_pagamento") REFERENCES "forma_pagamento" ("id") DEFERRABLE INITIALLY IMMEDIATE;
 
-ALTER TABLE "estoque"
-ADD FOREIGN KEY ("id_unidade") REFERENCES "unidade" ("id");
+ALTER TABLE "carro_items" ADD FOREIGN KEY ("id_carro") REFERENCES "carro" ("id") DEFERRABLE INITIALLY IMMEDIATE;
 
-ALTER TABLE "movimentacao_estoque"
-ADD FOREIGN KEY ("id_estoque") REFERENCES "estoque" ("id");
+ALTER TABLE "carro_items" ADD FOREIGN KEY ("id_item") REFERENCES "item" ("id") DEFERRABLE INITIALLY IMMEDIATE;
 
-ALTER TABLE "estoque_item"
-ADD FOREIGN KEY ("id_estoque") REFERENCES "estoque" ("id");
+ALTER TABLE "estoque" ADD FOREIGN KEY ("id_unidade") REFERENCES "unidade" ("id") DEFERRABLE INITIALLY IMMEDIATE;
 
-ALTER TABLE "movimentacao_estoque"
-ADD FOREIGN KEY ("id_item") REFERENCES "item" ("id");
+ALTER TABLE "movimentacao_estoque" ADD FOREIGN KEY ("id_estoque") REFERENCES "estoque" ("id") DEFERRABLE INITIALLY IMMEDIATE;
 
-ALTER TABLE "estoque_item"
-ADD FOREIGN KEY ("id_item") REFERENCES "item" ("id");
+ALTER TABLE "estoque_item" ADD FOREIGN KEY ("id_estoque") REFERENCES "estoque" ("id") DEFERRABLE INITIALLY IMMEDIATE;
 
-ALTER TABLE "item_venda"
-ADD FOREIGN KEY ("id_item") REFERENCES "item" ("id");
+ALTER TABLE "movimentacao_estoque" ADD FOREIGN KEY ("id_item") REFERENCES "item" ("id") DEFERRABLE INITIALLY IMMEDIATE;
 
-ALTER TABLE "item_venda"
-ADD FOREIGN KEY ("id_venda") REFERENCES "venda" ("id");
+ALTER TABLE "estoque_item" ADD FOREIGN KEY ("id_item") REFERENCES "item" ("id") DEFERRABLE INITIALLY IMMEDIATE;
 
-ALTER TABLE "item_compra"
-ADD FOREIGN KEY ("id_item") REFERENCES "item" ("id");
+ALTER TABLE "item_venda" ADD FOREIGN KEY ("id_item") REFERENCES "item" ("id") DEFERRABLE INITIALLY IMMEDIATE;
 
-ALTER TABLE "item_compra"
-ADD FOREIGN KEY ("id_compra") REFERENCES "compra" ("id");
+ALTER TABLE "item_venda" ADD FOREIGN KEY ("id_venda") REFERENCES "venda" ("id") DEFERRABLE INITIALLY IMMEDIATE;
+
+ALTER TABLE "item_compra" ADD FOREIGN KEY ("id_item") REFERENCES "item" ("id") DEFERRABLE INITIALLY IMMEDIATE;
+
+ALTER TABLE "item_compra" ADD FOREIGN KEY ("id_compra") REFERENCES "compra" ("id") DEFERRABLE INITIALLY IMMEDIATE;

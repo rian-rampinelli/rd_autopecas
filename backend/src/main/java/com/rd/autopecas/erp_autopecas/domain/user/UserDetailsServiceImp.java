@@ -1,5 +1,6 @@
-package com.rd.autopecas.erp_autopecas.domain.funcionario;
+package com.rd.autopecas.erp_autopecas.domain.user;
 
+import com.rd.autopecas.erp_autopecas.domain.funcionario.FuncionarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -10,11 +11,11 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UserDetailsServiceImp implements UserDetailsService {
 
-    private final FuncionarioRepository funcionarioRepository;
+    private final UserRepository userRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return funcionarioRepository.findByUser_Email(username)
+        return userRepository.findByEmail(username)
                 .orElseThrow(() -> new UsernameNotFoundException("user não encontrado!"));
     }
 }

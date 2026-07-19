@@ -2,7 +2,10 @@ package com.rd.autopecas.erp_autopecas.domain.user.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
+
+import java.util.Set;
 
 public record UserRequest(
         @NotBlank(message = "Nome não pode ser vazio")
@@ -20,6 +23,9 @@ public record UserRequest(
         
         @NotBlank(message = "CPF não pode ser vazio")
         @Size(min = 11, max = 11, message = "CPF deve conter exatamente 11 dígitos")
-        String cpf
+        String cpf,
+
+         @NotEmpty(message = "Ao menos uma role deve ser informada")
+         Set<Long> roles
 ) {
 }

@@ -14,7 +14,6 @@ public record FuncionarioResponse(
         String cpfUser,
         StatusFuncionario status,
         BigDecimal salario,
-        Set<Role> roles,
         LocalDateTime criadoEm,
         LocalDateTime atualizadoEm
 ) {

@@ -2,8 +2,6 @@ package com.rd.autopecas.erp_autopecas.domain.estoque;
 
 
 import com.rd.autopecas.erp_autopecas.domain.common.Auditable;
-import com.rd.autopecas.erp_autopecas.domain.endereco.Endereco;
-import com.rd.autopecas.erp_autopecas.domain.item_compra.ItemCompra;
 import com.rd.autopecas.erp_autopecas.domain.item_estoque.ItemEstoque;
 import com.rd.autopecas.erp_autopecas.domain.movimentacao_estoque.MovimentacaoEstoque;
 import com.rd.autopecas.erp_autopecas.domain.unidade.Unidade;

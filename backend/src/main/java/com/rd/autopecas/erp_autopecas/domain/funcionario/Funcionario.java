@@ -2,6 +2,7 @@ package com.rd.autopecas.erp_autopecas.domain.funcionario;
 
 import com.rd.autopecas.erp_autopecas.domain.common.Auditable;
 import com.rd.autopecas.erp_autopecas.domain.compra.Compra;
+import com.rd.autopecas.erp_autopecas.domain.endereco_funcionario.EnderecoFuncionario;
 import com.rd.autopecas.erp_autopecas.domain.funcionario.enums.StatusFuncionario;
 import com.rd.autopecas.erp_autopecas.domain.role.Role;
 import com.rd.autopecas.erp_autopecas.domain.user.User;
@@ -22,7 +23,7 @@ import java.util.*;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class Funcionario extends Auditable implements UserDetails {
+public class Funcionario extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -31,18 +32,13 @@ public class Funcionario extends Auditable implements UserDetails {
     @Column(name = "status", nullable = false,length = 64)
     private StatusFuncionario status;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "funcionario_roles",
-            joinColumns = @JoinColumn(name = "id_funcionario"),
-            inverseJoinColumns = @JoinColumn(name = "id_role")
-    )
-    private Set<Role> roles = new HashSet<>();
-
     @Column(name = "salario", nullable = false)
     private BigDecimal salario;
 
-    @OneToOne
+    @Column(name = "cargo", nullable = false, length = 255)
+    private String cargo;
+
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "id_user",nullable = false,unique = true)
     private User user;
 
@@ -53,6 +49,20 @@ public class Funcionario extends Auditable implements UserDetails {
     @OneToMany(mappedBy = "funcionario")
     @ToString.Exclude
     private List<Compra> compras = new ArrayList();
+
+    @OneToMany(mappedBy = "funcionario", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude
+    private List<EnderecoFuncionario> enderecoFuncionarios = new ArrayList<>();
+
+    public void addEndereco(EnderecoFuncionario enderecoFuncionario) {
+        enderecoFuncionarios.add(enderecoFuncionario);
+        enderecoFuncionario.setFuncionario(this);
+    }
+
+    public void removeEndereco(EnderecoFuncionario enderecoFuncionario) {
+        enderecoFuncionarios.remove(enderecoFuncionario);
+        enderecoFuncionario.setFuncionario(null);
+    }
 
 
     public void addVenda(Venda venda) {
@@ -75,46 +85,5 @@ public class Funcionario extends Auditable implements UserDetails {
         compra.setFuncionario(null);
     }
 
-    public void addRole(Role role) {
-        roles.add(role);
-    }
 
-    public void removeRole(Role role) {
-        roles.remove(role);
-    }
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return roles;
-    }
-
-    @Override
-    public @Nullable String getPassword() {
-        return user.getPassword();
-    }
-
-    @Override
-    public String getUsername() {
-        return user.getEmail();
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return UserDetails.super.isAccountNonExpired();
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return UserDetails.super.isAccountNonLocked();
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return UserDetails.super.isCredentialsNonExpired();
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return UserDetails.super.isEnabled();
-    }
 }

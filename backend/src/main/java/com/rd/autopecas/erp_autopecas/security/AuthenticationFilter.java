@@ -1,6 +1,7 @@
 package com.rd.autopecas.erp_autopecas.security;
 
 import com.rd.autopecas.erp_autopecas.domain.funcionario.FuncionarioRepository;
+import com.rd.autopecas.erp_autopecas.domain.user.UserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,7 +22,7 @@ import java.io.IOException;
 public class AuthenticationFilter extends OncePerRequestFilter {
 
     private final TokenProvider tokenProvider;
-    private final FuncionarioRepository funcionarioRepository;
+    private final UserRepository userRepository;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
@@ -35,7 +36,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
             if(tokenProvider.isTokenValid(token)){
                 String userName = tokenProvider.getUsername(token);
                 //pegar do db pelo email e instanciar em um userdetails
-                UserDetails userDetails = funcionarioRepository.findByUser_Email(userName)
+                UserDetails userDetails = userRepository.findByEmail(userName)
                         .orElseThrow(() -> new UsernameNotFoundException("nao encontrado"));
                 //confirma q o user ta autenticado a partir de agora
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails,null,userDetails.getAuthorities());

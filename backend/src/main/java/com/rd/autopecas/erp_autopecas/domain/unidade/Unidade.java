@@ -2,7 +2,6 @@ package com.rd.autopecas.erp_autopecas.domain.unidade;
 
 
 import com.rd.autopecas.erp_autopecas.domain.common.Auditable;
-import com.rd.autopecas.erp_autopecas.domain.endereco.Endereco;
 import com.rd.autopecas.erp_autopecas.domain.estoque.Estoque;
 import jakarta.persistence.*;
 import lombok.*;

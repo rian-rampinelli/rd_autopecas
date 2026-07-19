@@ -1,5 +1,5 @@
 package com.rd.autopecas.erp_autopecas.security;
-import com.rd.autopecas.erp_autopecas.domain.funcionario.Funcionario;
+import com.rd.autopecas.erp_autopecas.domain.user.User;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.jwt.*;
@@ -18,14 +18,14 @@ public class TokenProvider {
 
     //gerar um token
     public String gerarToken(Authentication authentication){
-        Funcionario funcionario =
-                (Funcionario) authentication.getPrincipal();
+        User user =
+                (User) authentication.getPrincipal();
 
         Instant now = Instant.now();
         var expiresIn = 1200L;
 
         var claims = JwtClaimsSet.builder()
-                .subject(funcionario.getUsername())
+                .subject(user.getUsername())
                 .issuedAt(now)
                 .expiresAt(now.plusSeconds(expiresIn))
                 .build();

@@ -1,6 +1,8 @@
 package com.rd.autopecas.erp_autopecas.domain.cliente;
 
 import com.rd.autopecas.erp_autopecas.domain.common.Auditable;
+import com.rd.autopecas.erp_autopecas.domain.endereco_cliente.EnderecoCliente;
+import com.rd.autopecas.erp_autopecas.domain.endereco_funcionario.EnderecoFuncionario;
 import com.rd.autopecas.erp_autopecas.domain.user.User;
 import com.rd.autopecas.erp_autopecas.domain.venda.Venda;
 import jakarta.persistence.*;
@@ -22,13 +24,25 @@ public class Cliente  extends Auditable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
-    @JoinColumn(name = "id_user",nullable = false,unique = true)
-    private User user;
 
     @OneToMany(mappedBy = "cliente")
     @ToString.Exclude
     private List<Venda> vendas = new ArrayList<>();
+
+
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude
+    private List<EnderecoCliente> enderecoClientes = new ArrayList<>();
+
+    public void addEndereco(EnderecoCliente enderecoCliente) {
+        enderecoClientes.add(enderecoCliente);
+        enderecoCliente.setCliente(this);
+    }
+
+    public void removeEndereco(EnderecoCliente enderecoCliente) {
+        enderecoClientes.remove(enderecoCliente);
+        enderecoCliente.setCliente(null);
+    }
 
 
     public void addVenda(Venda venda) {
