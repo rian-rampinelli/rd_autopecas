@@ -24,6 +24,17 @@ public class Cliente  extends Auditable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "nome", nullable = false, length = 255)
+    private String nome;
+
+    @Column(name = "email", nullable = false, unique = true, length = 128)
+    private String email;
+
+    @Column(name = "numero", nullable = false, unique = true, length = 64)
+    private String numero;
+
+    @Column(name = "cpf", nullable = false, unique = true, length = 11)
+    private String cpf;
 
     @OneToMany(mappedBy = "cliente")
     @ToString.Exclude

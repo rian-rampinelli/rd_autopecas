@@ -14,4 +14,5 @@ public record FuncionarioRequest(
         BigDecimal salario
 
 ) {
+
 }
