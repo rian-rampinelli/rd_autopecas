@@ -4,11 +4,12 @@ import com.rd.autopecas.erp_autopecas.domain.cliente.Cliente;
 import com.rd.autopecas.erp_autopecas.domain.endereco_cliente.EnderecoCliente;
 import com.rd.autopecas.erp_autopecas.domain.user.User;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 public record EnderecoClienteRequest(
         @NotBlank
         String rua,
-        @NotBlank
+        @NotNull
         Long numero,
         @NotBlank
         String cidade,

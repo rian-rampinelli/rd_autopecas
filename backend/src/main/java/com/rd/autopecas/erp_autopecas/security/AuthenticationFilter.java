@@ -1,6 +1,5 @@
 package com.rd.autopecas.erp_autopecas.security;
 
-import com.rd.autopecas.erp_autopecas.domain.funcionario.FuncionarioRepository;
 import com.rd.autopecas.erp_autopecas.domain.user.UserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

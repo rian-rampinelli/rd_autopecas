@@ -27,6 +27,7 @@ public class AuthController  {
 
     @PostMapping("/register")
     public ResponseEntity<RegisterResponse> register(@RequestBody @Valid RegisterRequest registerRequest) throws Exception {
+        System.out.println("ENTROU NO REGISTER");
         return ResponseEntity.status(HttpStatus.CREATED).body(authService.register(registerRequest));
     }
 }

@@ -2,13 +2,13 @@ package com.rd.autopecas.erp_autopecas.domain.endereco_funcionario.dto;
 
 import com.rd.autopecas.erp_autopecas.domain.endereco_funcionario.EnderecoFuncionario;
 import com.rd.autopecas.erp_autopecas.domain.funcionario.Funcionario;
-import com.rd.autopecas.erp_autopecas.domain.user.User;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 public record EnderecoFuncionarioRequest(
         @NotBlank
         String rua,
-        @NotBlank
+        @NotNull(message = "Número é obrigatório")
         Long numero,
         @NotBlank
         String cidade,

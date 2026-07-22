@@ -6,7 +6,7 @@ import lombok.Getter;
 public enum RoleUser {
     ROLE_VENDEDOR(1L),
     ROLE_RH(2L),
-    ROLE_ESTOQUISTA(3L),
+    ROLE_EXTOQUISTA(3L),
     ROLE_ADMIN(4L),
     ROLE_GERENTE(5L);
 

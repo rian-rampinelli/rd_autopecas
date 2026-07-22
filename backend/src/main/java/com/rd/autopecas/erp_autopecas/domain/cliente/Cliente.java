@@ -2,8 +2,6 @@ package com.rd.autopecas.erp_autopecas.domain.cliente;
 
 import com.rd.autopecas.erp_autopecas.domain.common.Auditable;
 import com.rd.autopecas.erp_autopecas.domain.endereco_cliente.EnderecoCliente;
-import com.rd.autopecas.erp_autopecas.domain.endereco_funcionario.EnderecoFuncionario;
-import com.rd.autopecas.erp_autopecas.domain.user.User;
 import com.rd.autopecas.erp_autopecas.domain.venda.Venda;
 import jakarta.persistence.*;
 import lombok.*;
@@ -44,6 +42,8 @@ public class Cliente  extends Auditable {
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
     private List<EnderecoCliente> enderecoClientes = new ArrayList<>();
+
+
 
     public void addEndereco(EnderecoCliente enderecoCliente) {
         enderecoClientes.add(enderecoCliente);
