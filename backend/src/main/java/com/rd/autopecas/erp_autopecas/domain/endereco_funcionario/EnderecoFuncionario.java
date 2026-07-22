@@ -19,8 +19,8 @@ public class EnderecoFuncionario extends Auditable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "nome", nullable = false, length = 255)
-    private String nome;
+    @Column(name = "complemento", nullable = false, length = 255)
+    private String complemento;
 
     @Column(name = "cidade", nullable = false, length = 255)
     private String cidade;

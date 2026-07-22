@@ -16,7 +16,7 @@ public record EnderecoClienteRequest(
         @NotBlank
         String bairro,
         @NotBlank
-        String nome,
+        String complemento,
         @NotBlank
         String cep
 ) {
@@ -27,7 +27,7 @@ public record EnderecoClienteRequest(
         enderecoCliente.setNumero(this.numero());
         enderecoCliente.setCidade(this.cidade());
         enderecoCliente.setBairro(this.bairro());
-        enderecoCliente.setNome(this.nome());
+        enderecoCliente.setComplemento(this.complemento());
         enderecoCliente.setCliente(cliente);
         return enderecoCliente;
     }

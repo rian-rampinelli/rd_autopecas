@@ -7,7 +7,7 @@ public record EnderecoClienteResponse(
         Long numero,
         String cidade,
         String bairro,
-        String nome,
+        String complemento,
         String cep
 ) {
     public static EnderecoClienteResponse fromEntity(EnderecoCliente enderecoCliente){
@@ -16,7 +16,7 @@ public record EnderecoClienteResponse(
                 enderecoCliente.getNumero(),
                 enderecoCliente.getCidade(),
                 enderecoCliente.getBairro(),
-                enderecoCliente.getNome(),
+                enderecoCliente.getComplemento(),
                 enderecoCliente.getCep()
         );
     }

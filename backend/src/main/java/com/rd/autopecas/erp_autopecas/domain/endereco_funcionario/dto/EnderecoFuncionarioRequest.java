@@ -15,7 +15,7 @@ public record EnderecoFuncionarioRequest(
         @NotBlank
         String bairro,
         @NotBlank
-        String nome,
+        String complemento,
         @NotBlank
         String cep
 ) {
@@ -26,7 +26,7 @@ public record EnderecoFuncionarioRequest(
         enderecoFuncionario.setNumero(this.numero());
         enderecoFuncionario.setCidade(this.cidade());
         enderecoFuncionario.setBairro(this.bairro());
-        enderecoFuncionario.setNome(this.nome());
+        enderecoFuncionario.setComplemento(this.complemento());
         enderecoFuncionario.setFuncionario(funcionario);
         return enderecoFuncionario;
     }
