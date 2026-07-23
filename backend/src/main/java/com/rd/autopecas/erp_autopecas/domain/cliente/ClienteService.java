@@ -8,8 +8,6 @@ import com.rd.autopecas.erp_autopecas.exceptions.AtributeAlredyExistsException;
 import com.rd.autopecas.erp_autopecas.exceptions.ResourceNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
