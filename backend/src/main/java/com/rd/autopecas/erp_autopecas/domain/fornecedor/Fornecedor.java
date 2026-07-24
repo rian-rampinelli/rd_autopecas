@@ -1,5 +1,6 @@
 package com.rd.autopecas.erp_autopecas.domain.fornecedor;
 
+import com.rd.autopecas.erp_autopecas.domain.common.Auditable;
 import com.rd.autopecas.erp_autopecas.domain.compra.Compra;
 import jakarta.persistence.*;
 import lombok.*;
@@ -14,7 +15,7 @@ import java.util.List;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class Fornecedor {
+public class Fornecedor extends Auditable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
