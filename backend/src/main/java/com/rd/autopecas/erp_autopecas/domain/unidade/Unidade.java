@@ -3,6 +3,7 @@ package com.rd.autopecas.erp_autopecas.domain.unidade;
 
 import com.rd.autopecas.erp_autopecas.domain.common.Auditable;
 import com.rd.autopecas.erp_autopecas.domain.estoque.Estoque;
+import com.rd.autopecas.erp_autopecas.domain.unidade.enums.StatusUnidade;
 import jakarta.persistence.*;
 import lombok.*;
 
