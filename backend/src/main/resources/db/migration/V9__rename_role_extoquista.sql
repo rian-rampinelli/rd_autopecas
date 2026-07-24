@@ -1,0 +1,3 @@
+UPDATE roles
+SET name = 'ROLE_ESTOQUISTA'
+WHERE name = 'ROLE_EXTOQUISTA';
