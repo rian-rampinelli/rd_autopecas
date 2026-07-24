@@ -23,7 +23,13 @@ public class Fornecedor {
     @Column(name = "nome", nullable = false, length = 255)
     private String nome;
 
-    @Column(name = "cnpj", nullable = false, unique = true, length = 255)
+    @Column(name = "email", nullable = false)
+    private String email;
+
+    @Column(name = "numero", nullable = false)
+    private String numero;
+
+    @Column(name = "cnpj", nullable = false)
     private String cnpj;
 
     @OneToMany(mappedBy = "fornecedor")
