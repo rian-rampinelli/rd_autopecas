@@ -6,6 +6,7 @@ import com.rd.autopecas.erp_autopecas.domain.unidade.Unidade;
 import com.rd.autopecas.erp_autopecas.domain.unidade.UnidadeRepository;
 import com.rd.autopecas.erp_autopecas.domain.unidade.dto.UnidadeResponse;
 import com.rd.autopecas.erp_autopecas.exceptions.ResourceNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,11 +24,12 @@ public class EstoqueService {
         return(EstoqueResponse.fromEntity(estoque));
     }
 
-
+    @Transactional
     public EstoqueResponse create(EstoqueRequest estoqueRequest) {
         Estoque estoque = new Estoque();
         Unidade unidade = findEntityUnidade(estoqueRequest.unidadeId());
-        estoque.setUnidade(unidade);
+        unidade.addEstoque(estoque);
+        unidadeRepository.save(unidade);
         estoqueRepository.save(estoque);
         return EstoqueResponse.fromEntity(estoque);
     }

@@ -1,5 +1,6 @@
 package com.rd.autopecas.erp_autopecas.domain.unidade;
 
+import com.rd.autopecas.erp_autopecas.domain.estoque.dto.EstoqueResponse;
 import com.rd.autopecas.erp_autopecas.domain.unidade.dto.UnidadeRequest;
 import com.rd.autopecas.erp_autopecas.domain.unidade.dto.UnidadeResponse;
 import com.rd.autopecas.erp_autopecas.domain.unidade.dto.UnidadeUpdateRequest;
@@ -29,6 +30,12 @@ public class UnidadeController {
     @GetMapping
     public ResponseEntity<List<UnidadeResponse>> findAll() {
         return ResponseEntity.ok(unidadeService.findAll());
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE', 'VENDEDOR','ESTOQUISTA')")
+    @GetMapping("/{id}/estoques")
+    public ResponseEntity<List<EstoqueResponse>> findAllEstoquesByUnidade(@PathVariable  Long id) {
+        return ResponseEntity.ok(unidadeService.findAllEstoques(id));
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE')")

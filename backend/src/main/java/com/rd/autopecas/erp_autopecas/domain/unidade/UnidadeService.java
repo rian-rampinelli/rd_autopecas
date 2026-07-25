@@ -1,5 +1,8 @@
 package com.rd.autopecas.erp_autopecas.domain.unidade;
 
+import com.rd.autopecas.erp_autopecas.domain.estoque.Estoque;
+import com.rd.autopecas.erp_autopecas.domain.estoque.EstoqueRepository;
+import com.rd.autopecas.erp_autopecas.domain.estoque.dto.EstoqueResponse;
 import com.rd.autopecas.erp_autopecas.domain.unidade.dto.UnidadeRequest;
 import com.rd.autopecas.erp_autopecas.domain.unidade.dto.UnidadeResponse;
 import com.rd.autopecas.erp_autopecas.domain.unidade.dto.UnidadeUpdateRequest;
@@ -16,17 +19,25 @@ import java.util.List;
 public class UnidadeService {
     
     private final UnidadeRepository unidadeRepository;
+    private final EstoqueRepository estoqueRepository;
 
 
     public UnidadeResponse findById(Long id){
-        Unidade unidade = findEntityById(id);
+        Unidade unidade = findEntityUnidade(id);
         return(UnidadeResponse.fromEntity(unidade));
     }
 
     public List<UnidadeResponse> findAll(){
-        return unidadeRepository.findAll().stream()
+        return unidadeRepository.findUnidadesWithEstoques().stream()
                 .map(unidade -> UnidadeResponse.fromEntity(unidade))
                 .toList();
+    }
+
+    public List<EstoqueResponse> findAllEstoques(Long id){
+         findEntityUnidade(id);
+         List<Estoque> estoques = unidadeRepository.findAllEstoquesByUnidadeId(id);
+         return estoques.stream().map(estoque -> EstoqueResponse.fromEntity(estoque))
+                 .toList();
     }
 
     public UnidadeResponse create(UnidadeRequest unidadeRequest) {
@@ -37,13 +48,13 @@ public class UnidadeService {
     }
 
     public void deleteById(Long id){
-        findEntityById(id);
+        findEntityUnidade(id);
         unidadeRepository.deleteById(id);
     }
 
     @Transactional
     public UnidadeResponse update(UnidadeUpdateRequest updateRequest, Long id){
-        Unidade unidade = findEntityById(id);
+        Unidade unidade = findEntityUnidade(id);
 
         if(updateRequest.endereco() != null){
             unidade.setEndereco(updateRequest.endereco());
@@ -56,10 +67,17 @@ public class UnidadeService {
     }
 
     //helpers
-    public Unidade findEntityById(Long id){
+    public Unidade findEntityUnidade(Long id){
         return unidadeRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Unidade não encontrado"));
     }
+
+    public Estoque findEntityEstoque(Long id){
+        return estoqueRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Estoque não encontrado"));
+    }
+
+
 
    
 }
