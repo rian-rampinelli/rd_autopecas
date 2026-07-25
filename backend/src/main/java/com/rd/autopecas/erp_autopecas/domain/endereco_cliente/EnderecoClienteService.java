@@ -38,8 +38,9 @@ public class EnderecoClienteService {
     @Transactional
     public EnderecoClienteResponse create(EnderecoClienteRequest enderecoClienteRequest, Long idCliente) {
         Cliente cliente = findEntityCliente(idCliente);
-        EnderecoCliente enderecoCliente = enderecoClienteRequest.toEntity(cliente);
-        enderecoClienteRepository.save(enderecoCliente);
+        EnderecoCliente enderecoCliente = enderecoClienteRequest.toEntity();
+        cliente.addEndereco(enderecoCliente);
+        clienteRepository.save(cliente);
         return EnderecoClienteResponse.fromEntity(enderecoCliente);
     }
 

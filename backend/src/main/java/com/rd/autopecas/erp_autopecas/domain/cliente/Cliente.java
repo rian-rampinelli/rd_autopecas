@@ -46,6 +46,10 @@ public class Cliente  extends Auditable {
 
 
     public void addEndereco(EnderecoCliente enderecoCliente) {
+        if(enderecoCliente == null){
+            throw new IllegalArgumentException("Endereço não pode ser nulo");
+        }
+
         enderecoClientes.add(enderecoCliente);
         enderecoCliente.setCliente(this);
     }
