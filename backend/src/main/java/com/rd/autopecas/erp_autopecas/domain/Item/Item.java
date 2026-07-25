@@ -41,9 +41,6 @@ public class Item extends Auditable {
     @Column(name = "standard_price", nullable = false, precision = 10, scale = 2)
     private BigDecimal standartPrice;
 
-    @Column(name = "peso", nullable = false, precision = 10, scale = 2)
-    private BigDecimal peso;
-
     @ManyToMany
     @JoinTable(
             name = "carro_items",

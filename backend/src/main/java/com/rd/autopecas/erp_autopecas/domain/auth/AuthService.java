@@ -77,7 +77,6 @@ public class AuthService {
 
         }
 
-        funcionarioRepository.save(funcionario);
         System.out.println("3");
         return RegisterResponse.fromEntity(user,funcionario);
     }
