@@ -29,9 +29,9 @@ public class ItemService {
         return(ItemResponse.fromEntity(item));
     }
 
-    public List<ItemResumeResponse> findAll(){
-        return itemRepository.findAll().stream()
-                .map(item -> ItemResumeResponse.fromEntity(item))
+    public List<ItemResponse> findAll(){
+        return itemRepository.findAllWithCarros().stream()
+                .map(item -> ItemResponse.fromEntity(item))
                 .toList();
     }
 

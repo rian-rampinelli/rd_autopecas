@@ -12,6 +12,7 @@ import java.util.Optional;
 public interface ItemRepository extends JpaRepository<Item, Long> {
     Boolean existsByIdAndCarros_Id(Long idItem, Long idCarro);
 
+    //usando slq native
     @Query(value = """
         select c.*
         from carro c
@@ -20,4 +21,12 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
         WHERE ci.id_item = :itemId
     """, nativeQuery = true)
     List<Carro> findAllCarsByItemId(Long itemId);
+
+    //usando jpql,sql + java(bem mais resumido)
+    @Query("""
+    SELECT i  
+    FROM Item i
+    LEFT JOIN FETCH i.carros
+    """)
+    List<Item> findAllWithCarros();
 }

@@ -27,7 +27,7 @@ public class ItemController {
 
     @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE', 'VENDEDOR','ESTOQUISTA')")
     @GetMapping
-    public ResponseEntity<List<ItemResumeResponse>> findAll() {
+    public ResponseEntity<List<ItemResponse>> findAll() {
         return ResponseEntity.ok(itemService.findAll());
     }
 
