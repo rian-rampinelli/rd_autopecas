@@ -27,8 +27,9 @@ public record ClienteRequest(
     public Cliente toEntity(){
         Cliente cliente = new Cliente();
         List<EnderecoCliente> enderecoClientes = enderecos().stream()
-                .map(dto -> dto.toEntity(cliente))
+                .map(dto -> dto.toEntity())
                 .toList();
+
 
         cliente.setNome(name);
         cliente.setEmail(email);
