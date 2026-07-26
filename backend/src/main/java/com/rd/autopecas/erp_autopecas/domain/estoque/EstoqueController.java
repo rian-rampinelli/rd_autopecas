@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @RestController
 @RequestMapping("/estoques")
@@ -35,6 +37,12 @@ public class EstoqueController {
     @PostMapping("/{idEstoque}/items")
     public ResponseEntity<EstoqueItemResponse> adicionarItem(@PathVariable  Long idEstoque,@RequestBody @Valid EstoqueItemRequest estoqueItemRequest) {
         return ResponseEntity.ok(estoqueService.adicionarItem(idEstoque,estoqueItemRequest));
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE', 'ESTOQUISTA','VENDEDOR')")
+    @GetMapping("/{idEstoque}/items")
+    public ResponseEntity<List<EstoqueItemResponse>> buscarItems(@PathVariable  Long idEstoque) {
+        return ResponseEntity.ok(estoqueService.buscarItemsDeEstoque(idEstoque));
     }
 
 

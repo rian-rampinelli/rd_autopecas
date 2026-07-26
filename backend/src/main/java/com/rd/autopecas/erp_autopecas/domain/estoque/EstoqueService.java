@@ -14,6 +14,8 @@ import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @Service
 @AllArgsConstructor
@@ -52,6 +54,10 @@ public class EstoqueService {
         estoqueRepository.save(estoque);
         estoqueItemRepository.save(estoqueItem);
         return EstoqueItemResponse.fromEntity(estoqueItem);
+    }
+
+    public List<EstoqueItemResponse> buscarItemsDeEstoque(Long idEstoque){
+        return estoqueRepository.findAllItemsByEstoque(idEstoque);
     }
 
 
