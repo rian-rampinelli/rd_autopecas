@@ -1,5 +1,6 @@
 package com.rd.autopecas.erp_autopecas.domain.unidade;
 
+import com.rd.autopecas.erp_autopecas.domain.estoque.dto.EstoqueRequest;
 import com.rd.autopecas.erp_autopecas.domain.estoque.dto.EstoqueResponse;
 import com.rd.autopecas.erp_autopecas.domain.unidade.dto.UnidadeRequest;
 import com.rd.autopecas.erp_autopecas.domain.unidade.dto.UnidadeResponse;
@@ -42,6 +43,13 @@ public class UnidadeController {
     @PostMapping
     public ResponseEntity<UnidadeResponse> create(@RequestBody @Valid UnidadeRequest unidadeRequest) {
         return ResponseEntity.created(URI.create("/unidades")).body(unidadeService.create(unidadeRequest));
+    }
+
+
+    @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE')")
+    @PostMapping("/{idUnidade}/estoques")
+    public ResponseEntity<EstoqueResponse> createEstoque(@RequestBody @Valid EstoqueRequest estoqueRequest,@PathVariable Long idUnidade) {
+        return ResponseEntity.created(URI.create("/unidades")).body(unidadeService.createEstoque(estoqueRequest,idUnidade));
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE')")

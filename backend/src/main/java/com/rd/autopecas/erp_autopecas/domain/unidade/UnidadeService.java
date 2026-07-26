@@ -2,6 +2,7 @@ package com.rd.autopecas.erp_autopecas.domain.unidade;
 
 import com.rd.autopecas.erp_autopecas.domain.estoque.Estoque;
 import com.rd.autopecas.erp_autopecas.domain.estoque.EstoqueRepository;
+import com.rd.autopecas.erp_autopecas.domain.estoque.dto.EstoqueRequest;
 import com.rd.autopecas.erp_autopecas.domain.estoque.dto.EstoqueResponse;
 import com.rd.autopecas.erp_autopecas.domain.unidade.dto.UnidadeRequest;
 import com.rd.autopecas.erp_autopecas.domain.unidade.dto.UnidadeResponse;
@@ -32,13 +33,6 @@ public class UnidadeService {
                 .toList();
     }
 
-    public List<EstoqueResponse> findAllEstoquesByUnidadeId(Long id){
-         List<EstoqueResponse> estoques = unidadeRepository.findAllEstoquesByUnidade(id).stream()
-                 .map(estoque -> EstoqueResponse.fromEntity(estoque))
-                 .toList();
-         return estoques;
-    }
-
     public UnidadeResponse create(UnidadeRequest unidadeRequest) {
         Unidade unidade = unidadeRequest.toEntity();
 
@@ -64,6 +58,26 @@ public class UnidadeService {
         unidadeRepository.save(unidade);
         return UnidadeResponse.fromEntity(unidade);
     }
+
+
+    public List<EstoqueResponse> findAllEstoquesByUnidadeId(Long id){
+        List<EstoqueResponse> estoques = unidadeRepository.findAllEstoquesByUnidade(id).stream()
+                .map(estoque -> EstoqueResponse.fromEntity(estoque))
+                .toList();
+        return estoques;
+    }
+
+    @Transactional
+    public EstoqueResponse createEstoque(EstoqueRequest estoqueRequest,Long idUnidade) {
+        Unidade unidade = findEntityUnidade(idUnidade);
+        Estoque estoque = estoqueRequest.toEntity();
+        unidade.addEstoque(estoque);
+        unidadeRepository.save(unidade);
+        estoqueRepository.save(estoque);
+        return EstoqueResponse.fromEntity(estoque);
+    }
+
+
 
     //helpers
     public Unidade findEntityUnidade(Long id){

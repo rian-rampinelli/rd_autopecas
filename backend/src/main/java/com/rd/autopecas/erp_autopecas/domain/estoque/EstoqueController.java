@@ -23,12 +23,6 @@ public class EstoqueController {
     public ResponseEntity<EstoqueResponse> findById(@PathVariable @Valid Long id) {
         return ResponseEntity.ok(estoqueService.findById(id));
     }
-    
-    @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE')")
-    @PostMapping
-    public ResponseEntity<EstoqueResponse> create(@RequestBody @Valid EstoqueRequest estoqueRequest) {
-        return ResponseEntity.created(URI.create("/estoque")).body(estoqueService.create(estoqueRequest));
-    }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE')")
     @DeleteMapping("/{id}")

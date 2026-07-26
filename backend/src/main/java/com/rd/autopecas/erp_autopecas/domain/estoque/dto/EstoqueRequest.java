@@ -1,14 +1,7 @@
 package com.rd.autopecas.erp_autopecas.domain.estoque.dto;
 
-
 import com.rd.autopecas.erp_autopecas.domain.estoque.Estoque;
-import jakarta.validation.constraints.NotNull;
-
-
-
 public record EstoqueRequest(
-        @NotNull
-        Long unidadeId,
         String nome,
         String descricao
 ) {
