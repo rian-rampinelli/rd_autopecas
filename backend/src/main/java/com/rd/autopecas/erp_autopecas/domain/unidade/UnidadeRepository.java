@@ -17,7 +17,7 @@ public interface UnidadeRepository extends JpaRepository<Unidade, Long> {
         FROM estoque
         WHERE id_unidade = :unidadeId
     """, nativeQuery = true)
-    List<Estoque> findAllEstoquesByUnidadeId(Long unidadeId);
+    List<Estoque> findAllEstoquesByUnidade(Long unidadeId);
 
     //usando jpql,sql + java(bem mais resumido)
     @Query("""

@@ -35,7 +35,7 @@ public class UnidadeController {
     @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE', 'VENDEDOR','ESTOQUISTA')")
     @GetMapping("/{id}/estoques")
     public ResponseEntity<List<EstoqueResponse>> findAllEstoquesByUnidade(@PathVariable  Long id) {
-        return ResponseEntity.ok(unidadeService.findAllEstoques(id));
+        return ResponseEntity.ok(unidadeService.findAllEstoquesByUnidadeId(id));
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE')")

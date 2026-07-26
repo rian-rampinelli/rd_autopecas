@@ -1,9 +1,10 @@
 package com.rd.autopecas.erp_autopecas.domain.unidade.dto;
+
 import com.rd.autopecas.erp_autopecas.domain.estoque.dto.EstoqueResponse;
 import com.rd.autopecas.erp_autopecas.domain.unidade.Unidade;
 
-
 import java.util.List;
+
 
 public record UnidadeResponse(
         Long id,

@@ -26,7 +26,7 @@ public class EstoqueService {
 
     @Transactional
     public EstoqueResponse create(EstoqueRequest estoqueRequest) {
-        Estoque estoque = new Estoque();
+        Estoque estoque = estoqueRequest.toEntity();
         Unidade unidade = findEntityUnidade(estoqueRequest.unidadeId());
         unidade.addEstoque(estoque);
         unidadeRepository.save(unidade);

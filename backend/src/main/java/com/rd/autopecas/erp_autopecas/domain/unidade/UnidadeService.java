@@ -11,7 +11,6 @@ import com.rd.autopecas.erp_autopecas.exceptions.ResourceNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
@@ -33,11 +32,11 @@ public class UnidadeService {
                 .toList();
     }
 
-    public List<EstoqueResponse> findAllEstoques(Long id){
-         findEntityUnidade(id);
-         List<Estoque> estoques = unidadeRepository.findAllEstoquesByUnidadeId(id);
-         return estoques.stream().map(estoque -> EstoqueResponse.fromEntity(estoque))
+    public List<EstoqueResponse> findAllEstoquesByUnidadeId(Long id){
+         List<EstoqueResponse> estoques = unidadeRepository.findAllEstoquesByUnidade(id).stream()
+                 .map(estoque -> EstoqueResponse.fromEntity(estoque))
                  .toList();
+         return estoques;
     }
 
     public UnidadeResponse create(UnidadeRequest unidadeRequest) {

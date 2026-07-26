@@ -5,12 +5,16 @@ import com.rd.autopecas.erp_autopecas.domain.unidade.Unidade;
 
 
 public record EstoqueResponse(
-        Long id
+        Long id,
+        String nome,
+        String descricao
 
 ) {
     public static EstoqueResponse fromEntity(Estoque estoque) {
         return new EstoqueResponse(
-                estoque.getId()
+                estoque.getId(),
+                estoque.getNome(),
+                estoque.getDescricao()
         );
     }
 }
