@@ -2,7 +2,7 @@ package com.rd.autopecas.erp_autopecas.domain.estoque;
 
 
 import com.rd.autopecas.erp_autopecas.domain.common.Auditable;
-import com.rd.autopecas.erp_autopecas.domain.item_estoque.ItemEstoque;
+import com.rd.autopecas.erp_autopecas.domain.estoque_item.EstoqueItem;
 import com.rd.autopecas.erp_autopecas.domain.movimentacao_estoque.MovimentacaoEstoque;
 import com.rd.autopecas.erp_autopecas.domain.unidade.Unidade;
 import jakarta.persistence.*;
@@ -36,21 +36,21 @@ public class Estoque extends Auditable {
 
     @OneToMany(mappedBy = "estoque")
     @ToString.Exclude
-    private List<ItemEstoque> ItemsEstoque = new ArrayList();
+    private List<EstoqueItem> ItemsEstoque = new ArrayList();
 
     @OneToMany(mappedBy = "estoque")
     @ToString.Exclude
     private List<MovimentacaoEstoque> movimentacoesEstoque = new ArrayList();
 
 
-    public void addItemEstoque(ItemEstoque itemEstoque) {
-        ItemsEstoque.add(itemEstoque);
-        itemEstoque.setEstoque(this);
+    public void addEstoqueItem(EstoqueItem estoqueItem) {
+        ItemsEstoque.add(estoqueItem);
+        estoqueItem.setEstoque(this);
     }
 
-    public void removeItemEstoque(ItemEstoque itemEstoque) {
-        ItemsEstoque.remove(itemEstoque);
-        itemEstoque.setEstoque(null);
+    public void removeItemEstoque(EstoqueItem estoqueItem) {
+        ItemsEstoque.remove(estoqueItem);
+        estoqueItem.setEstoque(null);
     }
 
     public void addMovimentacao(MovimentacaoEstoque movimentacaoEstoque) {

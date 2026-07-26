@@ -1,14 +1,14 @@
 package com.rd.autopecas.erp_autopecas.domain.estoque;
 
-import com.rd.autopecas.erp_autopecas.domain.estoque.dto.EstoqueRequest;
+
 import com.rd.autopecas.erp_autopecas.domain.estoque.dto.EstoqueResponse;
+import com.rd.autopecas.erp_autopecas.domain.estoque_item.dto.EstoqueItemRequest;
+import com.rd.autopecas.erp_autopecas.domain.estoque_item.dto.EstoqueItemResponse;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import java.net.URI;
 
 
 @RestController
@@ -30,4 +30,12 @@ public class EstoqueController {
         estoqueService.deleteById(id);
         return ResponseEntity.ok().build();
     }
+
+    @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE', 'ESTOQUISTA')")
+    @PostMapping("/{idEstoque}/items")
+    public ResponseEntity<EstoqueItemResponse> adicionarItem(@PathVariable  Long idEstoque,@RequestBody @Valid EstoqueItemRequest estoqueItemRequest) {
+        return ResponseEntity.ok(estoqueService.adicionarItem(idEstoque,estoqueItemRequest));
+    }
+
+
 }
