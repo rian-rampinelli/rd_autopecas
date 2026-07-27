@@ -51,15 +51,23 @@ public class EstoqueService {
         else{
             estoqueItem.adicionarQuantidade(estoqueItemRequest.quantidade());
         }
-        estoqueRepository.save(estoque);
-        estoqueItemRepository.save(estoqueItem);
+        return EstoqueItemResponse.fromEntity(estoqueItem);
+    }
+
+    @Transactional
+    public EstoqueItemResponse removerItem(Long idEstoque, EstoqueItemRequest estoqueItemRequest){
+        EstoqueItem estoqueItem = findByIdEstoqueAndItem(idEstoque,estoqueItemRequest.idItem());
+        if(estoqueItem == null){
+            throw new ResourceNotFoundException("nao existe esse item nesse estoque!");
+        }
+        //n uso save pois o hibernate ja gerencia com o @Transactional,fazendo um update no final
+        estoqueItem.removerQuantidade(estoqueItemRequest.quantidade());
         return EstoqueItemResponse.fromEntity(estoqueItem);
     }
 
     public List<EstoqueItemResponse> buscarItemsDeEstoque(Long idEstoque){
         return estoqueRepository.findAllItemsByEstoque(idEstoque);
     }
-
 
 
     //helpers

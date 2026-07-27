@@ -40,6 +40,12 @@ public class EstoqueController {
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE', 'ESTOQUISTA','VENDEDOR')")
+    @PostMapping("/{idEstoque}/items")
+    public ResponseEntity<EstoqueItemResponse> removerItem(@PathVariable  Long idEstoque,@RequestBody @Valid EstoqueItemRequest estoqueItemRequest) {
+        return ResponseEntity.ok(estoqueService.removerItem(idEstoque,estoqueItemRequest));
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE', 'ESTOQUISTA','VENDEDOR')")
     @GetMapping("/{idEstoque}/items")
     public ResponseEntity<List<EstoqueItemResponse>> buscarItems(@PathVariable  Long idEstoque) {
         return ResponseEntity.ok(estoqueService.buscarItemsDeEstoque(idEstoque));

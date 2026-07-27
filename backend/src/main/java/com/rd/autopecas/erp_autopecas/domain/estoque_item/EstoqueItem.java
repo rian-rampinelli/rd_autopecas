@@ -7,7 +7,6 @@ import com.rd.autopecas.erp_autopecas.exceptions.ValidationException;
 import jakarta.persistence.*;
 import lombok.*;
 
-
 import java.math.BigDecimal;
 
 @Entity
@@ -38,11 +37,25 @@ public class EstoqueItem extends Auditable {
     private Estoque estoque;
 
     public void adicionarQuantidade(BigDecimal quantidadeAdd) {
-        if (quantidadeAdd.compareTo(BigDecimal.ZERO) <= 0) {
-            throw new ValidationException("valor menor ou igual a zero!");
-        } else {
-            setQuantidade(quantidade.add(quantidadeAdd));
-        }
-        ;
+        validaMaiorQueZero(quantidadeAdd);
+
+        setQuantidade(quantidade.add(quantidadeAdd));
     }
+
+    public void removerQuantidade(BigDecimal quantidadeRemove) {
+        validaMaiorQueZero(quantidadeRemove);
+
+        if (quantidadeRemove.compareTo(quantidade) > 0) {
+            throw new ValidationException("Quantidade indisponível para retirar.");
+        }
+        setQuantidade(quantidade.subtract(quantidadeRemove));
+
+    }
+
+    private void validaMaiorQueZero(BigDecimal quantidade){
+        if (quantidade.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new ValidationException("Quantidade inválida. O valor deve ser maior que zero.");
+        }
+    }
+
 }
