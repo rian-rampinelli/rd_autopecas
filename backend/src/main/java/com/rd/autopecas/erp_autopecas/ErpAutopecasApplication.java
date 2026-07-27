@@ -17,7 +17,7 @@ public class ErpAutopecasApplication {
 
 
 		SpringApplication.run(ErpAutopecasApplication.class, args);{
-            System.out.println("hello");
+            System.out.println("hello!!!");
         }
 	}
 }

@@ -3,11 +3,14 @@ package com.rd.autopecas.erp_autopecas.domain.estoque_item;
 import com.rd.autopecas.erp_autopecas.domain.Item.Item;
 import com.rd.autopecas.erp_autopecas.domain.common.Auditable;
 import com.rd.autopecas.erp_autopecas.domain.estoque.Estoque;
+import com.rd.autopecas.erp_autopecas.domain.movimentacao_estoque.MovimentacaoEstoque;
 import com.rd.autopecas.erp_autopecas.exceptions.ValidationException;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "estoque_item")
@@ -35,6 +38,20 @@ public class EstoqueItem extends Auditable {
     @ManyToOne
     @JoinColumn(name = "id_estoque", nullable = false)
     private Estoque estoque;
+
+    @OneToMany(mappedBy = "estoqueItem")
+    @ToString.Exclude
+    private List<MovimentacaoEstoque> movimentacoesEstoque = new ArrayList();
+
+    public void addMovimentacao(MovimentacaoEstoque movimentacaoEstoque) {
+        movimentacoesEstoque.add(movimentacaoEstoque);
+        movimentacaoEstoque.setEstoqueItem(this);
+    }
+
+    public void removeMovimentacaoEstoque(MovimentacaoEstoque movimentacaoEstoque) {
+        movimentacoesEstoque.remove(movimentacaoEstoque);
+        movimentacaoEstoque.setEstoqueItem(null);
+    }
 
     public void adicionarQuantidade(BigDecimal quantidadeAdd) {
         validaMaiorQueZero(quantidadeAdd);

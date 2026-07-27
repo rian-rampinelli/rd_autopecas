@@ -1,9 +1,8 @@
 package com.rd.autopecas.erp_autopecas.domain.movimentacao_estoque;
 
-import com.rd.autopecas.erp_autopecas.domain.Item.Item;
 import com.rd.autopecas.erp_autopecas.domain.common.Auditable;
-import com.rd.autopecas.erp_autopecas.domain.compra.Compra;
-import com.rd.autopecas.erp_autopecas.domain.estoque.Estoque;
+import com.rd.autopecas.erp_autopecas.domain.estoque_item.EstoqueItem;
+import com.rd.autopecas.erp_autopecas.domain.movimentacao_estoque.enums.TypeMovimentacao;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -30,10 +29,6 @@ public class MovimentacaoEstoque extends Auditable {
     private TypeMovimentacao typeMovimentacao;
 
     @ManyToOne
-    @JoinColumn(name = "id_item", nullable = false)
-    private Item item;
-
-    @ManyToOne
-    @JoinColumn(name = "id_estoque", nullable = false)
-    private Estoque estoque;
+    @JoinColumn(name = "id_estoque_item", nullable = false)
+    private EstoqueItem estoqueItem;
 }

@@ -40,7 +40,7 @@ public class EstoqueController {
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE', 'ESTOQUISTA','VENDEDOR')")
-    @PostMapping("/{idEstoque}/items")
+    @PutMapping ("/{idEstoque}/items")
     public ResponseEntity<EstoqueItemResponse> removerItem(@PathVariable  Long idEstoque,@RequestBody @Valid EstoqueItemRequest estoqueItemRequest) {
         return ResponseEntity.ok(estoqueService.removerItem(idEstoque,estoqueItemRequest));
     }

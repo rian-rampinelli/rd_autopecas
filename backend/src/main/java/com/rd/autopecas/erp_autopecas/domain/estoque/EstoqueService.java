@@ -7,6 +7,9 @@ import com.rd.autopecas.erp_autopecas.domain.estoque_item.EstoqueItem;
 import com.rd.autopecas.erp_autopecas.domain.estoque_item.EstoqueItemRepository;
 import com.rd.autopecas.erp_autopecas.domain.estoque_item.dto.EstoqueItemRequest;
 import com.rd.autopecas.erp_autopecas.domain.estoque_item.dto.EstoqueItemResponse;
+import com.rd.autopecas.erp_autopecas.domain.movimentacao_estoque.MovimentacaoEstoque;
+import com.rd.autopecas.erp_autopecas.domain.movimentacao_estoque.MovimentacaoEstoqueRepository;
+import com.rd.autopecas.erp_autopecas.domain.movimentacao_estoque.enums.TypeMovimentacao;
 import com.rd.autopecas.erp_autopecas.domain.unidade.Unidade;
 import com.rd.autopecas.erp_autopecas.domain.unidade.UnidadeRepository;
 import com.rd.autopecas.erp_autopecas.exceptions.ResourceNotFoundException;
@@ -14,6 +17,7 @@ import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 
@@ -25,10 +29,15 @@ public class EstoqueService {
     private final EstoqueItemRepository estoqueItemRepository;
     private final UnidadeRepository unidadeRepository;
     private final ItemRepository itemRepository;
+    private final MovimentacaoEstoqueRepository movimentacaoEstoqueRepository;
 
     public EstoqueResponse findById(Long id){
         Estoque estoque = findEntityEstoque(id);
         return(EstoqueResponse.fromEntity(estoque));
+    }
+
+    public List<EstoqueItemResponse> buscarItemsDeEstoque(Long idEstoque){
+        return estoqueRepository.findAllItemsByEstoque(idEstoque);
     }
 
     public void deleteById(Long id){
@@ -39,9 +48,9 @@ public class EstoqueService {
     @Transactional
     public EstoqueItemResponse adicionarItem(Long idEstoque, EstoqueItemRequest estoqueItemRequest){
         EstoqueItem estoqueItem = findByIdEstoqueAndItem(idEstoque,estoqueItemRequest.idItem());
-        Estoque estoque = findEntityEstoque(idEstoque);
-        Item item = findEntityItem(estoqueItemRequest.idItem());
         if(estoqueItem == null){
+            Estoque estoque = findEntityEstoque(idEstoque);
+            Item item = findEntityItem(estoqueItemRequest.idItem());
             estoqueItem = new EstoqueItem();
             estoqueItem.setQuantidade(estoqueItemRequest.quantidade());
             estoqueItem.setLocalizacao(estoqueItemRequest.localizacao());
@@ -51,6 +60,8 @@ public class EstoqueService {
         else{
             estoqueItem.adicionarQuantidade(estoqueItemRequest.quantidade());
         }
+        estoqueItemRepository.save(estoqueItem);
+        registrarTransacao(estoqueItemRequest.quantidade(),TypeMovimentacao.ENTRADA,estoqueItem);
         return EstoqueItemResponse.fromEntity(estoqueItem);
     }
 
@@ -62,11 +73,18 @@ public class EstoqueService {
         }
         //n uso save pois o hibernate ja gerencia com o @Transactional,fazendo um update no final
         estoqueItem.removerQuantidade(estoqueItemRequest.quantidade());
+        registrarTransacao(estoqueItemRequest.quantidade(),TypeMovimentacao.SAIDA,estoqueItem);
         return EstoqueItemResponse.fromEntity(estoqueItem);
     }
 
-    public List<EstoqueItemResponse> buscarItemsDeEstoque(Long idEstoque){
-        return estoqueRepository.findAllItemsByEstoque(idEstoque);
+
+    private MovimentacaoEstoque registrarTransacao(BigDecimal qtd, TypeMovimentacao typeMovimentacao, EstoqueItem estoqueItem) {
+        MovimentacaoEstoque movimentacaoEstoque = new MovimentacaoEstoque();
+        movimentacaoEstoque.setQuantidade(qtd);
+        movimentacaoEstoque.setTypeMovimentacao(typeMovimentacao);
+        estoqueItem.addMovimentacao(movimentacaoEstoque);
+        movimentacaoEstoqueRepository.save(movimentacaoEstoque);
+        return movimentacaoEstoque;
     }
 
 
@@ -90,5 +108,11 @@ public class EstoqueService {
         return estoqueItemRepository.findByEstoque_IdAndItem_Id(idEstoque,idItem)
                 .orElse(null);
     }
+
+    public EstoqueItem findEntityEstoqueItem(Long idEstoqueItem){
+        return estoqueItemRepository.findById(idEstoqueItem)
+                .orElseThrow(() -> new ResourceNotFoundException("Item não encontrado nesse estoque!"));
+    }
+
 
 }

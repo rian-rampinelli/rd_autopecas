@@ -38,9 +38,7 @@ public class Estoque extends Auditable {
     @ToString.Exclude
     private List<EstoqueItem> ItemsEstoque = new ArrayList();
 
-    @OneToMany(mappedBy = "estoque")
-    @ToString.Exclude
-    private List<MovimentacaoEstoque> movimentacoesEstoque = new ArrayList();
+
 
 
     public void addEstoqueItem(EstoqueItem estoqueItem) {
@@ -52,17 +50,5 @@ public class Estoque extends Auditable {
         ItemsEstoque.remove(estoqueItem);
         estoqueItem.setEstoque(null);
     }
-
-    public void addMovimentacao(MovimentacaoEstoque movimentacaoEstoque) {
-        movimentacoesEstoque.add(movimentacaoEstoque);
-        movimentacaoEstoque.setEstoque(this);
-    }
-
-    public void removeMovimentacaoEstoque(MovimentacaoEstoque movimentacaoEstoque) {
-        movimentacoesEstoque.remove(movimentacaoEstoque);
-        movimentacaoEstoque.setEstoque(null);
-    }
-
-
 
 }
