@@ -1,7 +1,7 @@
 package com.rd.autopecas.erp_autopecas.domain.movimentacao_estoque.dto;
 
 import com.rd.autopecas.erp_autopecas.domain.movimentacao_estoque.MovimentacaoEstoque;
-import com.rd.autopecas.erp_autopecas.domain.movimentacao_estoque.enums.TypeMovimentacao;
+
 
 import java.math.BigDecimal;
 
@@ -10,7 +10,7 @@ public record MovimentacaoEstoqueResponse(
         Long idItemEstoque,
         String nomeItem,
         BigDecimal quantidadeMovimentada,
-        TypeMovimentacao typeMovimentacao
+        String typeMovimentacao
 
 
 ) {
@@ -20,7 +20,7 @@ public record MovimentacaoEstoqueResponse(
                 movimentacaoEstoque.getEstoqueItem().getId(),
                 movimentacaoEstoque.getEstoqueItem().getItem().getNome(),
                 movimentacaoEstoque.getQuantidade(),
-                movimentacaoEstoque.getTypeMovimentacao()
+                movimentacaoEstoque.getTypeMovimentacao().toString()
 
         );
     }

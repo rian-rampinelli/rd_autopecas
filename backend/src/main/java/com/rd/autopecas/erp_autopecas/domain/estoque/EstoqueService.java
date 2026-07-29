@@ -9,6 +9,7 @@ import com.rd.autopecas.erp_autopecas.domain.estoque_item.dto.EstoqueItemRequest
 import com.rd.autopecas.erp_autopecas.domain.estoque_item.dto.EstoqueItemResponse;
 import com.rd.autopecas.erp_autopecas.domain.movimentacao_estoque.MovimentacaoEstoque;
 import com.rd.autopecas.erp_autopecas.domain.movimentacao_estoque.MovimentacaoEstoqueRepository;
+import com.rd.autopecas.erp_autopecas.domain.movimentacao_estoque.dto.MovimentacaoEstoqueResponse;
 import com.rd.autopecas.erp_autopecas.domain.movimentacao_estoque.enums.TypeMovimentacao;
 import com.rd.autopecas.erp_autopecas.domain.unidade.Unidade;
 import com.rd.autopecas.erp_autopecas.domain.unidade.UnidadeRepository;
@@ -38,6 +39,14 @@ public class EstoqueService {
 
     public List<EstoqueItemResponse> buscarItemsDeEstoque(Long idEstoque){
         return estoqueRepository.findAllItemsByEstoque(idEstoque);
+    }
+
+    public List<MovimentacaoEstoqueResponse> buscarHistoricoMovimentacoes(Long idEstoque,Long idItem){
+        if(idItem == null){
+            return estoqueRepository.historicoEstoque(idEstoque);
+        }
+        return estoqueRepository.historicoEstoquePorItem(idEstoque,idItem);
+
     }
 
     public void deleteById(Long id){

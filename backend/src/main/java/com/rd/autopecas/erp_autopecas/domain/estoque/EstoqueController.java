@@ -1,9 +1,11 @@
 package com.rd.autopecas.erp_autopecas.domain.estoque;
 
 
+import com.rd.autopecas.erp_autopecas.domain.Item.Item;
 import com.rd.autopecas.erp_autopecas.domain.estoque.dto.EstoqueResponse;
 import com.rd.autopecas.erp_autopecas.domain.estoque_item.dto.EstoqueItemRequest;
 import com.rd.autopecas.erp_autopecas.domain.estoque_item.dto.EstoqueItemResponse;
+import com.rd.autopecas.erp_autopecas.domain.movimentacao_estoque.dto.MovimentacaoEstoqueResponse;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -50,6 +52,15 @@ public class EstoqueController {
     public ResponseEntity<List<EstoqueItemResponse>> buscarItems(@PathVariable  Long idEstoque) {
         return ResponseEntity.ok(estoqueService.buscarItemsDeEstoque(idEstoque));
     }
+
+    @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE', 'ESTOQUISTA','VENDEDOR')")
+    @GetMapping("/{idEstoque}/movimentacoes")
+    public ResponseEntity<List<MovimentacaoEstoqueResponse>> buscarHistoricoMovimetacoes(@RequestParam(value = "item",required = false)Long item, @PathVariable  Long idEstoque) {
+        return ResponseEntity.ok(estoqueService.buscarHistoricoMovimentacoes(idEstoque,item));
+
+    }
+
+
 
 
 }
