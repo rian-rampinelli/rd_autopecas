@@ -1,13 +1,13 @@
 package com.rd.autopecas.erp_autopecas.domain.estoque;
 
-import com.rd.autopecas.erp_autopecas.domain.estoque_item.EstoqueItem;
 import com.rd.autopecas.erp_autopecas.domain.estoque_item.dto.EstoqueItemResponse;
-import com.rd.autopecas.erp_autopecas.domain.movimentacao_estoque.MovimentacaoEstoque;
 import com.rd.autopecas.erp_autopecas.domain.movimentacao_estoque.dto.MovimentacaoEstoqueResponse;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,7 +25,6 @@ public interface EstoqueRepository extends JpaRepository<Estoque, Long> {
     """, nativeQuery = true)
     List<EstoqueItemResponse> findAllItemsByEstoque(Long estoqueId);
 
-    //usando slq native
     @Query(value = """
         SELECT me.id,ei.id,i.nome,me.quantidade,me.type_movimentacao
         FROM movimentacao_estoque me
@@ -34,18 +33,11 @@ public interface EstoqueRepository extends JpaRepository<Estoque, Long> {
         inner join item i
         on ei.id_item = i.id
         WHERE ei.id_estoque = :estoqueId
+        and (:item IS NULL OR ei.id_item = :item)
+        and (:tipo IS NULL OR me.type_movimentacao = :tipo)
+        and (:qtdMinima IS NULL OR me.quantidade >= :qtdMinima)
     """, nativeQuery = true)
-    List<MovimentacaoEstoqueResponse> historicoEstoque(Long estoqueId);
+    List<MovimentacaoEstoqueResponse> buscarHistoricoEstoque(Long estoqueId, Long item,String tipo,BigDecimal qtdMinima);
 
-    //usando slq native
-    @Query(value = """
-        SELECT me.id,ei.id,i.nome,me.quantidade,me.type_movimentacao
-        FROM movimentacao_estoque me
-        inner join estoque_item ei
-        on me.id_estoque_item = ei.id
-        inner join item i
-        on ei.id_item = i.id
-        WHERE ei.id_estoque = :estoqueId and ei.id_item = :itemId
-    """, nativeQuery = true)
-    List<MovimentacaoEstoqueResponse> historicoEstoquePorItem(Long estoqueId,Long itemId);
+
 }

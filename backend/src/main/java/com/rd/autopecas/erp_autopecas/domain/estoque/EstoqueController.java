@@ -6,12 +6,14 @@ import com.rd.autopecas.erp_autopecas.domain.estoque.dto.EstoqueResponse;
 import com.rd.autopecas.erp_autopecas.domain.estoque_item.dto.EstoqueItemRequest;
 import com.rd.autopecas.erp_autopecas.domain.estoque_item.dto.EstoqueItemResponse;
 import com.rd.autopecas.erp_autopecas.domain.movimentacao_estoque.dto.MovimentacaoEstoqueResponse;
+import com.rd.autopecas.erp_autopecas.domain.movimentacao_estoque.filter.MovimentacaoEstoqueFilter;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 
@@ -55,8 +57,8 @@ public class EstoqueController {
 
     @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE', 'ESTOQUISTA','VENDEDOR')")
     @GetMapping("/{idEstoque}/movimentacoes")
-    public ResponseEntity<List<MovimentacaoEstoqueResponse>> buscarHistoricoMovimetacoes(@RequestParam(value = "item",required = false)Long item, @PathVariable  Long idEstoque) {
-        return ResponseEntity.ok(estoqueService.buscarHistoricoMovimentacoes(idEstoque,item));
+    public ResponseEntity<List<MovimentacaoEstoqueResponse>> buscarHistoricoMovimetacoes(@PathVariable  Long idEstoque,@ModelAttribute @Valid MovimentacaoEstoqueFilter filter) {
+        return ResponseEntity.ok(estoqueService.buscarHistoricoMovimentacoes(idEstoque,filter));
 
     }
 

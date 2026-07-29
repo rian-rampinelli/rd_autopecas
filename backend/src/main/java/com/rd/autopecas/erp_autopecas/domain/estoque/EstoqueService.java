@@ -11,9 +11,11 @@ import com.rd.autopecas.erp_autopecas.domain.movimentacao_estoque.MovimentacaoEs
 import com.rd.autopecas.erp_autopecas.domain.movimentacao_estoque.MovimentacaoEstoqueRepository;
 import com.rd.autopecas.erp_autopecas.domain.movimentacao_estoque.dto.MovimentacaoEstoqueResponse;
 import com.rd.autopecas.erp_autopecas.domain.movimentacao_estoque.enums.TypeMovimentacao;
+import com.rd.autopecas.erp_autopecas.domain.movimentacao_estoque.filter.MovimentacaoEstoqueFilter;
 import com.rd.autopecas.erp_autopecas.domain.unidade.Unidade;
 import com.rd.autopecas.erp_autopecas.domain.unidade.UnidadeRepository;
 import com.rd.autopecas.erp_autopecas.exceptions.ResourceNotFoundException;
+import com.rd.autopecas.erp_autopecas.exceptions.ValidationException;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -41,12 +43,17 @@ public class EstoqueService {
         return estoqueRepository.findAllItemsByEstoque(idEstoque);
     }
 
-    public List<MovimentacaoEstoqueResponse> buscarHistoricoMovimentacoes(Long idEstoque,Long idItem){
-        if(idItem == null){
-            return estoqueRepository.historicoEstoque(idEstoque);
+    public List<MovimentacaoEstoqueResponse> buscarHistoricoMovimentacoes(Long idEstoque, MovimentacaoEstoqueFilter filter){
+        String tipo = filter.tipo();
+        if (tipo != null) {
+            tipo = tipo.toUpperCase();
+            try {
+                TypeMovimentacao.valueOf(tipo);
+            } catch (IllegalArgumentException e) {
+                throw new IllegalArgumentException("Tipo de movimentação/enum inválido");
+            }
         }
-        return estoqueRepository.historicoEstoquePorItem(idEstoque,idItem);
-
+        return estoqueRepository.buscarHistoricoEstoque(idEstoque,filter.item(),tipo,filter.qtdMinima());
     }
 
     public void deleteById(Long id){

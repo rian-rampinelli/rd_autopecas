@@ -43,6 +43,17 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
 
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<RestErrorMessage> illegalArgumentException(IllegalArgumentException exception) {
+        RestErrorMessage errorResponse = new RestErrorMessage(
+                HttpStatus.BAD_REQUEST.value(),
+                HttpStatus.BAD_REQUEST.getReasonPhrase(),
+                exception.getMessage()
+        );
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+    }
+
+
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<RestErrorMessage> handleBadCredentials(BadCredentialsException exception) {
         RestErrorMessage errorResponse = new RestErrorMessage(
