@@ -27,11 +27,24 @@ public class UnidadeService {
         return(UnidadeResponse.fromEntity(unidade));
     }
 
-    public List<UnidadeResponse> findAll(){
-        return unidadeRepository.findUnidadesWithEstoques().stream()
+    public List<UnidadeResponse> buscarUnidades(String status){
+        if(status == null){
+            return unidadeRepository.findUnidadesWithEstoques().stream()
+                    .map(unidade -> UnidadeResponse.fromEntity(unidade))
+                    .toList();
+        }
+        return unidadeRepository.findUnidadesByStatus(StatusUnidade.valueOf(status.toUpperCase())).stream()
                 .map(unidade -> UnidadeResponse.fromEntity(unidade))
                 .toList();
     }
+
+    public List<EstoqueResponse> findAllEstoquesByUnidadeId(Long id){
+        List<EstoqueResponse> estoques = unidadeRepository.findAllEstoquesByUnidade(id).stream()
+                .map(estoque -> EstoqueResponse.fromEntity(estoque))
+                .toList();
+        return estoques;
+    }
+
 
     public UnidadeResponse create(UnidadeRequest unidadeRequest) {
         Unidade unidade = unidadeRequest.toEntity();
@@ -60,12 +73,7 @@ public class UnidadeService {
     }
 
 
-    public List<EstoqueResponse> findAllEstoquesByUnidadeId(Long id){
-        List<EstoqueResponse> estoques = unidadeRepository.findAllEstoquesByUnidade(id).stream()
-                .map(estoque -> EstoqueResponse.fromEntity(estoque))
-                .toList();
-        return estoques;
-    }
+
 
     @Transactional
     public EstoqueResponse createEstoque(EstoqueRequest estoqueRequest,Long idUnidade) {

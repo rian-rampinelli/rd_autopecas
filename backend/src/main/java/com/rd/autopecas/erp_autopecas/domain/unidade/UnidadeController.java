@@ -29,8 +29,8 @@ public class UnidadeController {
 
     @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE', 'VENDEDOR','ESTOQUISTA')")
     @GetMapping
-    public ResponseEntity<List<UnidadeResponse>> findAll() {
-        return ResponseEntity.ok(unidadeService.findAll());
+    public ResponseEntity<List<UnidadeResponse>> findAll(@RequestParam(value = "status",required = false)  String status) {
+        return ResponseEntity.ok(unidadeService.buscarUnidades(status));
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE', 'VENDEDOR','ESTOQUISTA')")
