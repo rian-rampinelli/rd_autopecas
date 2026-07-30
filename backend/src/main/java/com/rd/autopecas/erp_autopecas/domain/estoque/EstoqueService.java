@@ -47,13 +47,9 @@ public class EstoqueService {
         String tipo = filter.tipo();
         if (tipo != null) {
             tipo = tipo.toUpperCase();
-            try {
-                TypeMovimentacao.valueOf(tipo);
-            } catch (IllegalArgumentException e) {
-                throw new IllegalArgumentException("Tipo de movimentação/enum inválido");
-            }
+            validaValorEnum(tipo);
         }
-        return estoqueRepository.buscarHistoricoEstoque(idEstoque,filter.item(),tipo,filter.qtdMinima());
+        return estoqueRepository.buscarHistoricoEstoque(idEstoque,filter.item(),filter.nomeItem(),tipo,filter.qtdMinima(),filter.qtdMaxima());
     }
 
     public void deleteById(Long id){
@@ -128,6 +124,14 @@ public class EstoqueService {
     public EstoqueItem findEntityEstoqueItem(Long idEstoqueItem){
         return estoqueItemRepository.findById(idEstoqueItem)
                 .orElseThrow(() -> new ResourceNotFoundException("Item não encontrado nesse estoque!"));
+    }
+
+    private void validaValorEnum(String tipo){
+        try {
+            TypeMovimentacao.valueOf(tipo);
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Tipo de movimentação/enum inválido");
+        }
     }
 
 

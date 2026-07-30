@@ -6,8 +6,11 @@ import java.math.BigDecimal;
 
 public record MovimentacaoEstoqueFilter(
         Long item,
+        String nomeItem,
         String tipo,
         @DecimalMin(value = "0.01")
-        BigDecimal qtdMinima
+        BigDecimal qtdMinima,
+        @DecimalMin(value = "0.01")
+        BigDecimal qtdMaxima
 ) {
 }

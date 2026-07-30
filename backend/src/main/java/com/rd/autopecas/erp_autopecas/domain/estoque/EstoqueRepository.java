@@ -34,10 +34,12 @@ public interface EstoqueRepository extends JpaRepository<Estoque, Long> {
         on ei.id_item = i.id
         WHERE ei.id_estoque = :estoqueId
         and (:item IS NULL OR ei.id_item = :item)
+        and (:nomeItem IS NULL OR lower(i.nome) LIKE lower(CONCAT('%', :nomeItem, '%')))
         and (:tipo IS NULL OR me.type_movimentacao = :tipo)
         and (:qtdMinima IS NULL OR me.quantidade >= :qtdMinima)
+        and (:qtdMaxima IS NULL OR me.quantidade <= :qtdMaxima)
     """, nativeQuery = true)
-    List<MovimentacaoEstoqueResponse> buscarHistoricoEstoque(Long estoqueId, Long item,String tipo,BigDecimal qtdMinima);
+    List<MovimentacaoEstoqueResponse> buscarHistoricoEstoque(Long estoqueId, Long item,String nomeItem,String tipo,BigDecimal qtdMinima,BigDecimal qtdMaxima);
 
 
 }
