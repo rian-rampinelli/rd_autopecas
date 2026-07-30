@@ -37,16 +37,12 @@ public class Fornecedor extends Auditable {
     @ToString.Exclude
     private List<Compra> compras = new ArrayList();
 
-
     public void addCompra(Compra compra) {
         compras.add(compra);
-        compra.setFornecedor(this);
     }
 
     public void removeCompra(Compra compra) {
         compras.remove(compra);
-        compra.setFornecedor(null);
     }
-
 
 }

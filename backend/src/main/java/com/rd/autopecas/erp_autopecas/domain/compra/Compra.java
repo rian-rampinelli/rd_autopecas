@@ -60,4 +60,23 @@ public class Compra extends Auditable {
         ItemsCompra.remove(itemCompra);
         itemCompra.setCompra(null);
     }
+
+    public void addFuncionario(Funcionario funcionario) {
+        setFuncionario(funcionario);
+        funcionario.addCompra(this);
+    }
+
+    public void removeFuncionarioCompra(Funcionario funcionario) {
+        setFuncionario(funcionario);
+        funcionario.addCompra(null);
+    }
+
+    public void addFornecedor(Fornecedor fornecedor) {
+        setFornecedor(fornecedor);
+        fornecedor.addCompra(this);
+    }
+
+    public void removeFornecedor(Fornecedor fornecedor) {
+        setFornecedor(fornecedor);
+    }
 }

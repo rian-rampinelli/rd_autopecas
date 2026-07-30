@@ -77,12 +77,10 @@ public class Funcionario extends Auditable {
 
     public void addCompra(Compra compra) {
         compras.add(compra);
-        compra.setFuncionario(this);
     }
 
     public void removeCompra(Compra compra) {
         compras.remove(compra);
-        compra.setFuncionario(null);
     }
 
 

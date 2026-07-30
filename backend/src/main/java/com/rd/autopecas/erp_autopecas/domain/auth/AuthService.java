@@ -42,8 +42,6 @@ public class AuthService {
 
     @Transactional
     public RegisterResponse register(RegisterRequest registerRequest){
-
-
         if(userRepository.existsByEmail(registerRequest.email())){
             throw new AtributeAlredyExistsException("Email já cadastrado!");
         }
@@ -53,7 +51,6 @@ public class AuthService {
         user.setEmail(registerRequest.email());
         user.setCpf(registerRequest.cpf());
         user.setPassword(passwordEncoder.encode(registerRequest.password()));
-        System.out.println("1");
 
         Set<Role> roles = new HashSet<>(roleRepository.findAllById(registerRequest.roleIds()));
         if (roles.size() != registerRequest.roleIds().size()) {
@@ -66,8 +63,6 @@ public class AuthService {
         funcionario.setStatus(StatusFuncionario.ATIVO);
         funcionario.setCargo(registerRequest.cargo());
         funcionario.setSalario(registerRequest.salary());
-        System.out.println("2");
-
         if( registerRequest.enderecos() != null && !registerRequest.enderecos().isEmpty()){
             List<EnderecoFuncionario> enderecoFuncionarios = registerRequest.enderecos().stream()
                     .map(dto -> dto.toEntity(funcionario))
@@ -76,8 +71,8 @@ public class AuthService {
             funcionario.setEnderecoFuncionarios(enderecoFuncionarios);
 
         }
-
-        System.out.println("3");
+        userRepository.save(user);
+        funcionarioRepository.save(funcionario);
         return RegisterResponse.fromEntity(user,funcionario);
     }
 
