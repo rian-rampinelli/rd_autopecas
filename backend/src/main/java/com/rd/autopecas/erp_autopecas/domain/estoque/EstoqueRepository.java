@@ -22,8 +22,13 @@ public interface EstoqueRepository extends JpaRepository<Estoque, Long> {
         inner join item i
         on ei.id_item = i.id
         WHERE id_estoque = :estoqueId
+        and (:item IS NULL OR ei.id_item = :item)
+        and (:nomeItem IS NULL OR lower(i.nome) LIKE lower(CONCAT('%', :nomeItem, '%')))
+        and (:localizacao IS NULL OR lower(ei.localizacao) LIKE lower(CONCAT('%', :localizacao, '%')))
+        and (:qtdMinima IS NULL OR ei.quantidade >= :qtdMinima)
+        and (:qtdMaxima IS NULL OR ei.quantidade <= :qtdMaxima)
     """, nativeQuery = true)
-    List<EstoqueItemResponse> findAllItemsByEstoque(Long estoqueId);
+    List<EstoqueItemResponse> findAllItemsByEstoque(Long estoqueId,Long item,String nomeItem,String localizacao,BigDecimal qtdMinima,BigDecimal qtdMaxima);
 
     @Query(value = """
         SELECT me.id,ei.id,i.nome,me.quantidade,me.type_movimentacao

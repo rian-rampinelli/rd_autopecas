@@ -5,6 +5,7 @@ import com.rd.autopecas.erp_autopecas.domain.Item.Item;
 import com.rd.autopecas.erp_autopecas.domain.estoque.dto.EstoqueResponse;
 import com.rd.autopecas.erp_autopecas.domain.estoque_item.dto.EstoqueItemRequest;
 import com.rd.autopecas.erp_autopecas.domain.estoque_item.dto.EstoqueItemResponse;
+import com.rd.autopecas.erp_autopecas.domain.estoque_item.filter.EstoqueItemFilter;
 import com.rd.autopecas.erp_autopecas.domain.movimentacao_estoque.dto.MovimentacaoEstoqueResponse;
 import com.rd.autopecas.erp_autopecas.domain.movimentacao_estoque.filter.MovimentacaoEstoqueFilter;
 import jakarta.validation.Valid;
@@ -51,14 +52,14 @@ public class EstoqueController {
 
     @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE', 'ESTOQUISTA','VENDEDOR')")
     @GetMapping("/{idEstoque}/items")
-    public ResponseEntity<List<EstoqueItemResponse>> buscarItems(@PathVariable  Long idEstoque) {
-        return ResponseEntity.ok(estoqueService.buscarItemsDeEstoque(idEstoque));
+    public ResponseEntity<List<EstoqueItemResponse>> buscarItems(@PathVariable  Long idEstoque,@ModelAttribute @Valid EstoqueItemFilter filter) {
+        return ResponseEntity.ok(estoqueService.buscarItemsDeEstoque(idEstoque,filter));
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE', 'ESTOQUISTA','VENDEDOR')")
     @GetMapping("/{idEstoque}/movimentacoes")
     public ResponseEntity<List<MovimentacaoEstoqueResponse>> buscarHistoricoMovimetacoes(@PathVariable  Long idEstoque,@ModelAttribute @Valid MovimentacaoEstoqueFilter filter) {
-        return ResponseEntity.ok(estoqueService.buscarHistoricoMovimentacoes(idEstoque,filter));
+        return ResponseEntity.ok(estoqueService.buscarHistoricoMovimentacoesDeEstoque(idEstoque,filter));
 
     }
 
