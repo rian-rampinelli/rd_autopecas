@@ -46,7 +46,7 @@ public class Compra extends Auditable {
     @JoinColumn(name = "id_forma_pagamento", nullable = false)
     private FormaPagamento formaPagamento;
 
-    @OneToMany(mappedBy = "compra")
+    @OneToMany(mappedBy = "compra",cascade = CascadeType.ALL,orphanRemoval = true)
     @ToString.Exclude
     private List<ItemCompra> ItemsCompra = new ArrayList();
 
@@ -78,5 +78,14 @@ public class Compra extends Auditable {
 
     public void removeFornecedor(Fornecedor fornecedor) {
         setFornecedor(fornecedor);
+    }
+    public BigDecimal calcularTotal(){
+        BigDecimal totalValue = BigDecimal.valueOf(0);
+        for(ItemCompra itemCompra: getItemsCompra()){
+            totalValue = totalValue.add(itemCompra.getQuantidade().multiply(itemCompra.getItemValue())
+            );
+        }
+        setTotalValue(totalValue);
+        return totalValue;
     }
 }

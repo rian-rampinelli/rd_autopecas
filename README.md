@@ -1,6 +1,6 @@
 # RD Autopeças
 
-Sistema ERP Full Stack para gerenciamento de uma loja de autopeças, desenvolvido com **Java, Spring Boot e React**. O projeto tem como objetivo ser um ambiente de negócio real, contemplando módulos essenciais de gestão e aplicando boas práticas de desenvolvimento.
+Sistema ERP Full Stack para gerenciamento de uma loja de autopeças, desenvolvido com **Java, Spring Boot e React**. O projeto tem como objetivo ser um ambiente de negócio real.
 
 ## Tecnologias
 
