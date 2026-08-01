@@ -68,7 +68,7 @@ public class CompraService {
     @Transactional
     public CompraResponse adicionarItemNaCompra(Long idCompra, ItemCompraRequest request){
         Compra compra = findEntityCompra(idCompra);
-        verificaTransaçãoFinalizada(compra);
+        verificaTransaçãoPermitida(compra);
         ItemCompra itemCompra = findEntityItemCompraByItemAndCompra(request.idItem(),idCompra);
         if(itemCompra == null){
             itemCompra = new ItemCompra();
@@ -89,7 +89,7 @@ public class CompraService {
     @Transactional
     public CompraResponse removerItemDaCompra(Long idCompra,Long idItemCompra){
         Compra compra = findEntityCompra(idCompra);
-        verificaTransaçãoFinalizada(compra);
+        verificaTransaçãoPermitida(compra);
         ItemCompra itemCompra = findEntityItemCompraInCompra(idItemCompra,idCompra);
         compra.removeItemCompra(itemCompra);
         compraRepository.save(compra);
@@ -100,7 +100,7 @@ public class CompraService {
     public CompraResponse finalizarCompra(Long idEstoque,Long idCompra){
         Compra compra = findEntityCompra(idCompra);
         Estoque estoque = findEntityEstoque(idEstoque);
-        verificaTransaçãoFinalizada(compra);
+        verificaTransaçãoPermitida(compra);
         for(ItemCompra itemCompra : compra.getItemsCompra()){
             estoqueService.adicionarItem(estoque,itemCompra.getItem().getId(),itemCompra.getQuantidade(),"n sei ainda como");
         }
@@ -112,57 +112,55 @@ public class CompraService {
     }
 
 
-
     //helpers
-    public Compra findEntityCompra(Long id){
+    private Compra findEntityCompra(Long id){
         return compraRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("compra não encontrado"));
     }
 
-    public Estoque findEntityEstoque(Long id){
+    private Estoque findEntityEstoque(Long id){
         return estoqueRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("estoque não encontrado"));
     }
 
-    public Fornecedor findEntityFornecedor(Long id){
+    private Fornecedor findEntityFornecedor(Long id){
         return fornecedorRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("fornecedor não encontrado"));
     }
 
-    public Funcionario findEntityFuncionario(Long id){
+    private Funcionario findEntityFuncionario(Long id){
         return funcionarioRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("funcionario não encontrado"));
     }
 
-    public Item findEntityItem(Long id){
+    private Item findEntityItem(Long id){
         return itemRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("item não encontrado"));
     }
 
-    public ItemCompra findEntityItemCompraInCompra(Long idItemCompra,Long idCompra){
+    private ItemCompra findEntityItemCompraInCompra(Long idItemCompra,Long idCompra){
         return itemCompraRepository.findByIdAndCompra_Id(idItemCompra, idCompra)
                 .orElseThrow(() -> new ResourceNotFoundException("Item não pertence à compra."));
     }
 
-    public ItemCompra findEntityItemCompraByItemAndCompra(Long idItem,Long idCompra){
+    private ItemCompra findEntityItemCompraByItemAndCompra(Long idItem,Long idCompra){
         return itemCompraRepository.findByItem_IdAndCompra_Id(idItem, idCompra)
                 .orElse(null);
     }
 
 
-    public ItemCompra findEntityItemCompra(Long id){
+    private ItemCompra findEntityItemCompra(Long id){
         return itemCompraRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("item na compra não encontrado"));
     }
 
-
-    public FormaPagamento findEntityFormaPagamento(Long id){
+    private FormaPagamento findEntityFormaPagamento(Long id){
         return formaPagamentoRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("FormaPagamento não encontrada"));
     }
 
-    public void verificaTransaçãoFinalizada(Compra compra){
-        if(compra.getStatus() == StatusTransacao.FINALIZADA){
+    private void verificaTransaçãoPermitida(Compra compra){
+        if(compra.getStatus() != StatusTransacao.EM_ANDAMENTO){
             throw new ValidationException("Transação ja finalizada");
         }
     }
