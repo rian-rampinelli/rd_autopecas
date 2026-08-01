@@ -5,6 +5,8 @@ import com.rd.autopecas.erp_autopecas.domain.carro.dto.CarroResponse;
 import com.rd.autopecas.erp_autopecas.domain.carro.dto.CarroUpdateRequest;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -27,8 +29,8 @@ public class CarroController {
 
     @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE', 'VENDEDOR')")
     @GetMapping
-    public ResponseEntity<List<CarroResponse>> findAll() {
-        return ResponseEntity.ok(carroService.findAll());
+    public ResponseEntity<Page<CarroResponse>> findAll(Pageable pageable) {
+        return ResponseEntity.ok(carroService.findAll(pageable));
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE', 'VENDEDOR')")

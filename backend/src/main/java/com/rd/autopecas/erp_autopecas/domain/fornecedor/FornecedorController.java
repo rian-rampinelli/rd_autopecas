@@ -5,6 +5,8 @@ import com.rd.autopecas.erp_autopecas.domain.fornecedor.dto.FornecedorResponse;
 import com.rd.autopecas.erp_autopecas.domain.fornecedor.dto.FornecedorUpdateRequest;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -27,8 +29,8 @@ public class FornecedorController {
 
     @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE', 'ESTOQUISTA')")
     @GetMapping
-    public ResponseEntity<List<FornecedorResponse>> findAll() {
-        return ResponseEntity.ok(fornecedorService.findAll());
+    public ResponseEntity<Page<FornecedorResponse>> findAll(Pageable pageable) {
+        return ResponseEntity.ok(fornecedorService.findAll(pageable));
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE', 'ESTOQUISTA')")

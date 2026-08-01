@@ -7,6 +7,8 @@ import com.rd.autopecas.erp_autopecas.exceptions.AtributeAlredyExistsException;
 import com.rd.autopecas.erp_autopecas.exceptions.ResourceNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,10 +24,9 @@ public class FornecedorService {
         return(FornecedorResponse.fromEntity(fornecedor));
     }
 
-    public List<FornecedorResponse> findAll(){
-        return fornecedorRepository.findAll().stream()
-                .map(fornecedor -> FornecedorResponse.fromEntity(fornecedor))
-                .toList();
+    public Page<FornecedorResponse> findAll(Pageable pageable){
+        return fornecedorRepository.findAll(pageable)
+                .map(fornecedor -> FornecedorResponse.fromEntity(fornecedor));
     }
 
     public FornecedorResponse create(FornecedorRequest fornecedorRequest) {
