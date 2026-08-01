@@ -4,7 +4,7 @@ import com.rd.autopecas.erp_autopecas.domain.Item.Item;
 import com.rd.autopecas.erp_autopecas.domain.carro.dto.CarroResponse;
 
 import java.math.BigDecimal;
-import java.util.List;
+
 
 public record ItemResumeResponse(
         Long id,

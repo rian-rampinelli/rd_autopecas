@@ -5,6 +5,8 @@ import com.rd.autopecas.erp_autopecas.domain.Item.dto.*;
 import com.rd.autopecas.erp_autopecas.domain.carro.dto.CarroResponse;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -27,8 +29,8 @@ public class ItemController {
 
     @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE', 'VENDEDOR','ESTOQUISTA')")
     @GetMapping
-    public ResponseEntity<List<ItemResponse>> findAll() {
-        return ResponseEntity.ok(itemService.findAll());
+    public ResponseEntity<Page<ItemResumeResponse>> findAll(Pageable pageable) {
+        return ResponseEntity.ok(itemService.findAll(pageable));
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE', 'VENDEDOR')")
@@ -64,8 +66,8 @@ public class ItemController {
 
     @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE', 'VENDEDOR','ESTOQUISTA')")
     @GetMapping("{idItem}/carros")
-    public ResponseEntity<List<CarroResponse>> findAllCarroByItem(@PathVariable Long idItem) {
-        return ResponseEntity.ok(itemService.findAllCarsByItem(idItem));
+    public ResponseEntity<Page<CarroResponse>> findAllCarroByItem(@PathVariable Long idItem,Pageable pageable) {
+        return ResponseEntity.ok(itemService.findAllCarsByItem(idItem,pageable));
     }
 
 }

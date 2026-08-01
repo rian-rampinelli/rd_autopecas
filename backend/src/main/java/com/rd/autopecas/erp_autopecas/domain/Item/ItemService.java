@@ -9,6 +9,8 @@ import com.rd.autopecas.erp_autopecas.exceptions.ResourceNotFoundException;
 import com.rd.autopecas.erp_autopecas.exceptions.ValidationException;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -29,10 +31,15 @@ public class ItemService {
         return(ItemResponse.fromEntity(item));
     }
 
-    public List<ItemResponse> findAll(){
-        return itemRepository.findAllWithCarros().stream()
-                .map(item -> ItemResponse.fromEntity(item))
-                .toList();
+    public Page<ItemResumeResponse> findAll(Pageable pageable){
+        return itemRepository.findAll(pageable)
+                .map(item -> ItemResumeResponse.fromEntity(item));
+    }
+
+    @Transactional
+    public Page<CarroResponse> findAllCarsByItem(Long itemId,Pageable pageable){
+        Page<Carro> carros = itemRepository.findAllCarsByItemId(itemId,pageable);
+        return carros.map(carro -> CarroResponse.fromEntity(carro));
     }
 
     @Transactional
@@ -109,14 +116,6 @@ public class ItemService {
         carro.removeItem(item);
         itemRepository.save(item);
         return ItemResponse.fromEntity(item);
-    }
-
-    @Transactional
-    public List<CarroResponse> findAllCarsByItem(Long itemId){
-        List<Carro> carros = itemRepository.findAllCarsByItemId(itemId);
-        return carros.stream()
-                .map(carro -> CarroResponse.fromEntity(carro))
-                .toList();
     }
 
     //helpers

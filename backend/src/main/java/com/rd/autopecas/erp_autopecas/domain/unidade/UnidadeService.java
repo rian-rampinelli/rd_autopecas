@@ -4,15 +4,20 @@ import com.rd.autopecas.erp_autopecas.domain.estoque.Estoque;
 import com.rd.autopecas.erp_autopecas.domain.estoque.EstoqueRepository;
 import com.rd.autopecas.erp_autopecas.domain.estoque.dto.EstoqueRequest;
 import com.rd.autopecas.erp_autopecas.domain.estoque.dto.EstoqueResponse;
+import com.rd.autopecas.erp_autopecas.domain.estoque.dto.EstoqueResumeResponse;
+import com.rd.autopecas.erp_autopecas.domain.unidade.dto.UnidadeEstoqueResponse;
 import com.rd.autopecas.erp_autopecas.domain.unidade.dto.UnidadeRequest;
 import com.rd.autopecas.erp_autopecas.domain.unidade.dto.UnidadeResponse;
 import com.rd.autopecas.erp_autopecas.domain.unidade.dto.UnidadeUpdateRequest;
 import com.rd.autopecas.erp_autopecas.domain.unidade.enums.StatusUnidade;
+import com.rd.autopecas.erp_autopecas.domain.unidade.filter.UnidadeFilter;
 import com.rd.autopecas.erp_autopecas.exceptions.ResourceNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import java.util.List;
+
 
 @Service
 @AllArgsConstructor
@@ -22,33 +27,30 @@ public class UnidadeService {
     private final EstoqueRepository estoqueRepository;
 
 
+    @Transactional
     public UnidadeResponse findById(Long id){
         Unidade unidade = findEntityUnidade(id);
         return(UnidadeResponse.fromEntity(unidade));
     }
 
-    public List<UnidadeResponse> buscarUnidades(String status){
-        if(status == null){
-            return unidadeRepository.findUnidadesWithEstoques().stream()
-                    .map(unidade -> UnidadeResponse.fromEntity(unidade))
-                    .toList();
+    @Transactional
+    public Page<UnidadeEstoqueResponse> buscarUnidades(UnidadeFilter filter, Pageable pageable){
+        StatusUnidade status = null;
+        if (filter.status() != null) {
+            status = StatusUnidade.valueOf(filter.status().toUpperCase());
         }
-        return unidadeRepository.findUnidadesByStatus(StatusUnidade.valueOf(status.toUpperCase())).stream()
-                .map(unidade -> UnidadeResponse.fromEntity(unidade))
-                .toList();
+        Page<Unidade> unidades= unidadeRepository.findUnidadesWithEstoques(status,pageable);
+        return unidades.map(unidade -> UnidadeEstoqueResponse.fromEntity(unidade));
     }
 
-    public List<EstoqueResponse> findAllEstoquesByUnidadeId(Long id){
-        List<EstoqueResponse> estoques = unidadeRepository.findAllEstoquesByUnidade(id).stream()
-                .map(estoque -> EstoqueResponse.fromEntity(estoque))
-                .toList();
-        return estoques;
+    public Page<EstoqueResumeResponse> findAllEstoquesByUnidadeId(Long id,Pageable pageable){
+        return unidadeRepository.findAllEstoquesByUnidade(id,pageable)
+                .map(estoque -> EstoqueResumeResponse.fromEntity(estoque));
     }
 
 
     public UnidadeResponse create(UnidadeRequest unidadeRequest) {
         Unidade unidade = unidadeRequest.toEntity();
-
         unidadeRepository.save(unidade);
         return UnidadeResponse.fromEntity(unidade);
     }
@@ -73,8 +75,6 @@ public class UnidadeService {
     }
 
 
-
-
     @Transactional
     public EstoqueResponse createEstoque(EstoqueRequest estoqueRequest,Long idUnidade) {
         Unidade unidade = findEntityUnidade(idUnidade);
@@ -84,7 +84,6 @@ public class UnidadeService {
         estoqueRepository.save(estoque);
         return EstoqueResponse.fromEntity(estoque);
     }
-
 
 
     //helpers

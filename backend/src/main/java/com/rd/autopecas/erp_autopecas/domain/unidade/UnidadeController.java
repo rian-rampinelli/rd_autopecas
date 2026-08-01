@@ -2,17 +2,21 @@ package com.rd.autopecas.erp_autopecas.domain.unidade;
 
 import com.rd.autopecas.erp_autopecas.domain.estoque.dto.EstoqueRequest;
 import com.rd.autopecas.erp_autopecas.domain.estoque.dto.EstoqueResponse;
+import com.rd.autopecas.erp_autopecas.domain.estoque.dto.EstoqueResumeResponse;
+import com.rd.autopecas.erp_autopecas.domain.unidade.dto.UnidadeEstoqueResponse;
 import com.rd.autopecas.erp_autopecas.domain.unidade.dto.UnidadeRequest;
 import com.rd.autopecas.erp_autopecas.domain.unidade.dto.UnidadeResponse;
 import com.rd.autopecas.erp_autopecas.domain.unidade.dto.UnidadeUpdateRequest;
+import com.rd.autopecas.erp_autopecas.domain.unidade.filter.UnidadeFilter;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
-import java.util.List;
 
 @RestController
 @AllArgsConstructor
@@ -29,14 +33,14 @@ public class UnidadeController {
 
     @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE', 'VENDEDOR','ESTOQUISTA')")
     @GetMapping
-    public ResponseEntity<List<UnidadeResponse>> findAll(@RequestParam(value = "status",required = false)  String status) {
-        return ResponseEntity.ok(unidadeService.buscarUnidades(status));
+    public ResponseEntity<Page<UnidadeEstoqueResponse>> findAll(@ModelAttribute UnidadeFilter filter, Pageable pageable) {
+        return ResponseEntity.ok(unidadeService.buscarUnidades(filter,pageable));
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE', 'VENDEDOR','ESTOQUISTA')")
     @GetMapping("/{id}/estoques")
-    public ResponseEntity<List<EstoqueResponse>> findAllEstoquesByUnidade(@PathVariable  Long id) {
-        return ResponseEntity.ok(unidadeService.findAllEstoquesByUnidadeId(id));
+    public ResponseEntity<Page<EstoqueResumeResponse>> findAllEstoquesByUnidade(@PathVariable  Long id, Pageable pageable) {
+        return ResponseEntity.ok(unidadeService.findAllEstoquesByUnidadeId(id,pageable));
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE')")

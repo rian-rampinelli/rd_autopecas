@@ -2,7 +2,12 @@ package com.rd.autopecas.erp_autopecas.domain.unidade;
 
 import com.rd.autopecas.erp_autopecas.domain.estoque.Estoque;
 import com.rd.autopecas.erp_autopecas.domain.estoque_item.dto.EstoqueItemResponse;
+import com.rd.autopecas.erp_autopecas.domain.unidade.dto.UnidadeEstoqueResponse;
+import com.rd.autopecas.erp_autopecas.domain.unidade.dto.UnidadeResponse;
 import com.rd.autopecas.erp_autopecas.domain.unidade.enums.StatusUnidade;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -19,22 +24,13 @@ public interface UnidadeRepository extends JpaRepository<Unidade, Long> {
         FROM estoque
         WHERE id_unidade = :unidadeId
     """, nativeQuery = true)
-    List<Estoque> findAllEstoquesByUnidade(Long unidadeId);
-
-    //usando slq native
-    @Query(value = """
-        SELECT u  
-        FROM Unidade u
-        LEFT JOIN FETCH u.estoques
-        WHERE u.status = :status
-    """)
-    List<Unidade> findUnidadesByStatus(StatusUnidade status);
+    Page<Estoque> findAllEstoquesByUnidade(Long unidadeId,Pageable pageable);
 
     //usando jpql,sql + java(bem mais resumido)
     @Query("""
-    SELECT u  
+    SELECT u
     FROM Unidade u
-    LEFT JOIN FETCH u.estoques
+    WHERE (:status IS NULL OR u.status = :status)
     """)
-    List<Unidade> findUnidadesWithEstoques();
+    Page<Unidade> findUnidadesWithEstoques(StatusUnidade status, Pageable pageable);
 }
