@@ -35,6 +35,7 @@ public class EstoqueService {
     private final ItemRepository itemRepository;
     private final MovimentacaoEstoqueRepository movimentacaoEstoqueRepository;
 
+    @Transactional
     public EstoqueResponse findById(Long id){
         Estoque estoque = findEntityEstoque(id);
         return(EstoqueResponse.fromEntity(estoque));
@@ -57,26 +58,6 @@ public class EstoqueService {
         findEntityEstoque(id);
         estoqueRepository.deleteById(id);
     }
-
-//    @Transactional
-//    public EstoqueItemResponse adicionarItem(Long idEstoque, EstoqueItemRequest estoqueItemRequest){
-//        EstoqueItem estoqueItem = findByIdEstoqueAndItem(idEstoque,estoqueItemRequest.idItem());
-//        if(estoqueItem == null){
-//            Estoque estoque = findEntityEstoque(idEstoque);
-//            Item item = findEntityItem(estoqueItemRequest.idItem());
-//            estoqueItem = new EstoqueItem();
-//            estoqueItem.setQuantidade(estoqueItemRequest.quantidade());
-//            estoqueItem.setLocalizacao(estoqueItemRequest.localizacao());
-//            estoque.addEstoqueItem(estoqueItem);
-//            estoqueItem.setItem(item);
-//        }
-//        else{
-//            estoqueItem.adicionarQuantidade(estoqueItemRequest.quantidade());
-//        }
-//        estoqueItemRepository.save(estoqueItem);
-//        registrarTransacao(estoqueItemRequest.quantidade(),TypeMovimentacao.ENTRADA,estoqueItem);
-//        return EstoqueItemResponse.fromEntity(estoqueItem);
-//    }
 
     @Transactional
     public EstoqueItemResponse adicionarItem(Estoque estoque,Long idItem,BigDecimal quantidade ,String localizacao){
