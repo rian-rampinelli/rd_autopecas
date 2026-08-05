@@ -3,8 +3,11 @@ package com.rd.autopecas.erp_autopecas.domain.forma_pagamento;
 import com.rd.autopecas.erp_autopecas.domain.forma_pagamento.dto.FormaPagamentoRequest;
 import com.rd.autopecas.erp_autopecas.domain.forma_pagamento.dto.FormaPagamentoResponse;
 import com.rd.autopecas.erp_autopecas.domain.forma_pagamento.dto.FormaPagamentoUpdateRequest;
+import com.rd.autopecas.erp_autopecas.domain.forma_pagamento.filter.FormaPagamentoFilter;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -27,8 +30,8 @@ public class FormaPagamentoController {
 
     @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE')")
     @GetMapping
-    public ResponseEntity<List<FormaPagamentoResponse>> findAll() {
-        return ResponseEntity.ok(formaPagamentoService.findAll());
+    public ResponseEntity<Page<FormaPagamentoResponse>> findAll(FormaPagamentoFilter filter, Pageable pageable) {
+        return ResponseEntity.ok(formaPagamentoService.findAll(filter,pageable));
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE')")
@@ -44,9 +47,16 @@ public class FormaPagamentoController {
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE')")
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteById(@PathVariable Long id){
-        formaPagamentoService.deleteById(id);
+    @PutMapping("/{id}/desativar")
+    public ResponseEntity<Void> deactivate(@PathVariable Long id){
+        formaPagamentoService.deactivate(id);
+        return ResponseEntity.ok().build();
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE')")
+    @PutMapping("/{id}/ativar")
+    public ResponseEntity<Void> active(@PathVariable Long id){
+        formaPagamentoService.active(id);
         return ResponseEntity.ok().build();
     }
 }

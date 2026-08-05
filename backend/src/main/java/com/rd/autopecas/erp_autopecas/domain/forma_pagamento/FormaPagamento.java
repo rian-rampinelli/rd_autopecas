@@ -2,6 +2,7 @@ package com.rd.autopecas.erp_autopecas.domain.forma_pagamento;
 
 
 import com.rd.autopecas.erp_autopecas.domain.common.Auditable;
+import com.rd.autopecas.erp_autopecas.domain.common.StatusCommon;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -18,7 +19,11 @@ public class FormaPagamento extends Auditable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name", nullable = false, length = 255)
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status",nullable = false)
+    private StatusCommon status;
+
+    @Column(name = "name", nullable = false, length = 255,unique = true)
     private String name;
 
 }

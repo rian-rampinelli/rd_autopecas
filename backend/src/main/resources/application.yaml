@@ -30,3 +30,9 @@ jwt:
     key: ${JWT_PUBLIC_KEY}
   private:
     key: ${JWT_PRIVATE_KEY}
+
+
+logging:
+  level:
+    org.hibernate.SQL: DEBUG
+    org.hibernate.orm.jdbc.bind: TRACE
