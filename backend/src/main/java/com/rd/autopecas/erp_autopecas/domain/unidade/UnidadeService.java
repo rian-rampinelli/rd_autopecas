@@ -5,7 +5,6 @@ import com.rd.autopecas.erp_autopecas.domain.estoque.EstoqueRepository;
 import com.rd.autopecas.erp_autopecas.domain.estoque.dto.EstoqueRequest;
 import com.rd.autopecas.erp_autopecas.domain.estoque.dto.EstoqueResponse;
 import com.rd.autopecas.erp_autopecas.domain.estoque.dto.EstoqueResumeResponse;
-import com.rd.autopecas.erp_autopecas.domain.unidade.dto.UnidadeEstoqueResponse;
 import com.rd.autopecas.erp_autopecas.domain.unidade.dto.UnidadeRequest;
 import com.rd.autopecas.erp_autopecas.domain.unidade.dto.UnidadeResponse;
 import com.rd.autopecas.erp_autopecas.domain.unidade.dto.UnidadeUpdateRequest;
@@ -34,13 +33,13 @@ public class UnidadeService {
     }
 
     @Transactional
-    public Page<UnidadeEstoqueResponse> buscarUnidades(UnidadeFilter filter, Pageable pageable){
+    public Page<UnidadeResponse> buscarUnidades(UnidadeFilter filter, Pageable pageable){
         StatusUnidade status = null;
         if (filter.status() != null) {
             status = StatusUnidade.valueOf(filter.status().toUpperCase());
         }
         Page<Unidade> unidades= unidadeRepository.findUnidadesWithEstoques(status,pageable);
-        return unidades.map(unidade -> UnidadeEstoqueResponse.fromEntity(unidade));
+        return unidades.map(unidade -> UnidadeResponse.fromEntity(unidade));
     }
 
     public Page<EstoqueResumeResponse> findAllEstoquesByUnidadeId(Long id,Pageable pageable){

@@ -3,7 +3,6 @@ package com.rd.autopecas.erp_autopecas.domain.unidade;
 import com.rd.autopecas.erp_autopecas.domain.estoque.dto.EstoqueRequest;
 import com.rd.autopecas.erp_autopecas.domain.estoque.dto.EstoqueResponse;
 import com.rd.autopecas.erp_autopecas.domain.estoque.dto.EstoqueResumeResponse;
-import com.rd.autopecas.erp_autopecas.domain.unidade.dto.UnidadeEstoqueResponse;
 import com.rd.autopecas.erp_autopecas.domain.unidade.dto.UnidadeRequest;
 import com.rd.autopecas.erp_autopecas.domain.unidade.dto.UnidadeResponse;
 import com.rd.autopecas.erp_autopecas.domain.unidade.dto.UnidadeUpdateRequest;
@@ -33,7 +32,7 @@ public class UnidadeController {
 
     @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE', 'VENDEDOR','ESTOQUISTA')")
     @GetMapping
-    public ResponseEntity<Page<UnidadeEstoqueResponse>> findAll(@ModelAttribute UnidadeFilter filter, Pageable pageable) {
+    public ResponseEntity<Page<UnidadeResponse>> findAll(@ModelAttribute UnidadeFilter filter, Pageable pageable) {
         return ResponseEntity.ok(unidadeService.buscarUnidades(filter,pageable));
     }
 
