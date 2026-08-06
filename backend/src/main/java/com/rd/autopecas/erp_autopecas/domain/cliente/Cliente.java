@@ -1,6 +1,7 @@
 package com.rd.autopecas.erp_autopecas.domain.cliente;
 
 import com.rd.autopecas.erp_autopecas.domain.common.Auditable;
+import com.rd.autopecas.erp_autopecas.domain.common.StatusCommon;
 import com.rd.autopecas.erp_autopecas.domain.endereco_cliente.EnderecoCliente;
 import com.rd.autopecas.erp_autopecas.domain.venda.Venda;
 import jakarta.persistence.*;
@@ -33,6 +34,10 @@ public class Cliente  extends Auditable {
 
     @Column(name = "cpf", nullable = false, unique = true, length = 11)
     private String cpf;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
+    private StatusCommon status;
 
     @OneToMany(mappedBy = "cliente")
     @ToString.Exclude

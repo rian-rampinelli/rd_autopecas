@@ -1,0 +1,2 @@
+ALTER TABLE cliente
+ALTER COLUMN status SET NOT NULL;

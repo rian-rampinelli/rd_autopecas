@@ -2,16 +2,17 @@ package com.rd.autopecas.erp_autopecas.domain.cliente;
 
 import com.rd.autopecas.erp_autopecas.domain.cliente.dto.ClienteRequest;
 import com.rd.autopecas.erp_autopecas.domain.cliente.dto.ClienteResponse;
-import com.rd.autopecas.erp_autopecas.domain.cliente.dto.ClienteResumoResponse;
 import com.rd.autopecas.erp_autopecas.domain.cliente.dto.ClienteUpdateRequest;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
-import java.util.List;
+
 
 @RestController
 @AllArgsConstructor
@@ -28,8 +29,8 @@ public class ClienteController {
 
     @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE', 'VENDEDOR')")
     @GetMapping
-    public ResponseEntity<List< ClienteResumoResponse>> findAll() {
-        return ResponseEntity.ok(clienteService.findAll());
+    public ResponseEntity<Page< ClienteResponse>> findAll(Pageable pageable) {
+        return ResponseEntity.ok(clienteService.findAll(pageable));
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE', 'VENDEDOR')")
@@ -45,9 +46,16 @@ public class ClienteController {
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE')")
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteById(@PathVariable Long id){
-        clienteService.deleteById(id);
+    @PutMapping("/{id}/desativar")
+    public ResponseEntity<Void> deactivate(@PathVariable Long id){
+        clienteService.deactivate(id);
+        return ResponseEntity.ok().build();
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE')")
+    @PutMapping("/{id}/ativar")
+    public ResponseEntity<Void> active(@PathVariable Long id){
+        clienteService.active(id);
         return ResponseEntity.ok().build();
     }
 

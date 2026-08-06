@@ -86,7 +86,6 @@ public class EnderecoClienteService {
                 .orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado"));
     }
 
-
     private EnderecoCliente findByIdAndIdCliente(Long idEndereco,Long idCliente){
         return enderecoClienteRepository.findByIdAndCliente_Id(idEndereco,idCliente)
                 .orElseThrow(() -> new ResourceNotFoundException("Endereco nao pertence a esse cliente!"));

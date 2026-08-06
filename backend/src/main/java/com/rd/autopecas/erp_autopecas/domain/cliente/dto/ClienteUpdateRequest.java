@@ -9,7 +9,9 @@ public record ClienteUpdateRequest(
         @Email(message = "Email inválido")
         String email,
         @Size(min = 10, message = "Numero deve ter no mínimo 10 caracteres")
-        String numero
+        String numero,
+        @Size(min = 11,max = 11, message = "cpf deve 11 caracteres")
+        String cpf
 
 ) {
 
