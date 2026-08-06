@@ -1,0 +1,2 @@
+ALTER TABLE fornecedor
+ALTER COLUMN status SET NOT NULL;

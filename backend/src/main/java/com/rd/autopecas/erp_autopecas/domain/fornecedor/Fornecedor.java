@@ -1,6 +1,7 @@
 package com.rd.autopecas.erp_autopecas.domain.fornecedor;
 
 import com.rd.autopecas.erp_autopecas.domain.common.Auditable;
+import com.rd.autopecas.erp_autopecas.domain.common.StatusCommon;
 import com.rd.autopecas.erp_autopecas.domain.compra.Compra;
 import jakarta.persistence.*;
 import lombok.*;
@@ -32,6 +33,10 @@ public class Fornecedor extends Auditable {
 
     @Column(name = "cnpj", nullable = false)
     private String cnpj;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status",nullable = false)
+    private StatusCommon status;
 
     @OneToMany(mappedBy = "fornecedor")
     @ToString.Exclude

@@ -9,7 +9,9 @@ public record FornecedorUpdateRequest(
         @Email(message = "Email inválido")
         String email,
         @Size(min = 10, message = "Numero deve ter no mínimo 10 caracteres")
-        String numero
+        String numero,
+        @Size(min =11 , message = "Cnpj deve ter no mínimo 11 caracteres")
+        String cnpj
 
 ) {
 

@@ -3,6 +3,7 @@ package com.rd.autopecas.erp_autopecas.domain.fornecedor;
 import com.rd.autopecas.erp_autopecas.domain.fornecedor.dto.FornecedorRequest;
 import com.rd.autopecas.erp_autopecas.domain.fornecedor.dto.FornecedorResponse;
 import com.rd.autopecas.erp_autopecas.domain.fornecedor.dto.FornecedorUpdateRequest;
+import com.rd.autopecas.erp_autopecas.domain.fornecedor.filter.FornecedorFilter;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -12,7 +13,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
-import java.util.List;
+
 
 @RestController
 @AllArgsConstructor
@@ -29,8 +30,8 @@ public class FornecedorController {
 
     @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE', 'ESTOQUISTA')")
     @GetMapping
-    public ResponseEntity<Page<FornecedorResponse>> findAll(Pageable pageable) {
-        return ResponseEntity.ok(fornecedorService.findAll(pageable));
+    public ResponseEntity<Page<FornecedorResponse>> findAll(FornecedorFilter filter,Pageable pageable) {
+        return ResponseEntity.ok(fornecedorService.findAll(filter,pageable));
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE', 'ESTOQUISTA')")
@@ -46,9 +47,18 @@ public class FornecedorController {
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE')")
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteById(@PathVariable Long id){
-        fornecedorService.deleteById(id);
+    @PutMapping("/{id}/desativar")
+    public ResponseEntity<Void> deactivate(@PathVariable Long id){
+        fornecedorService.deactivate(id);
         return ResponseEntity.ok().build();
     }
+
+    @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE')")
+    @PutMapping("/{id}/ativar")
+    public ResponseEntity<Void> active(@PathVariable Long id){
+        fornecedorService.active(id);
+        return ResponseEntity.ok().build();
+    }
+
+
 }

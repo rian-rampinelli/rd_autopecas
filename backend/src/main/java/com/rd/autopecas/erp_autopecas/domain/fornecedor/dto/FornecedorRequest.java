@@ -1,6 +1,4 @@
 package com.rd.autopecas.erp_autopecas.domain.fornecedor.dto;
-
-import com.rd.autopecas.erp_autopecas.domain.cliente.Cliente;
 import com.rd.autopecas.erp_autopecas.domain.fornecedor.Fornecedor;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

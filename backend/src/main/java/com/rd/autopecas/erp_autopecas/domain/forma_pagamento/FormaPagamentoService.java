@@ -5,8 +5,6 @@ import com.rd.autopecas.erp_autopecas.domain.forma_pagamento.dto.FormaPagamentoR
 import com.rd.autopecas.erp_autopecas.domain.forma_pagamento.dto.FormaPagamentoResponse;
 import com.rd.autopecas.erp_autopecas.domain.forma_pagamento.dto.FormaPagamentoUpdateRequest;
 import com.rd.autopecas.erp_autopecas.domain.forma_pagamento.filter.FormaPagamentoFilter;
-import com.rd.autopecas.erp_autopecas.domain.unidade.dto.UnidadeResponse;
-import com.rd.autopecas.erp_autopecas.domain.unidade.enums.StatusUnidade;
 import com.rd.autopecas.erp_autopecas.exceptions.AtributeAlredyExistsException;
 import com.rd.autopecas.erp_autopecas.exceptions.ResourceNotFoundException;
 import jakarta.transaction.Transactional;

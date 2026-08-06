@@ -35,6 +35,12 @@ public class EstoqueService {
     private final ItemRepository itemRepository;
     private final MovimentacaoEstoqueRepository movimentacaoEstoqueRepository;
 
+    public void deleteById(Long id){
+        //verificar se estoque ja foi utilizada em alguma compra ou venda
+        findEntityEstoque(id);
+        estoqueRepository.deleteById(id);
+    }
+
     @Transactional
     public EstoqueResponse findById(Long id){
         Estoque estoque = findEntityEstoque(id);
@@ -54,10 +60,6 @@ public class EstoqueService {
         return estoqueRepository.buscarHistoricoEstoque(idEstoque,filter.item(),filter.nomeItem(),tipo,filter.qtdMinima(),filter.qtdMaxima());
     }
 
-    public void deleteById(Long id){
-        findEntityEstoque(id);
-        estoqueRepository.deleteById(id);
-    }
 
     @Transactional
     public EstoqueItemResponse adicionarItem(Estoque estoque,Long idItem,BigDecimal quantidade ,String localizacao){
