@@ -8,4 +8,13 @@ import java.util.Optional;
 @Repository
 public interface EnderecoClienteRepository extends JpaRepository<EnderecoCliente, Long> {
     Optional<EnderecoCliente>  findByIdAndCliente_Id(Long idEndereco, Long idCliente);
+    boolean existsByClienteIdAndCepAndCidadeAndBairroAndRuaAndNumeroAndComplemento(
+            Long clienteId,
+            String cep,
+            String cidade,
+            String bairro,
+            String rua,
+            Long numero,
+            String complemento
+    );
 }

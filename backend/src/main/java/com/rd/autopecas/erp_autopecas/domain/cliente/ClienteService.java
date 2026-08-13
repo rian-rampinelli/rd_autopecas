@@ -3,7 +3,9 @@ package com.rd.autopecas.erp_autopecas.domain.cliente;
 import com.rd.autopecas.erp_autopecas.domain.cliente.dto.ClienteRequest;
 import com.rd.autopecas.erp_autopecas.domain.cliente.dto.ClienteUpdateRequest;
 import com.rd.autopecas.erp_autopecas.domain.cliente.dto.ClienteResponse;
+import com.rd.autopecas.erp_autopecas.domain.cliente.filter.ClienteFilter;
 import com.rd.autopecas.erp_autopecas.domain.common.StatusCommon;
+import com.rd.autopecas.erp_autopecas.domain.endereco_cliente.dto.EnderecoClienteResponse;
 import com.rd.autopecas.erp_autopecas.exceptions.AtributeAlredyExistsException;
 import com.rd.autopecas.erp_autopecas.exceptions.ResourceNotFoundException;
 import jakarta.transaction.Transactional;
@@ -12,6 +14,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @AllArgsConstructor
 @Service
@@ -19,29 +23,23 @@ public class ClienteService {
 
     private final ClienteRepository clienteRepository;
 
-    //criar end point allenderecos
-    //resolver n + 1 e filter de findallclientes
-    //n seria melhor colocar o create/delete e upsate de endereco em cliente?
-
     @Transactional
     public ClienteResponse findById(Long id){
         Cliente cliente = findEntityCliente(id);
         return(ClienteResponse.fromEntity(cliente));
     }
 
-    @Transactional
-    public Page<ClienteResponse> findAll(Pageable pageable){
-        return clienteRepository.findAll(pageable)
+    public Page<ClienteResponse> findAll(ClienteFilter filter,Pageable pageable){
+        String nome = normalize(filter.nome());
+        String email = normalize(filter.email());
+        String cpf = normalize(filter.cpf());
+        String numero = normalize(filter.numero());
+
+        return clienteRepository.findAllWithFilter(nome,email,cpf,numero,pageable)
                 .map(cliente -> ClienteResponse.fromEntity(cliente));
     }
 
-//    public Page<EnderecoClienteResponse> findAllEnderecos(Long idCliente){
-//        Cliente cliente = findEntityCliente(idCliente);
-//
-//        return cliente.getEnderecoClientes()
-//                .map(enderecoCliente -> EnderecoClienteResponse.fromEntity(enderecoCliente))
-//                ;
-//    }
+
 
     public ClienteResponse create(ClienteRequest clienteRequest) {
         alreadyExists(clienteRequest.cpf(), clienteRequest.email(),clienteRequest.numero());
@@ -125,10 +123,6 @@ public class ClienteService {
         if(cliente.getStatus() == StatusCommon.ATIVO){
             throw new AtributeAlredyExistsException("cliente ja ativo!");
         }
-    }
-
-    private StatusCommon parseStatus(String status) {
-        return status == null ? null : StatusCommon.valueOf(status.toUpperCase());
     }
 
     private String normalize(String value) {

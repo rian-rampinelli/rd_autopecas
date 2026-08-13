@@ -8,7 +8,7 @@ import java.util.List;
 
 public record ClienteResponse(
         Long id,
-        String name,
+        String nome,
         String email,
         String cpf,
         String numero,

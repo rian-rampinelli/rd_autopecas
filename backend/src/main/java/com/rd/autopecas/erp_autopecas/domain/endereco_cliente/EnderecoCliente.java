@@ -2,7 +2,6 @@ package com.rd.autopecas.erp_autopecas.domain.endereco_cliente;
 
 import com.rd.autopecas.erp_autopecas.domain.cliente.Cliente;
 import com.rd.autopecas.erp_autopecas.domain.common.Auditable;
-import com.rd.autopecas.erp_autopecas.domain.user.User;
 import jakarta.persistence.*;
 import lombok.*;
 

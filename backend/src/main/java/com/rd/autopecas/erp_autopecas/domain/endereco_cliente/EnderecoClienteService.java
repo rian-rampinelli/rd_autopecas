@@ -5,6 +5,7 @@ import com.rd.autopecas.erp_autopecas.domain.cliente.ClienteRepository;
 import com.rd.autopecas.erp_autopecas.domain.endereco_cliente.dto.EnderecoClienteRequest;
 import com.rd.autopecas.erp_autopecas.domain.endereco_cliente.dto.EnderecoClienteResponse;
 import com.rd.autopecas.erp_autopecas.domain.endereco_cliente.dto.EnderecoClienteUpdateRequest;
+import com.rd.autopecas.erp_autopecas.exceptions.AtributeAlredyExistsException;
 import com.rd.autopecas.erp_autopecas.exceptions.ResourceNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -22,22 +23,31 @@ public class EnderecoClienteService {
 
 
     @Transactional
-    public EnderecoClienteResponse findById(Long idEndereco, Long idCliente){
-        EnderecoCliente enderecoCliente = findByIdAndIdCliente(idEndereco,idCliente);
+    public EnderecoClienteResponse findById(Long idEndereco){
+        EnderecoCliente enderecoCliente = findEntityEndereco(idEndereco);
         return(EnderecoClienteResponse.fromEntity(enderecoCliente));
     }
 
-    @Transactional
-    public List<EnderecoClienteResponse> findAll(Long id){
-        Cliente cliente = findEntityCliente(id);
-        return cliente.getEnderecoClientes().stream()
+    public List<EnderecoClienteResponse> findAll(){
+        return enderecoClienteRepository.findAll().stream()
                 .map(enderecoCliente -> EnderecoClienteResponse.fromEntity(enderecoCliente))
                 .toList();
     }
 
     @Transactional
+    public List<EnderecoClienteResponse> findAllEnderecosByCliente(Long idCliente){
+        Cliente cliente = findEntityCliente(idCliente);
+        return cliente.getEnderecoClientes().stream()
+                .map(enderecoCliente -> EnderecoClienteResponse.fromEntity(enderecoCliente)).toList();
+    }
+
+    @Transactional
     public EnderecoClienteResponse create(EnderecoClienteRequest enderecoClienteRequest, Long idCliente) {
         Cliente cliente = findEntityCliente(idCliente);
+        boolean existe = enderecoAlredyExistsInCliente(enderecoClienteRequest,idCliente);
+        if (existe) {
+            throw new AtributeAlredyExistsException("Cliente já possui esse endereço");
+        }
         EnderecoCliente enderecoCliente = enderecoClienteRequest.toEntity();
         cliente.addEndereco(enderecoCliente);
         clienteRepository.save(cliente);
@@ -90,5 +100,18 @@ public class EnderecoClienteService {
         return enderecoClienteRepository.findByIdAndCliente_Id(idEndereco,idCliente)
                 .orElseThrow(() -> new ResourceNotFoundException("Endereco nao pertence a esse cliente!"));
 
+    }
+
+    private boolean enderecoAlredyExistsInCliente(EnderecoClienteRequest enderecoClienteRequest,Long clienteId){
+        return enderecoClienteRepository
+                .existsByClienteIdAndCepAndCidadeAndBairroAndRuaAndNumeroAndComplemento(
+                        clienteId,
+                        enderecoClienteRequest.cep(),
+                        enderecoClienteRequest.cidade(),
+                        enderecoClienteRequest.bairro(),
+                        enderecoClienteRequest.rua(),
+                        enderecoClienteRequest.numero(),
+                        enderecoClienteRequest.complemento()
+                );
     }
 }
