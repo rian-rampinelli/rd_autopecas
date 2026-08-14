@@ -4,14 +4,11 @@ import com.rd.autopecas.erp_autopecas.domain.common.Auditable;
 import com.rd.autopecas.erp_autopecas.domain.compra.Compra;
 import com.rd.autopecas.erp_autopecas.domain.endereco_funcionario.EnderecoFuncionario;
 import com.rd.autopecas.erp_autopecas.domain.funcionario.enums.StatusFuncionario;
-import com.rd.autopecas.erp_autopecas.domain.role.Role;
 import com.rd.autopecas.erp_autopecas.domain.user.User;
 import com.rd.autopecas.erp_autopecas.domain.venda.Venda;
+import com.rd.autopecas.erp_autopecas.exceptions.ValidationException;
 import jakarta.persistence.*;
 import lombok.*;
-import org.jspecify.annotations.Nullable;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -83,5 +80,10 @@ public class Funcionario extends Auditable {
         compras.remove(compra);
     }
 
+    public void validarAtivo(){
+        if(status != StatusFuncionario.ATIVO){
+            throw new ValidationException("funcionario não esta apto para essa operação!");
+        }
+    }
 
 }

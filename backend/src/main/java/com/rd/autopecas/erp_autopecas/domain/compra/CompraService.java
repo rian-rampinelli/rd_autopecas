@@ -55,6 +55,7 @@ public class CompraService {
     public CompraResponse gerarCompra(CompraRequest compraRequest) {
         Fornecedor fornecedor = findEntityFornecedor(compraRequest.idFornecedor());
         Funcionario funcionario = findEntityFuncionario(compraRequest.idFuncionario());
+        funcionario.validarAtivo();
         FormaPagamento formaPagamento = findEntityFormaPagamento(compraRequest.idFormaPagamento());
         Compra compra = new Compra();
         compra.setFornecedor(fornecedor);

@@ -1,9 +1,11 @@
 package com.rd.autopecas.erp_autopecas;
 
 import io.github.cdimascio.dotenv.Dotenv;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+@Slf4j
 @SpringBootApplication
 public class ErpAutopecasApplication {
 
@@ -17,7 +19,7 @@ public class ErpAutopecasApplication {
 
 
 		SpringApplication.run(ErpAutopecasApplication.class, args);{
-            System.out.println("hello!!!");
+            log.info("hello!!!");
         }
 	}
 }
