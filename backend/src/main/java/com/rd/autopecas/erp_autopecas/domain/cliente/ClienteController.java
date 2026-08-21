@@ -59,13 +59,14 @@ public class ClienteController {
         return ResponseEntity.ok().build();
     }
 
-    //endereco de cliente
     @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE')")
     @PutMapping("/{id}/ativar")
     public ResponseEntity<Void> active(@PathVariable Long id){
         clienteService.active(id);
         return ResponseEntity.ok().build();
     }
+
+    //endereco de cliente
 
     @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE', 'VENDEDOR')")
     @GetMapping("{idCliente}/enderecos")

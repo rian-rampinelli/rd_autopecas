@@ -51,6 +51,13 @@ public class Funcionario extends Auditable {
     @ToString.Exclude
     private List<EnderecoFuncionario> enderecoFuncionarios = new ArrayList<>();
 
+    public void setSalario(BigDecimal salario) {
+        if(salario.compareTo(BigDecimal.ZERO) < 0){
+            throw new ValidationException(("salario nao pode ser menor ou igual a 0!"));
+        }
+        this.salario = salario;
+    }
+
     public void addEndereco(EnderecoFuncionario enderecoFuncionario) {
         enderecoFuncionarios.add(enderecoFuncionario);
         enderecoFuncionario.setFuncionario(this);
@@ -60,7 +67,6 @@ public class Funcionario extends Auditable {
         enderecoFuncionarios.remove(enderecoFuncionario);
         enderecoFuncionario.setFuncionario(null);
     }
-
 
     public void addVenda(Venda venda) {
         vendas.add(venda);

@@ -1,13 +1,16 @@
 package com.rd.autopecas.erp_autopecas.domain.funcionario.dto;
 
-import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.*;
+
 import java.math.BigDecimal;
 
 public record FuncionarioUpdateRequest(
-
-        @NotNull(message = "Salário não pode ser nulo")
-        @DecimalMin(value = "0.0", inclusive = false, message = "Salário deve ser maior que zero")
-        BigDecimal salario
+        String nome,
+        String email,
+        @Pattern(regexp = "\\d{11}", message = "CPF deve conter 11 dígitos")
+        String cpf,
+        @Min(value = 0, message = "Salário deve ser maior que zero")
+        BigDecimal salary,
+        String cargo
 ) {
 }

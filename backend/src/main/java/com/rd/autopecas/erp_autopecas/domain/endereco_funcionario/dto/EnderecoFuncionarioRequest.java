@@ -19,7 +19,7 @@ public record EnderecoFuncionarioRequest(
         @NotBlank
         String cep
 ) {
-    public EnderecoFuncionario toEntity(Funcionario funcionario){
+    public EnderecoFuncionario toEntity(){
         EnderecoFuncionario enderecoFuncionario = new EnderecoFuncionario();
         enderecoFuncionario.setRua(this.rua());
         enderecoFuncionario.setCep(this.cep());
@@ -27,7 +27,6 @@ public record EnderecoFuncionarioRequest(
         enderecoFuncionario.setCidade(this.cidade());
         enderecoFuncionario.setBairro(this.bairro());
         enderecoFuncionario.setComplemento(this.complemento());
-        enderecoFuncionario.setFuncionario(funcionario);
         return enderecoFuncionario;
     }
 }

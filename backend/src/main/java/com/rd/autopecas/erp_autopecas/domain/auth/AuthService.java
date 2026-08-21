@@ -65,7 +65,7 @@ public class AuthService {
         funcionario.setSalario(registerRequest.salary());
         if( registerRequest.enderecos() != null && !registerRequest.enderecos().isEmpty()){
             List<EnderecoFuncionario> enderecoFuncionarios = registerRequest.enderecos().stream()
-                    .map(dto -> dto.toEntity(funcionario))
+                    .map(dto -> dto.toEntity())
                     .toList();
 
             funcionario.setEnderecoFuncionarios(enderecoFuncionarios);
