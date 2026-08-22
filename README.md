@@ -8,6 +8,7 @@ Sistema ERP Full Stack para gerenciamento de uma loja de autopeças, desenvolvid
 - Java 21
 - Spring Boot
 - Spring Data JPA (Hibernate)
+- Spring Security
 - Lombok
 - Flyway
 

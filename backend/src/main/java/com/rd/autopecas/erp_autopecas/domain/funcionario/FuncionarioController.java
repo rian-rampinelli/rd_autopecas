@@ -7,6 +7,7 @@ import com.rd.autopecas.erp_autopecas.domain.endereco_funcionario.dto.EnderecoFu
 import com.rd.autopecas.erp_autopecas.domain.endereco_funcionario.dto.EnderecoFuncionarioUpdateRequest;
 import com.rd.autopecas.erp_autopecas.domain.funcionario.dto.FuncionarioResponse;
 import com.rd.autopecas.erp_autopecas.domain.funcionario.dto.FuncionarioUpdateRequest;
+import com.rd.autopecas.erp_autopecas.domain.funcionario.filter.FuncionarioFilter;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -34,8 +35,8 @@ public class FuncionarioController {
 
     @PreAuthorize("hasAnyRole('GERENTE','RH','ADMIN')")
     @GetMapping
-    public ResponseEntity<Page<FuncionarioResponse>> findAll(Pageable pageable){
-        return ResponseEntity.ok(funcionarioService.findAll(pageable));
+    public ResponseEntity<Page<FuncionarioResponse>> findAll(FuncionarioFilter filter,Pageable pageable){
+        return ResponseEntity.ok(funcionarioService.findAllWithFilter(filter,pageable));
     }
 
     @PreAuthorize("hasAnyRole('GERENTE','RH','ADMIN')")

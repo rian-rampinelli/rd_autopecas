@@ -3,9 +3,9 @@ package com.rd.autopecas.erp_autopecas.domain.funcionario;
 import com.rd.autopecas.erp_autopecas.domain.funcionario.dto.FuncionarioResponse;
 import com.rd.autopecas.erp_autopecas.domain.funcionario.dto.FuncionarioUpdateRequest;
 import com.rd.autopecas.erp_autopecas.domain.funcionario.enums.StatusFuncionario;
+import com.rd.autopecas.erp_autopecas.domain.funcionario.filter.FuncionarioFilter;
 import com.rd.autopecas.erp_autopecas.exceptions.AtributeAlredyExistsException;
 import com.rd.autopecas.erp_autopecas.exceptions.ResourceNotFoundException;
-import com.rd.autopecas.erp_autopecas.exceptions.ValidationException;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,9 +27,16 @@ public class FuncionarioService {
     }
 
     @Transactional
-    public Page<FuncionarioResponse> findAll(Pageable pageable){
+    public Page<FuncionarioResponse> findAllWithFilter(FuncionarioFilter filter, Pageable pageable){
         log.info("Entrou no findAll de funcionário");
-        return funcionarioRepository.findAll(pageable).map(funcionario -> FuncionarioResponse.fromEntity(funcionario));
+        String nome = normalize(filter.nome());
+        String email = normalize(filter.email());
+        String cpf = normalize(filter.cpf());
+        String cargo = normalize(filter.cargo());
+        String status = normalize(filter.status());
+        return funcionarioRepository.findAllWithFilter(nome,email,cpf,status,
+                        cargo,filter.minSalario(),filter.maxSalario(),pageable).
+                map(funcionario -> FuncionarioResponse.fromEntity(funcionario));
     }
 
     public FuncionarioResponse changeStatus(Long id,String status){
@@ -84,9 +91,12 @@ public class FuncionarioService {
         }
     }
 
-
     private StatusFuncionario tranformEnum(String status){
         return StatusFuncionario.valueOf(status.toUpperCase());
+    }
+
+    private String normalize(String value) {
+        return value == null ? "" : value;
     }
 
 }
