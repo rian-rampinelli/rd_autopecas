@@ -108,7 +108,7 @@ public class CompraService {
         BigDecimal totalValue = compra.calcularTotal();
         compra.setStatus(StatusTransacao.FINALIZADA);
         compra.setTotalValue(totalValue);
-        compraRepository.save(compra);
+        // compraRepository.save(compra); colocar isso no add item,como metodo recalcular total
         return CompraResponse.fromEntity(compra);
     }
 

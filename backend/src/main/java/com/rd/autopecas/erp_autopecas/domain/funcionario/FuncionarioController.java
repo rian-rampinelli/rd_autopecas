@@ -8,6 +8,7 @@ import com.rd.autopecas.erp_autopecas.domain.endereco_funcionario.dto.EnderecoFu
 import com.rd.autopecas.erp_autopecas.domain.funcionario.dto.FuncionarioResponse;
 import com.rd.autopecas.erp_autopecas.domain.funcionario.dto.FuncionarioUpdateRequest;
 import com.rd.autopecas.erp_autopecas.domain.funcionario.filter.FuncionarioFilter;
+import com.rd.autopecas.erp_autopecas.domain.role.dto.RoleResponse;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @AllArgsConstructor
@@ -25,6 +27,7 @@ import java.util.List;
 public class FuncionarioController {
 
     private final FuncionarioService funcionarioService;
+    private final FuncionarioRoleService funcionarioRoleService;
     private final EnderecoFuncionarioService enderecoFuncionarioService;
 
     @PreAuthorize("hasAnyRole('GERENTE','RH','ADMIN')")
@@ -77,5 +80,25 @@ public class FuncionarioController {
         enderecoFuncionarioService.delete(idEndereco,idFuncionario);
         return ResponseEntity.noContent().build();
     }
+
+    //roles de funcionario
+    @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE', 'RH')")
+    @GetMapping("{idFuncionario}/roles")
+    public ResponseEntity<Set<RoleResponse>> findAllRoleByFuncionario(@PathVariable Long idFuncionario) {
+        return ResponseEntity.ok(funcionarioRoleService.buscarRoles(idFuncionario));
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE')")
+    @PutMapping("/{idFuncionario}/adicionar_roles/{idRole}")
+    public ResponseEntity<FuncionarioResponse> addRole( @PathVariable Long idRole, @PathVariable Long idFuncionario){
+        return ResponseEntity.ok(funcionarioRoleService.addRole(idFuncionario,idRole));
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE')")
+    @PutMapping("/{idFuncionario}/remover_roles/{idRole}")
+    public ResponseEntity<FuncionarioResponse> removerRole( @PathVariable Long idRole, @PathVariable Long idFuncionario){
+        return ResponseEntity.ok(funcionarioRoleService.removerRole(idFuncionario,idRole));
+    }
+
 
 }

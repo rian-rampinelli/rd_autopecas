@@ -1,5 +1,6 @@
 package com.rd.autopecas.erp_autopecas.domain.funcionario;
 
+import com.rd.autopecas.erp_autopecas.domain.role.Role;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
@@ -11,17 +12,20 @@ import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
 import java.util.Optional;
+import java.util.Set;
 
 @Repository
 public interface FuncionarioRepository extends JpaRepository<Funcionario, Long> {
 
     @EntityGraph(attributePaths = {"enderecoFuncionarios","user"})
     Page<Funcionario> findAll(Pageable pageable);
-    @EntityGraph(attributePaths = {"enderecoFuncionarios","user"})
+
+    @EntityGraph(attributePaths = {"enderecoFuncionarios","user","user.roles"})
     Optional<Funcionario> findById(Long id);
 
     Boolean existsByUser_Cpf(String cpf);
     Boolean existsByUser_Email(String email);
+
 
 
     //usei eg pois n filtro por endereco,caso filtrasse,usaria left join para trazer enderecos inves do ea
@@ -44,4 +48,17 @@ public interface FuncionarioRepository extends JpaRepository<Funcionario, Long> 
     """)
     Page<Funcionario> findAllWithFilter(@Param("nome") String nome, @Param("email") String email, @Param("cpf") String cpf,
                                         @Param("status") String status,@Param("cargo") String cargo, @Param("minSalario") BigDecimal minSalario, @Param("maxSalario") BigDecimal maxSalario, Pageable pageable);
+
+
+
+    @Query(value = """
+    SELECT r.*
+    FROM funcionario f
+    JOIN users u ON u.id = f.id_user
+    JOIN users_roles ur ON ur.id_user = u.id
+    JOIN roles r ON r.id = ur.id_role
+    WHERE f.id = :id
+    """, nativeQuery = true)
+    Set<Role> findRolesByFuncionarioId(@Param("id") Long id);
 }
+
