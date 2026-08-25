@@ -8,7 +8,8 @@ public enum RoleUser {
     ROLE_RH(2L),
     ROLE_ESTOQUISTA(3L),
     ROLE_ADMIN(4L),
-    ROLE_GERENTE(5L);
+    ROLE_GERENTE(5L),
+    ROLE_TESTE(6L);
 
     Long roleId;
 
