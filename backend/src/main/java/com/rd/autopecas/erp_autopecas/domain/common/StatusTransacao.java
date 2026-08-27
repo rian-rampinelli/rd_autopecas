@@ -1,7 +1,12 @@
 package com.rd.autopecas.erp_autopecas.domain.common;
 
 public enum StatusTransacao {
+    ABANDONADA,
     EM_ANDAMENTO,
     FINALIZADA,
-    CANCELADA
+    ENTREGUE,
+    CANCELADA,
+    PAGA,
+    AGUARDANDO_PAGAMENTO,
+    PAGAMENTO_RECUSADO
 }

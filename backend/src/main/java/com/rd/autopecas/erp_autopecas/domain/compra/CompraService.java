@@ -56,11 +56,9 @@ public class CompraService {
         Fornecedor fornecedor = findEntityFornecedor(compraRequest.idFornecedor());
         Funcionario funcionario = findEntityFuncionario(compraRequest.idFuncionario());
         funcionario.validarAtivo();
-        FormaPagamento formaPagamento = findEntityFormaPagamento(compraRequest.idFormaPagamento());
         Compra compra = new Compra();
         compra.setFornecedor(fornecedor);
         compra.setFuncionario(funcionario);
-        compra.setFormaPagamento(formaPagamento);
         compra.setStatus(StatusTransacao.EM_ANDAMENTO);
         compraRepository.save(compra);
         return CompraResponse.fromEntity(compra);
@@ -69,7 +67,7 @@ public class CompraService {
     @Transactional
     public CompraResponse adicionarItemNaCompra(Long idCompra, ItemCompraRequest request){
         Compra compra = findEntityCompra(idCompra);
-        verificaTransaçãoPermitida(compra);
+        verificaTransaçãoEmAndamento(compra);
         ItemCompra itemCompra = findEntityItemCompraByItemAndCompra(request.idItem(),idCompra);
         if(itemCompra == null){
             itemCompra = new ItemCompra();
@@ -82,6 +80,7 @@ public class CompraService {
         else{
             itemCompra.setQuantidade(itemCompra.getQuantidade().add(request.quantidade()));
         }
+        recalcularTotal(compra);
         compraRepository.save(compra);
         itemCompraRepository.save(itemCompra);
         return CompraResponse.fromEntity(compra);
@@ -90,9 +89,10 @@ public class CompraService {
     @Transactional
     public CompraResponse removerItemDaCompra(Long idCompra,Long idItemCompra){
         Compra compra = findEntityCompra(idCompra);
-        verificaTransaçãoPermitida(compra);
+        verificaTransaçãoEmAndamento(compra);
         ItemCompra itemCompra = findEntityItemCompraInCompra(idItemCompra,idCompra);
         compra.removeItemCompra(itemCompra);
+        recalcularTotal(compra);
         compraRepository.save(compra);
         return CompraResponse.fromEntity(compra);
     }
@@ -101,16 +101,39 @@ public class CompraService {
     public CompraResponse finalizarCompra(Long idEstoque,Long idCompra){
         Compra compra = findEntityCompra(idCompra);
         Estoque estoque = findEntityEstoque(idEstoque);
-        verificaTransaçãoPermitida(compra);
+        verificaTransaçãoPaga(compra);
+        movimentarEstoquePorCompra(compra,estoque);
+        compra.setStatus(StatusTransacao.FINALIZADA);
+        compraRepository.save(compra);
+        return CompraResponse.fromEntity(compra);
+    }
+
+    @Transactional
+    public CompraResponse processarPagamento(Long idCompra,Long idFormaDePagamento){
+        Compra compra = findEntityCompra(idCompra);
+        FormaPagamento formaPagamento = findEntityFormaPagamento(idFormaDePagamento);
+        verificaTransaçãoEmAndamento(compra);
+        compra.setStatus(StatusTransacao.AGUARDANDO_PAGAMENTO);
+        System.out.println("pagamento foi aprovado!");
+        compra.setStatus(StatusTransacao.PAGA);
+        compra.setFormaPagamento(formaPagamento);
+        compraRepository.save(compra);
+        return CompraResponse.fromEntity(compra);
+    }
+
+
+    private void recalcularTotal(Compra compra){
+        BigDecimal totalValue = compra.calcularTotal();
+        compra.setTotalValue(totalValue);
+    }
+
+    private void movimentarEstoquePorCompra(Compra compra,Estoque estoque){
         for(ItemCompra itemCompra : compra.getItemsCompra()){
             estoqueService.adicionarItem(estoque,itemCompra.getItem().getId(),itemCompra.getQuantidade(),"n sei ainda como");
         }
-        BigDecimal totalValue = compra.calcularTotal();
-        compra.setStatus(StatusTransacao.FINALIZADA);
-        compra.setTotalValue(totalValue);
-        // compraRepository.save(compra); colocar isso no add item,como metodo recalcular total
-        return CompraResponse.fromEntity(compra);
     }
+
+
 
 
     //helpers
@@ -160,10 +183,17 @@ public class CompraService {
                 .orElseThrow(() -> new ResourceNotFoundException("FormaPagamento não encontrada"));
     }
 
-    private void verificaTransaçãoPermitida(Compra compra){
+    private void verificaTransaçãoEmAndamento(Compra compra){
         if(compra.getStatus() != StatusTransacao.EM_ANDAMENTO){
             throw new ValidationException("Transação ja finalizada");
         }
     }
+
+    private void verificaTransaçãoPaga(Compra compra){
+        if(compra.getStatus() != StatusTransacao.PAGA){
+            throw new ValidationException("Transação precisa ser paga!");
+        }
+    }
+
 
 }

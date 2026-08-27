@@ -28,14 +28,22 @@ public class CompraController {
     public ResponseEntity<CompraResponse> adicionarItemCompra(@PathVariable Long id, @RequestBody @Valid ItemCompraRequest itemCompraRequest){
         return ResponseEntity.created(URI.create("/compras")).body(compraService.adicionarItemNaCompra(id,itemCompraRequest));
     }
-    @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE', 'ESTOQUISTA')")
-    @PostMapping("{idCompra}/finalizar/estoque/{idEstoque}")
-    public ResponseEntity<CompraResponse> finalizarCompra(@PathVariable Long idEstoque,@PathVariable Long idCompra){
-        return ResponseEntity.created(URI.create("/compras")).body(compraService.finalizarCompra(idEstoque,idCompra));
-    }
+
     @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE', 'ESTOQUISTA')")
     @DeleteMapping("{idCompra}/itemcompra/{idItemCompra}")
     public ResponseEntity<CompraResponse> removerItemCompra(@PathVariable Long idCompra,@PathVariable Long idItemCompra){
         return ResponseEntity.created(URI.create("/compras")).body(compraService.removerItemDaCompra(idCompra,idItemCompra));
     }
+
+    @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE', 'ESTOQUISTA')")
+    @PostMapping("{idCompra}/processar_pagamento/{idFormaPagamento}")
+    public ResponseEntity<CompraResponse> processarPagamento(@PathVariable Long idCompra,@PathVariable Long idFormaPagamento){
+        return ResponseEntity.created(URI.create("/compras")).body(compraService.processarPagamento(idCompra,idFormaPagamento));
+    }
+    @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE', 'ESTOQUISTA')")
+    @PostMapping("{idCompra}/finalizar/estoque/{idEstoque}")
+    public ResponseEntity<CompraResponse> finalizarCompra(@PathVariable Long idEstoque,@PathVariable Long idCompra){
+        return ResponseEntity.created(URI.create("/compras")).body(compraService.finalizarCompra(idEstoque,idCompra));
+    }
+
 }
