@@ -62,7 +62,7 @@ public class EstoqueService {
 
 
     @Transactional
-    public EstoqueItemResponse adicionarItem(Estoque estoque,Long idItem,BigDecimal quantidade ,String localizacao){
+    public EstoqueItemResponse registrarEntrada(Estoque estoque,Long idItem,BigDecimal quantidade ,String localizacao){
         EstoqueItem estoqueItem = findByIdEstoqueAndItem(estoque.getId(),idItem);
         if(estoqueItem == null){
             Item item = findEntityItem(idItem);
@@ -81,7 +81,7 @@ public class EstoqueService {
     }
 
     @Transactional
-    public EstoqueItemResponse removerItem(Long idEstoque, EstoqueItemRequest estoqueItemRequest){
+    public EstoqueItemResponse registrarSaida(Long idEstoque, EstoqueItemRequest estoqueItemRequest){
         EstoqueItem estoqueItem = findByIdEstoqueAndItem(idEstoque,estoqueItemRequest.idItem());
         if(estoqueItem == null){
             throw new ResourceNotFoundException("nao existe esse item nesse estoque!");

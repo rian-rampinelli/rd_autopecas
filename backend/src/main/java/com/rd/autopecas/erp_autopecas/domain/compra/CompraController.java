@@ -19,6 +19,12 @@ public class CompraController {
     private final CompraService compraService;
 
     @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE', 'ESTOQUISTA')")
+    @GetMapping("{id}")
+    public ResponseEntity<CompraResponse> findById(@PathVariable Long id){
+        return ResponseEntity.ok((compraService.findById(id)));
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE', 'ESTOQUISTA')")
     @PostMapping
     public ResponseEntity<CompraResponse> gerarCompra(@RequestBody @Valid CompraRequest compraRequest){
         return ResponseEntity.created(URI.create("/compras")).body(compraService.gerarCompra(compraRequest));
@@ -41,9 +47,28 @@ public class CompraController {
         return ResponseEntity.created(URI.create("/compras")).body(compraService.processarPagamento(idCompra,idFormaPagamento));
     }
     @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE', 'ESTOQUISTA')")
-    @PostMapping("{idCompra}/finalizar/estoque/{idEstoque}")
-    public ResponseEntity<CompraResponse> finalizarCompra(@PathVariable Long idEstoque,@PathVariable Long idCompra){
-        return ResponseEntity.created(URI.create("/compras")).body(compraService.finalizarCompra(idEstoque,idCompra));
+    @PostMapping("{idCompra}/finalizar")
+    public ResponseEntity<CompraResponse> finalizarCompra(@PathVariable Long idCompra){
+        return ResponseEntity.created(URI.create("/compras")).body(compraService.finalizarCompra(idCompra));
     }
+
+    @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE', 'ESTOQUISTA')")
+    @PostMapping("{idCompra}/entregar/estoque/{idEstoque}")
+    public ResponseEntity<CompraResponse> CompraEntregue(@PathVariable Long idCompra,@PathVariable Long idEstoque){
+        return ResponseEntity.created(URI.create("/compras")).body(compraService.registrarEntrega(idCompra,idEstoque));
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE', 'ESTOQUISTA')")
+    @PostMapping("{idCompra}/cancelar")
+    public ResponseEntity<CompraResponse> cancelarCompra(@PathVariable Long idCompra){
+        return ResponseEntity.created(URI.create("/compras")).body(compraService.registrarCancelamento(idCompra));
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE', 'ESTOQUISTA')")
+    @PostMapping("{idCompra}/abandonar")
+    public ResponseEntity<CompraResponse> registrarAbandono(@PathVariable Long idCompra){
+        return ResponseEntity.created(URI.create("/compras")).body(compraService.registrarAbandono(idCompra));
+    }
+
 
 }

@@ -6,7 +6,6 @@ import com.rd.autopecas.erp_autopecas.domain.fornecedor.Fornecedor;
 import com.rd.autopecas.erp_autopecas.domain.funcionario.Funcionario;
 import com.rd.autopecas.erp_autopecas.domain.common.StatusTransacao;
 import com.rd.autopecas.erp_autopecas.domain.item_compra.ItemCompra;
-import com.rd.autopecas.erp_autopecas.domain.item_venda.ItemVenda;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -48,16 +47,16 @@ public class Compra extends Auditable {
 
     @OneToMany(mappedBy = "compra",cascade = CascadeType.ALL,orphanRemoval = true)
     @ToString.Exclude
-    private List<ItemCompra> ItemsCompra = new ArrayList();
+    private List<ItemCompra> itemsCompra = new ArrayList();
 
 
     public void addItemCompra(ItemCompra itemCompra) {
-        ItemsCompra.add(itemCompra);
+        itemsCompra.add(itemCompra);
         itemCompra.setCompra(this);
     }
 
     public void removeItemCompra(ItemCompra itemCompra) {
-        ItemsCompra.remove(itemCompra);
+        itemsCompra.remove(itemCompra);
         itemCompra.setCompra(null);
     }
 
@@ -79,6 +78,7 @@ public class Compra extends Auditable {
     public void removeFornecedor(Fornecedor fornecedor) {
         setFornecedor(fornecedor);
     }
+
     public BigDecimal calcularTotal(){
         BigDecimal totalValue = BigDecimal.valueOf(0);
         for(ItemCompra itemCompra: getItemsCompra()){
