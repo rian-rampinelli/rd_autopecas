@@ -5,6 +5,7 @@ import com.rd.autopecas.erp_autopecas.domain.common.Auditable;
 import com.rd.autopecas.erp_autopecas.domain.common.StatusTransacao;
 import com.rd.autopecas.erp_autopecas.domain.forma_pagamento.FormaPagamento;
 import com.rd.autopecas.erp_autopecas.domain.funcionario.Funcionario;
+import com.rd.autopecas.erp_autopecas.domain.item_compra.ItemCompra;
 import com.rd.autopecas.erp_autopecas.domain.item_venda.ItemVenda;
 import jakarta.persistence.*;
 import lombok.*;
@@ -58,5 +59,15 @@ public class Venda extends Auditable {
     public void removeItemVenda(ItemVenda itemVenda) {
         ItemsVenda.remove(itemVenda);
         itemVenda.setVenda(null);
+    }
+
+    public BigDecimal calcularTotal(){
+        BigDecimal totalValue = BigDecimal.valueOf(0);
+        for(ItemVenda itemVenda: getItemsVenda()){
+            totalValue = totalValue.add(itemVenda.getQuantidade().multiply(itemVenda.getItemValue())
+            );
+        }
+        setTotalValue(totalValue);
+        return totalValue;
     }
 }

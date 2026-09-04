@@ -11,6 +11,8 @@ Sistema ERP Full Stack para gerenciamento de uma loja de autopeças, desenvolvid
 - Spring Security
 - Lombok
 - Flyway
+- Cucumber
+- Junit 4
 
 ### Banco de Dados
 - PostgreSQL
