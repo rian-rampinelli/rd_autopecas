@@ -19,7 +19,7 @@ public class ErpAutopecasApplication {
 
 
 		SpringApplication.run(ErpAutopecasApplication.class, args);{
-            log.info("hello!!!");
+                    log.info("hello!!!");
         }
 	}
 }
