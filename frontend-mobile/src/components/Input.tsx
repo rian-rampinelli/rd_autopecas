@@ -19,10 +19,10 @@ const styles = StyleSheet.create({
         width: "99%",
         height: 48,
         borderWidth: 1,
-        borderRadius: 4,
+        borderRadius: 8,
         fontSize: 14,
         paddingLeft: 12,
-        borderColor: "black"
+        borderColor: "#D9D9D9"
     },
     label:{
         fontWeight:"700",
