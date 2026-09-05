@@ -1,10 +1,13 @@
 package com.rd.autopecas.erp_autopecas.domain.estoque;
 
+import com.rd.autopecas.erp_autopecas.domain.estoque.dto.EstoqueItemProjection;
+import com.rd.autopecas.erp_autopecas.domain.estoque_item.EstoqueItem;
 import com.rd.autopecas.erp_autopecas.domain.estoque_item.dto.EstoqueItemResponse;
 import com.rd.autopecas.erp_autopecas.domain.movimentacao_estoque.dto.MovimentacaoEstoqueResponse;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
@@ -14,6 +17,19 @@ import java.util.Optional;
 @Repository
 public interface EstoqueRepository extends JpaRepository<Estoque, Long> {
     Optional<Estoque> findByIdAndUnidade_Id(Long idEstoque, Long idUnidade);
+
+    //usando slq native
+    @Query(value = """
+        SELECT ei.id,i.id,e.id,i.nome,ei.quantidade,ei.localizacao
+        FROM estoque_item ei
+        inner join estoque e
+        on ei.id_estoque = e.id
+        inner join item i
+        on ei.id_item = i.id
+        WHERE i.id= :itemId
+    
+    """, nativeQuery = true)
+    List<EstoqueItemProjection> findAll(@Param("itemId") Long itemId);
 
     //usando slq native
     @Query(value = """

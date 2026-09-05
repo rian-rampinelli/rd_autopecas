@@ -2,6 +2,7 @@ package com.rd.autopecas.erp_autopecas.domain.estoque;
 
 import com.rd.autopecas.erp_autopecas.domain.Item.Item;
 import com.rd.autopecas.erp_autopecas.domain.Item.ItemRepository;
+import com.rd.autopecas.erp_autopecas.domain.estoque.dto.EstoqueItemProjection;
 import com.rd.autopecas.erp_autopecas.domain.estoque.dto.EstoqueResponse;
 import com.rd.autopecas.erp_autopecas.domain.estoque_item.EstoqueItem;
 import com.rd.autopecas.erp_autopecas.domain.estoque_item.EstoqueItemRepository;
@@ -24,6 +25,8 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.List;
 
+import static java.util.stream.Collectors.toList;
+
 
 @Service
 @AllArgsConstructor
@@ -40,26 +43,6 @@ public class EstoqueService {
         findEntityEstoque(id);
         estoqueRepository.deleteById(id);
     }
-
-    @Transactional
-    public EstoqueResponse findById(Long id){
-        Estoque estoque = findEntityEstoque(id);
-        return(EstoqueResponse.fromEntity(estoque));
-    }
-
-    public List<EstoqueItemResponse> buscarItemsDeEstoque(Long idEstoque, EstoqueItemFilter filter){
-        return estoqueRepository.findAllItemsByEstoque(idEstoque,filter.item(),filter.nomeItem(),filter.localizacao(),filter.qtdMinima(),filter.qtdMaxima());
-    }
-
-    public List<MovimentacaoEstoqueResponse> buscarHistoricoMovimentacoesDeEstoque(Long idEstoque, MovimentacaoEstoqueFilter filter){
-        String tipo = filter.tipo();
-        if (tipo != null) {
-            tipo = tipo.toUpperCase();
-            validaValorEnum(tipo);
-        }
-        return estoqueRepository.buscarHistoricoEstoque(idEstoque,filter.item(),filter.nomeItem(),tipo,filter.qtdMinima(),filter.qtdMaxima());
-    }
-
 
     @Transactional
     public EstoqueItemResponse registrarEntrada(Estoque estoque,Long idItem,BigDecimal quantidade ,String localizacao){
@@ -127,14 +110,6 @@ public class EstoqueService {
     public EstoqueItem findEntityEstoqueItem(Long idEstoqueItem){
         return estoqueItemRepository.findById(idEstoqueItem)
                 .orElseThrow(() -> new ResourceNotFoundException("Item não encontrado nesse estoque!"));
-    }
-
-    private void validaValorEnum(String tipo){
-        try {
-            TypeMovimentacao.valueOf(tipo);
-        } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException("Tipo de movimentação/enum inválido");
-        }
     }
 
 

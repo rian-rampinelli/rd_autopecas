@@ -6,7 +6,8 @@ import com.rd.autopecas.erp_autopecas.domain.cliente.Cliente;
 import com.rd.autopecas.erp_autopecas.domain.cliente.ClienteRepository;
 import com.rd.autopecas.erp_autopecas.domain.common.StatusTransacao;
 
-import com.rd.autopecas.erp_autopecas.domain.item_compra.ItemCompra;
+import com.rd.autopecas.erp_autopecas.domain.estoque_item.EstoqueItem;
+import com.rd.autopecas.erp_autopecas.domain.estoque_item.EstoqueItemRepository;
 import com.rd.autopecas.erp_autopecas.domain.venda.dto.VendaRequest;
 import com.rd.autopecas.erp_autopecas.domain.venda.dto.VendaResponse;
 import com.rd.autopecas.erp_autopecas.domain.estoque.Estoque;
@@ -42,6 +43,7 @@ public class VendaService {
     private final ItemVendaRepository itemVendaRepository;
     private final EstoqueService estoqueService;
     private final EstoqueRepository estoqueRepository;
+    private final EstoqueItemRepository estoqueItemRepository;
 
 
     public VendaResponse findById(Long id){
@@ -50,6 +52,7 @@ public class VendaService {
     }
 
     public List<VendaResponse> findTodasVendas(){
+        log.info("entrei em findall");
         return vendaRepository.findAll().stream()
                 .map(venda -> VendaResponse.fromEntity(venda))
                 .toList();
@@ -57,6 +60,7 @@ public class VendaService {
 
     @Transactional
     public VendaResponse gerarVenda(VendaRequest vendaRequest) {
+        log.info("entrei em criar venda");
         Cliente cliente = findEntityCliente(vendaRequest.idCliente());
         Funcionario funcionario = findEntityFuncionario(vendaRequest.idFuncionario());
         funcionario.validarAtivo();
@@ -71,20 +75,25 @@ public class VendaService {
     @Transactional
     public VendaResponse adicionarItemNaVenda(Long idVenda, ItemVendaRequest request){
         Venda venda = findEntityVenda(idVenda);
+        Estoque estoque = findEntityEstoque(request.idEstoque());
         verificaTransaçãoEmAndamento(venda);
         ItemVenda itemVenda = findEntityItemVendaByItemAndVenda(request.idItem(),idVenda);
         if(itemVenda == null){
             itemVenda = new ItemVenda();
             Item item = findEntityItem(request.idItem());
+            verificaEstoqueDisponivel(estoque.getId(), request.idItem(),request.quantidade());
             itemVenda.setQuantidade(request.quantidade());
             itemVenda.setItemValue(request.itemValue());
             itemVenda.setItem(item);
             venda.addItemVenda(itemVenda);
         }
         else{
+            verificaEstoqueDisponivel(estoque.getId(), request.idItem(),request.quantidade());
             itemVenda.setQuantidade(itemVenda.getQuantidade().add(request.quantidade()));
         }
+
         recalcularTotal(venda);
+        itemVendaRepository.save(itemVenda);
         vendaRepository.save(venda);
         return VendaResponse.fromEntity(venda);
     }
@@ -210,6 +219,11 @@ public class VendaService {
                 .orElseThrow(() -> new ResourceNotFoundException("Item não pertence à essa venda!."));
     }
 
+    private EstoqueItem findEntityEstoqueItem(Long idEstoque, Long idItem){
+        return estoqueItemRepository.findByEstoque_IdAndItem_Id(idEstoque, idItem)
+                .orElseThrow(() -> new ResourceNotFoundException("Item não pertence à essa estoque!."));
+    }
+
     private void verificaTransaçãoEmAndamento(Venda venda){
         if(venda.getStatus() != StatusTransacao.EM_ANDAMENTO){
             throw new ValidationException("Transação não esta em andamento!");
@@ -226,6 +240,13 @@ public class VendaService {
     private void verificaTransaçãoFinalizada(Venda venda){
         if(venda.getStatus() != StatusTransacao.FINALIZADA){
             throw new ValidationException("Transação precisa estar finalizada!");
+        }
+    }
+
+    private void verificaEstoqueDisponivel(Long idEstoque, Long idItem, BigDecimal qtdAdicionada){
+        EstoqueItem estoqueItem = findEntityEstoqueItem(idEstoque,idItem);
+        if(estoqueItem.getQuantidade().compareTo(qtdAdicionada) < 0){
+            throw new ResourceNotFoundException("quantidade insuficiente no estoque!");
         }
     }
 

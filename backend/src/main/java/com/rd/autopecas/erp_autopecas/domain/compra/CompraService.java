@@ -62,10 +62,12 @@ public class CompraService {
     public CompraResponse gerarCompra(CompraRequest compraRequest) {
         Fornecedor fornecedor = findEntityFornecedor(compraRequest.idFornecedor());
         Funcionario funcionario = findEntityFuncionario(compraRequest.idFuncionario());
+        Estoque estoque = findEntityEstoque(compraRequest.idEstoque());
         funcionario.validarAtivo();
         Compra compra = new Compra();
         compra.setFornecedor(fornecedor);
         compra.setFuncionario(funcionario);
+        compra.setEstoque(estoque);
         compra.setStatus(StatusTransacao.EM_ANDAMENTO);
         compraRepository.save(compra);
         return CompraResponse.fromEntity(compra);
@@ -126,12 +128,11 @@ public class CompraService {
     }
 
     @Transactional
-    public CompraResponse registrarEntrega(Long idCompra,Long idEstoque){
+    public CompraResponse registrarEntrega(Long idCompra){
         log.info("entrei na entrega");
         Compra compra = findEntityCompra(idCompra);
-        Estoque estoque = findEntityEstoque(idEstoque);
         verificaTransaçãoFinalizada(compra);
-        registrarEntradaNoEstoque(compra,estoque);
+        registrarEntradaNoEstoque(compra,compra.getEstoque());
         compra.setStatus(StatusTransacao.ENTREGUE);
         compraRepository.save(compra);
         return CompraResponse.fromEntity(compra);

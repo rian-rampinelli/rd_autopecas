@@ -1,6 +1,7 @@
 package com.rd.autopecas.erp_autopecas.domain.compra;
 
 import com.rd.autopecas.erp_autopecas.domain.common.Auditable;
+import com.rd.autopecas.erp_autopecas.domain.estoque.Estoque;
 import com.rd.autopecas.erp_autopecas.domain.forma_pagamento.FormaPagamento;
 import com.rd.autopecas.erp_autopecas.domain.fornecedor.Fornecedor;
 import com.rd.autopecas.erp_autopecas.domain.funcionario.Funcionario;
@@ -40,6 +41,10 @@ public class Compra extends Auditable {
     @ManyToOne
     @JoinColumn(name = "id_funcionario", nullable = false)
     private Funcionario funcionario;
+
+    @ManyToOne
+    @JoinColumn(name = "id_estoque")
+    private Estoque estoque;
 
     @ManyToOne
     @JoinColumn(name = "id_forma_pagamento")

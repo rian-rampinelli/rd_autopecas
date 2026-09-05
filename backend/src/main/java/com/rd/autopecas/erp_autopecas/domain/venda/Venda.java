@@ -43,7 +43,7 @@ public class Venda extends Auditable {
     private Funcionario funcionario;
 
     @ManyToOne
-    @JoinColumn(name = "id_forma_pagamento",nullable = false)
+    @JoinColumn(name = "id_forma_pagamento")
     private FormaPagamento formaPagamento;
 
     @OneToMany(mappedBy = "venda")

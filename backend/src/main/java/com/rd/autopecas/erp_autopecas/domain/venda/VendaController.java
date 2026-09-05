@@ -1,8 +1,8 @@
 package com.rd.autopecas.erp_autopecas.domain.venda;
 
-import com.rd.autopecas.erp_autopecas.domain.compra.dto.CompraRequest;
-import com.rd.autopecas.erp_autopecas.domain.compra.dto.CompraResponse;
-import com.rd.autopecas.erp_autopecas.domain.item_compra.dto.ItemCompraRequest;
+import com.rd.autopecas.erp_autopecas.domain.venda.dto.VendaRequest;
+import com.rd.autopecas.erp_autopecas.domain.venda.dto.VendaResponse;
+import com.rd.autopecas.erp_autopecas.domain.item_venda.dto.ItemVendaRequest;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -13,62 +13,62 @@ import java.net.URI;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("compras")
+@RequestMapping("vendas")
 public class VendaController {
 
-    private final VendaService compraService;
+    private final VendaService vendaService;
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE', 'ESTOQUISTA')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE', 'VENDEDOR')")
     @GetMapping("{id}")
-    public ResponseEntity<CompraResponse> findById(@PathVariable Long id){
-        return ResponseEntity.ok((compraService.findById(id)));
+    public ResponseEntity<VendaResponse> findById(@PathVariable Long id){
+        return ResponseEntity.ok((vendaService.findById(id)));
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE', 'ESTOQUISTA')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE', 'VENDEDOR')")
     @PostMapping
-    public ResponseEntity<CompraResponse> gerarCompra(@RequestBody @Valid CompraRequest compraRequest){
-        return ResponseEntity.created(URI.create("/compras")).body(compraService.gerarCompra(compraRequest));
+    public ResponseEntity<VendaResponse> gerarVenda(@RequestBody @Valid VendaRequest vendaRequest){
+        return ResponseEntity.created(URI.create("/vendas")).body(vendaService.gerarVenda(vendaRequest));
     }
-    @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE', 'ESTOQUISTA')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE', 'VENDEDOR')")
     @PostMapping("{id}")
-    public ResponseEntity<CompraResponse> adicionarItemCompra(@PathVariable Long id, @RequestBody @Valid ItemCompraRequest itemCompraRequest){
-        return ResponseEntity.created(URI.create("/compras")).body(compraService.adicionarItemNaCompra(id,itemCompraRequest));
+    public ResponseEntity<VendaResponse> adicionarItemVenda(@PathVariable Long id, @RequestBody @Valid ItemVendaRequest itemVendaRequest){
+        return ResponseEntity.created(URI.create("/vendas")).body(vendaService.adicionarItemNaVenda(id,itemVendaRequest));
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE', 'ESTOQUISTA')")
-    @DeleteMapping("{idCompra}/itemcompra/{idItemCompra}")
-    public ResponseEntity<CompraResponse> removerItemCompra(@PathVariable Long idCompra,@PathVariable Long idItemCompra){
-        return ResponseEntity.created(URI.create("/compras")).body(compraService.removerItemDaCompra(idCompra,idItemCompra));
-    }
-
-    @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE', 'ESTOQUISTA')")
-    @PostMapping("{idCompra}/processar_pagamento/{idFormaPagamento}")
-    public ResponseEntity<CompraResponse> processarPagamento(@PathVariable Long idCompra,@PathVariable Long idFormaPagamento){
-        return ResponseEntity.created(URI.create("/compras")).body(compraService.processarPagamento(idCompra,idFormaPagamento));
-    }
-    @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE', 'ESTOQUISTA')")
-    @PostMapping("{idCompra}/finalizar")
-    public ResponseEntity<CompraResponse> finalizarCompra(@PathVariable Long idCompra){
-        return ResponseEntity.created(URI.create("/compras")).body(compraService.finalizarCompra(idCompra));
-    }
-
-    @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE', 'ESTOQUISTA')")
-    @PostMapping("{idCompra}/entregar/estoque/{idEstoque}")
-    public ResponseEntity<CompraResponse> CompraEntregue(@PathVariable Long idCompra,@PathVariable Long idEstoque){
-        return ResponseEntity.created(URI.create("/compras")).body(compraService.registrarEntrega(idCompra,idEstoque));
-    }
-
-    @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE', 'ESTOQUISTA')")
-    @PostMapping("{idCompra}/cancelar")
-    public ResponseEntity<CompraResponse> cancelarCompra(@PathVariable Long idCompra){
-        return ResponseEntity.created(URI.create("/compras")).body(compraService.registrarCancelamento(idCompra));
-    }
-
-    @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE', 'ESTOQUISTA')")
-    @PostMapping("{idCompra}/abandonar")
-    public ResponseEntity<CompraResponse> registrarAbandono(@PathVariable Long idCompra){
-        return ResponseEntity.created(URI.create("/compras")).body(compraService.registrarAbandono(idCompra));
-    }
+//    @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE', 'ESTOQUISTA')")
+//    @DeleteMapping("{idVenda}/itemvenda/{idItemVenda}")
+//    public ResponseEntity<VendaResponse> removerItemVenda(@PathVariable Long idVenda,@PathVariable Long idItemVenda){
+//        return ResponseEntity.created(URI.create("/vendas")).body(vendaService.removerItemDaVenda(idVenda,idItemVenda));
+//    }
+//
+//    @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE', 'ESTOQUISTA')")
+//    @PostMapping("{idVenda}/processar_pagamento/{idFormaPagamento}")
+//    public ResponseEntity<VendaResponse> processarPagamento(@PathVariable Long idVenda,@PathVariable Long idFormaPagamento){
+//        return ResponseEntity.created(URI.create("/vendas")).body(vendaService.processarPagamento(idVenda,idFormaPagamento));
+//    }
+//    @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE', 'ESTOQUISTA')")
+//    @PostMapping("{idVenda}/finalizar")
+//    public ResponseEntity<VendaResponse> finalizarVenda(@PathVariable Long idVenda){
+//        return ResponseEntity.created(URI.create("/vendas")).body(vendaService.finalizarVenda(idVenda));
+//    }
+//
+//    @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE', 'ESTOQUISTA')")
+//    @PostMapping("{idVenda}/entregar/estoque/{idEstoque}")
+//    public ResponseEntity<VendaResponse> VendaEntregue(@PathVariable Long idVenda,@PathVariable Long idEstoque){
+//        return ResponseEntity.created(URI.create("/vendas")).body(vendaService.registrarEntrega(idVenda,idEstoque));
+//    }
+//
+//    @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE', 'ESTOQUISTA')")
+//    @PostMapping("{idVenda}/cancelar")
+//    public ResponseEntity<VendaResponse> cancelarVenda(@PathVariable Long idVenda){
+//        return ResponseEntity.created(URI.create("/vendas")).body(vendaService.registrarCancelamento(idVenda));
+//    }
+//
+//    @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE', 'ESTOQUISTA')")
+//    @PostMapping("{idVenda}/abandonar")
+//    public ResponseEntity<VendaResponse> registrarAbandono(@PathVariable Long idVenda){
+//        return ResponseEntity.created(URI.create("/vendas")).body(vendaService.registrarAbandono(idVenda));
+//    }
 
 
 }

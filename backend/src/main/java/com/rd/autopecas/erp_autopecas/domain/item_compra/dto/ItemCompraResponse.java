@@ -1,7 +1,5 @@
 package com.rd.autopecas.erp_autopecas.domain.item_compra.dto;
 
-import com.rd.autopecas.erp_autopecas.domain.compra.Compra;
-import com.rd.autopecas.erp_autopecas.domain.compra.dto.CompraResponse;
 import com.rd.autopecas.erp_autopecas.domain.item_compra.ItemCompra;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;

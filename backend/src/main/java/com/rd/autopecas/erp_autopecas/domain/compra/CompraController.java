@@ -53,9 +53,9 @@ public class CompraController {
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE', 'ESTOQUISTA')")
-    @PostMapping("{idCompra}/entregar/estoque/{idEstoque}")
-    public ResponseEntity<CompraResponse> CompraEntregue(@PathVariable Long idCompra,@PathVariable Long idEstoque){
-        return ResponseEntity.created(URI.create("/compras")).body(compraService.registrarEntrega(idCompra,idEstoque));
+    @PostMapping("{idCompra}/entregar")
+    public ResponseEntity<CompraResponse> CompraEntregue(@PathVariable Long idCompra){
+        return ResponseEntity.created(URI.create("/compras")).body(compraService.registrarEntrega(idCompra));
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE', 'ESTOQUISTA')")
