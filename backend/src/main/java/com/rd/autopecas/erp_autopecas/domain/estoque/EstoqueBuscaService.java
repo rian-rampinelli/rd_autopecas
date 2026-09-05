@@ -31,10 +31,6 @@ public class EstoqueBuscaService {
         return(EstoqueResponse.fromEntity(estoque));
     }
 
-    public List<EstoqueItemProjection> findAllItensDisponiveis(Long idItem){
-        return estoqueRepository.findAll(idItem);
-    }
-
     public List<EstoqueItemResponse> buscarItemsDeEstoque(Long idEstoque, EstoqueItemFilter filter){
         return estoqueRepository.findAllItemsByEstoque(idEstoque,filter.item(),filter.nomeItem(),filter.localizacao(),filter.qtdMinima(),filter.qtdMaxima());
     }

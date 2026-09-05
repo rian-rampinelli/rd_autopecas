@@ -20,19 +20,6 @@ public interface EstoqueRepository extends JpaRepository<Estoque, Long> {
 
     //usando slq native
     @Query(value = """
-        SELECT ei.id,i.id,e.id,i.nome,ei.quantidade,ei.localizacao
-        FROM estoque_item ei
-        inner join estoque e
-        on ei.id_estoque = e.id
-        inner join item i
-        on ei.id_item = i.id
-        WHERE i.id= :itemId
-    
-    """, nativeQuery = true)
-    List<EstoqueItemProjection> findAll(@Param("itemId") Long itemId);
-
-    //usando slq native
-    @Query(value = """
         SELECT ei.id,i.nome,ei.quantidade,ei.localizacao
         FROM estoque_item ei
         inner join item i

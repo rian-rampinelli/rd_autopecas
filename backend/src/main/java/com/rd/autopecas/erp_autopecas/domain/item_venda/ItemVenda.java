@@ -2,6 +2,7 @@ package com.rd.autopecas.erp_autopecas.domain.item_venda;
 
 import com.rd.autopecas.erp_autopecas.domain.Item.Item;
 import com.rd.autopecas.erp_autopecas.domain.common.Auditable;
+import com.rd.autopecas.erp_autopecas.domain.estoque.Estoque;
 import com.rd.autopecas.erp_autopecas.domain.venda.Venda;
 import jakarta.persistence.*;
 import lombok.*;
@@ -34,4 +35,9 @@ public class ItemVenda extends Auditable {
     @ManyToOne
     @JoinColumn(name = "id_venda", nullable = false)
     private Venda venda;
+
+    @ManyToOne
+    @JoinColumn(name = "id_estoque")
+    private Estoque estoque;
+
 }

@@ -74,10 +74,11 @@ public class VendaService {
 
     @Transactional
     public VendaResponse adicionarItemNaVenda(Long idVenda, ItemVendaRequest request){
+        log.info("entrei em add item venda");
         Venda venda = findEntityVenda(idVenda);
         Estoque estoque = findEntityEstoque(request.idEstoque());
         verificaTransaçãoEmAndamento(venda);
-        ItemVenda itemVenda = findEntityItemVendaByItemAndVenda(request.idItem(),idVenda);
+        ItemVenda itemVenda = findEntityItemVendaByItemAndVendaAndEstoque(request.idItem(),idVenda,request.idEstoque());
         if(itemVenda == null){
             itemVenda = new ItemVenda();
             Item item = findEntityItem(request.idItem());
@@ -85,6 +86,7 @@ public class VendaService {
             itemVenda.setQuantidade(request.quantidade());
             itemVenda.setItemValue(request.itemValue());
             itemVenda.setItem(item);
+            itemVenda.setEstoque(estoque);
             venda.addItemVenda(itemVenda);
         }
         else{
@@ -209,8 +211,8 @@ public class VendaService {
                 .orElseThrow(() -> new ResourceNotFoundException("FormaPagamento não encontrada"));
     }
 
-    private ItemVenda findEntityItemVendaByItemAndVenda(Long idItem, Long idVenda){
-        return itemVendaRepository.findByItem_IdAndVenda_Id(idItem, idVenda)
+    private ItemVenda findEntityItemVendaByItemAndVendaAndEstoque(Long idItem, Long idVenda,Long idEstoque){
+        return itemVendaRepository.findByItem_IdAndVenda_IdAndEstoque_id(idItem, idVenda,idEstoque)
                 .orElse(null);
     }
 
