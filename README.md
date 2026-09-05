@@ -1,6 +1,6 @@
 # RD Autopeças
 
-Sistema ERP Full Stack para gerenciamento de uma loja de autopeças, desenvolvido com **Java, Spring Boot e React**. O projeto tem como objetivo ser um ambiente de negócio real.
+Sistema ERP Full Stack para gerenciamento de uma loja de autopeças, desenvolvido com **Java, Spring Boot e React Native**. O projeto tem como objetivo ser um ambiente de negócio real.
 
 ## Tecnologias
 
@@ -18,7 +18,9 @@ Sistema ERP Full Stack para gerenciamento de uma loja de autopeças, desenvolvid
 - PostgreSQL
 
 ### Frontend
-- React *(em desenvolvimento)*
+- React Native 
+- Expo
+- Js
 
 ## Documentação da API
 
@@ -29,15 +31,3 @@ http://localhost:8080/swagger
 ```
 
 ##  Estrutura do Projeto
-
-```text
-backend/src/main/java/com/rd_autopecas/erp_autopecas/
-├── domain
-│   ├── auth
-│   ├── user
-│   ├── venda
-│   └── ...
-├── config
-├── exceptions
-└── infra
-```
