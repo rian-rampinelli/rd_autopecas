@@ -80,7 +80,9 @@ public class AuthService {
         //authentication provider -> userDetailsService -> PassWordEncoder.matches -> autenticado!
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.email(),loginRequest.password()));
         String token = tokenProvider.gerarToken(authentication);
+        User user = (User) authentication.getPrincipal();
 
-        return new LoginResponse(token, tokenProvider.expiresIn(token));
+
+        return new LoginResponse(token, tokenProvider.expiresIn(token), user.getId(),user.getNome(), user.getEmail(), user.getFuncionario().getCargo());
     }
 }

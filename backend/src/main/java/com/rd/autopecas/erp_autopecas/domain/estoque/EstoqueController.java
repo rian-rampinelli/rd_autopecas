@@ -33,11 +33,6 @@ public class EstoqueController {
         return ResponseEntity.ok(estoqueBuscaService.findById(id));
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE', 'ESTOQUISTA','VENDEDOR')")
-    @GetMapping()
-    public ResponseEntity<List<EstoqueItemProjection>> findAllItensDisponiveis(@RequestParam Long idItem ) {
-        return ResponseEntity.ok(estoqueBuscaService.findAllItensDisponiveis(idItem));
-    }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE')")
     @DeleteMapping("/{id}")
