@@ -5,7 +5,8 @@ import jakarta.validation.constraints.DecimalMin;
 import java.math.BigDecimal;
 
 public record EstoqueItemFilter(
-        Long item,
+        Long idEstoque,
+        Long idItem,
         String nomeItem,
         String localizacao,
         @DecimalMin(value = "0.01")

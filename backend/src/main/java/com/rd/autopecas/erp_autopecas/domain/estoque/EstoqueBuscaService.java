@@ -1,14 +1,7 @@
 package com.rd.autopecas.erp_autopecas.domain.estoque;
 
-import com.rd.autopecas.erp_autopecas.domain.Item.Item;
-import com.rd.autopecas.erp_autopecas.domain.Item.ItemRepository;
-import com.rd.autopecas.erp_autopecas.domain.estoque.dto.EstoqueItemProjection;
 import com.rd.autopecas.erp_autopecas.domain.estoque.dto.EstoqueResponse;
-import com.rd.autopecas.erp_autopecas.domain.estoque_item.EstoqueItem;
-import com.rd.autopecas.erp_autopecas.domain.estoque_item.EstoqueItemRepository;
 import com.rd.autopecas.erp_autopecas.domain.estoque_item.dto.EstoqueItemResponse;
-import com.rd.autopecas.erp_autopecas.domain.estoque_item.filter.EstoqueItemFilter;
-import com.rd.autopecas.erp_autopecas.domain.movimentacao_estoque.MovimentacaoEstoqueRepository;
 import com.rd.autopecas.erp_autopecas.domain.movimentacao_estoque.dto.MovimentacaoEstoqueResponse;
 import com.rd.autopecas.erp_autopecas.domain.movimentacao_estoque.enums.TypeMovimentacao;
 import com.rd.autopecas.erp_autopecas.domain.movimentacao_estoque.filter.MovimentacaoEstoqueFilter;
@@ -31,9 +24,6 @@ public class EstoqueBuscaService {
         return(EstoqueResponse.fromEntity(estoque));
     }
 
-    public List<EstoqueItemResponse> buscarItemsDeEstoque(Long idEstoque, EstoqueItemFilter filter){
-        return estoqueRepository.findAllItemsByEstoque(idEstoque,filter.item(),filter.nomeItem(),filter.localizacao(),filter.qtdMinima(),filter.qtdMaxima());
-    }
 
     public List<MovimentacaoEstoqueResponse> buscarHistoricoMovimentacoesDeEstoque(Long idEstoque, MovimentacaoEstoqueFilter filter){
         String tipo = filter.tipo();

@@ -1,17 +1,14 @@
 package com.rd.autopecas.erp_autopecas.domain.estoque_item;
 
 
-import com.rd.autopecas.erp_autopecas.domain.Item.dto.ItemResumeResponse;
 import com.rd.autopecas.erp_autopecas.domain.estoque_item.dto.EstoqueItemResponse;
+import com.rd.autopecas.erp_autopecas.domain.estoque_item.filter.EstoqueItemFilter;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("estoqueitens")
@@ -28,7 +25,7 @@ public class EstoqueItemController {
 
     @PreAuthorize("hasAnyRole('ADMIN', 'GERENTE', 'VENDEDOR','ESTOQUISTA')")
     @GetMapping
-    public ResponseEntity<Page<EstoqueItemResponse>> findAll(Pageable pageable) {
-        return ResponseEntity.ok(estoqueItemService.findAll(pageable));
+    public ResponseEntity<Page<EstoqueItemResponse>> findAll(Pageable pageable,@ModelAttribute EstoqueItemFilter filter) {
+        return ResponseEntity.ok(estoqueItemService.findAll(pageable,filter));
     }
 }

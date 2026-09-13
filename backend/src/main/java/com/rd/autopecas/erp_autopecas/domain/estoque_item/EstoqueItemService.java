@@ -2,6 +2,7 @@ package com.rd.autopecas.erp_autopecas.domain.estoque_item;
 
 import com.rd.autopecas.erp_autopecas.domain.estoque.EstoqueService;
 import com.rd.autopecas.erp_autopecas.domain.estoque_item.dto.EstoqueItemResponse;
+import com.rd.autopecas.erp_autopecas.domain.estoque_item.filter.EstoqueItemFilter;
 import com.rd.autopecas.erp_autopecas.exceptions.ResourceNotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,9 +27,9 @@ public class EstoqueItemService {
 
 
 
-    public Page<EstoqueItemResponse> findAll(Pageable pageable){
+    public Page<EstoqueItemResponse> findAll(Pageable pageable, EstoqueItemFilter filter){
         log.info("entrei no find all");
-        Page<EstoqueItemResponse> estoqueItems =  estoqueItemRepository.findWithFilters(pageable);
+        Page<EstoqueItemResponse> estoqueItems =  estoqueItemRepository.findWithFilters(pageable,filter.idEstoque());
         return estoqueItems;
 
     }

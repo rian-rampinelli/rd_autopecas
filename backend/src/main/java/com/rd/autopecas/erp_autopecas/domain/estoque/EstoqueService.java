@@ -2,30 +2,21 @@ package com.rd.autopecas.erp_autopecas.domain.estoque;
 
 import com.rd.autopecas.erp_autopecas.domain.Item.Item;
 import com.rd.autopecas.erp_autopecas.domain.Item.ItemRepository;
-import com.rd.autopecas.erp_autopecas.domain.estoque.dto.EstoqueItemProjection;
-import com.rd.autopecas.erp_autopecas.domain.estoque.dto.EstoqueResponse;
 import com.rd.autopecas.erp_autopecas.domain.estoque_item.EstoqueItem;
 import com.rd.autopecas.erp_autopecas.domain.estoque_item.EstoqueItemRepository;
 import com.rd.autopecas.erp_autopecas.domain.estoque_item.dto.EstoqueItemRequest;
 import com.rd.autopecas.erp_autopecas.domain.estoque_item.dto.EstoqueItemResponse;
-import com.rd.autopecas.erp_autopecas.domain.estoque_item.filter.EstoqueItemFilter;
 import com.rd.autopecas.erp_autopecas.domain.movimentacao_estoque.MovimentacaoEstoque;
 import com.rd.autopecas.erp_autopecas.domain.movimentacao_estoque.MovimentacaoEstoqueRepository;
-import com.rd.autopecas.erp_autopecas.domain.movimentacao_estoque.dto.MovimentacaoEstoqueResponse;
 import com.rd.autopecas.erp_autopecas.domain.movimentacao_estoque.enums.TypeMovimentacao;
-import com.rd.autopecas.erp_autopecas.domain.movimentacao_estoque.filter.MovimentacaoEstoqueFilter;
 import com.rd.autopecas.erp_autopecas.domain.unidade.Unidade;
 import com.rd.autopecas.erp_autopecas.domain.unidade.UnidadeRepository;
 import com.rd.autopecas.erp_autopecas.exceptions.ResourceNotFoundException;
-import com.rd.autopecas.erp_autopecas.exceptions.ValidationException;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.List;
-
-import static java.util.stream.Collectors.toList;
 
 
 @Service
