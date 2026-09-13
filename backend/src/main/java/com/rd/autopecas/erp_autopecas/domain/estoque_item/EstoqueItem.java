@@ -31,11 +31,11 @@ public class EstoqueItem extends Auditable {
     @Column(name = "localizacao", nullable = false, length = 255)
     private String localizacao;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_item", nullable = false)
     private Item item;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_estoque", nullable = false)
     private Estoque estoque;
 
